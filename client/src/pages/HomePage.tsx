@@ -1,7 +1,8 @@
-const HomePage = () => {
-  return (
-    <div>HomePage</div>
-  )
-}
+import useMainPage from "../hooks/useMainPage";
 
-export default HomePage
+const HomePage = () => {
+  const { title } = useMainPage();
+  return <div>{title}</div>;
+};
+
+export default HomePage;
