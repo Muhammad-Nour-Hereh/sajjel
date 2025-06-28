@@ -1,0 +1,36 @@
+{
+  "autorun": true,
+  "autokill": true,
+  "terminals": [
+    {
+      "name": "DB",
+      "icon": "database",
+      "color": "terminal.ansiCyan",
+      "command": "clear && mariadb -u root"
+    },
+    {
+      "name": "FE Server",
+      "icon": "play-circle",
+      "color": "terminal.ansiGreen",
+      "command": "cd *cl* && clear && npm run dev"
+    },
+    {
+      "name": "BE Server",
+      "icon": "server",
+      "color": "terminal.ansiBlue",
+      "command": "cd *ser* && clear && php artisan serve "
+    },
+    {
+      "name": "FE cmd",
+      "icon": "file-code",
+      "color": "terminal.ansiYellow",
+      "command": "cd *cl* && clear"
+    },
+    {
+      "name": "BE cmd",
+      "icon": "file-binary",
+      "color": "terminal.ansiMagenta",
+      "command": "cd *ser* && clear"
+    }
+  ]
+}

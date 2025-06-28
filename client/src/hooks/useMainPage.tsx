@@ -1,5 +1,5 @@
 const useMainPage = () => {
-  const title = "main";
+  const title = "mustafa";
   return { title };
 };
 
