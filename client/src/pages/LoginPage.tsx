@@ -7,7 +7,7 @@ const LoginPage = () => {
       {title}
       LoginPage
     </div>
-  );
-};
+  );;;
+}
 
-export default LoginPage;
+export default LoginPage
