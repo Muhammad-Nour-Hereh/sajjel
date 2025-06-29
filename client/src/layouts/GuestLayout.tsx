@@ -1,9 +1,8 @@
+import { remote } from '@/remotes/remotes'
 import { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-import { remote } from '@/remotes/remotes'
-import LoadingPage from '@/pages/LoadingPage'
 
-const UserRoutes = () => {
+const GuestLayout = () => {
   const [loading, setLoading] = useState(true)
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
 
@@ -23,9 +22,9 @@ const UserRoutes = () => {
     checkAuth()
   }, [])
 
-  if (loading) return <LoadingPage />
+  if (loading) return <div>Loading...</div>
 
-  return isAuthorized ? <Outlet /> : <Navigate to="/login" />
+  return isAuthorized ? <Navigate to="/home" /> : <Outlet />
 }
 
-export default UserRoutes
+export default GuestLayout
