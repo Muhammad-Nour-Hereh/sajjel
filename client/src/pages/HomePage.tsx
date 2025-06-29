@@ -1,7 +1,7 @@
-import useMainPage from "../hooks/useMainPage";
+import useMainPage from '../hooks/useMainPage'
 
 const HomePage = () => {
-  const { title } = useMainPage();
+  const { title } = useMainPage()
   return (
     <div>
       {title}
@@ -12,7 +12,7 @@ const HomePage = () => {
       <input /> <br />
       <input /> <br />
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

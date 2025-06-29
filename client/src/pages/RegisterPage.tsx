@@ -1,7 +1,7 @@
-import useRegisterPage from "../hooks/useRegisterPage";
+import useRegisterPage from '../hooks/useRegisterPage'
 
 const RegisterPage = () => {
-  const { title } = useRegisterPage();
+  const { title } = useRegisterPage()
   return (
     <div>
       {title}
@@ -10,7 +10,7 @@ const RegisterPage = () => {
       <input />
       <input />
     </div>
-  );
-};
+  )
+}
 
-export default RegisterPage;
+export default RegisterPage
