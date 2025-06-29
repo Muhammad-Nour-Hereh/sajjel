@@ -1,7 +1,13 @@
-const LoginPage = () => {
-  return (
-    <div>LoginPage</div>
-  )
-}
+import useLoginPage from "../hooks/useLoginPage";
 
-export default LoginPage
+const LoginPage = () => {
+  const { title } = useLoginPage();
+  return (
+    <div>
+      {title}
+      LoginPage
+    </div>
+  );
+};
+
+export default LoginPage;
