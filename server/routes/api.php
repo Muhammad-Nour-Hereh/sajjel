@@ -2,14 +2,16 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+Route::group(["prefix" => "v1"], function () {
 
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-], function ($router) {
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
-    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api')->name('refresh');
-    Route::post('/me', [AuthController::class, 'me'])->middleware('auth:api')->name('me');
+    Route::prefix('auth')->group(function () {
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/register', [AuthController::class, 'register']);
+
+        // Protected routes (require JWT token)
+        Route::middleware('jwt')->group(function () {
+            Route::get('/me', [AuthController::class, 'me']);
+            Route::post('/logout', [AuthController::class, 'logout']);
+        });
+    });
 });

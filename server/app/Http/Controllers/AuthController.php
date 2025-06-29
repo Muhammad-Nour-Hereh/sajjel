@@ -2,59 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Services\AuthService;
+
 
 class AuthController extends Controller {
 
-//     public function register() {
-//         $validator = Validator::make(request()->all(), [
-//             'name' => 'required',
-//             'email' => 'required|email|unique:users',
-//             'password' => 'required|confirmed|min:8',
-//         ]);
+    public function __construct(protected AuthService $auth) {
+    }
 
-//         if ($validator->fails()) {
-//             return response()->json($validator->errors()->toJson(), 400);
-//         }
+    public function me() {
+        $user = $this->auth->user();
 
-//         $user = new User;
-//         $user->name = request()->name;
-//         $user->email = request()->email;
-//         $user->password = bcrypt(request()->password);
-//         $user->save();
+        return $this->successResponse($user);
+    }
 
-//         return response()->json($user, 201);
-//     }
+    public function register(RegisterRequest $request) {
+        $token = $this->auth->register($request->validated());
 
-//     public function login() {
-//         $credentials = request(['email', 'password']);
+        return $this->successResponse($token, 201);
+    }
 
-//         if (! $token = auth()->attempt($credentials)) {
-//             return response()->json(['error' => 'Unauthorized'], 401);
-//         }
+    public function login(LoginRequest $request) {
+        $credentials = $request->validated();
+        $token = $this->auth->login($credentials);
+        if (! $token) {
+            return $this->unauthorizedResponse();
+        }
 
-//         return $this->respondWithToken($token);
-//     }
+        return $this->successResponse($token);
+    }
+    public function logout() {
+        $this->auth->logout();
 
-//     public function me() {
-//         return response()->json(auth()->user());
-//     }
-
-//     public function logout() {
-//         auth()->logout();
-
-//         return response()->json(['message' => 'Successfully logged out']);
-//     }
-
-//     public function refresh() {
-//         return $this->respondWithToken(auth()->refresh());
-//     }
-
-//     protected function respondWithToken($token) {
-//         return response()->json([
-//             'access_token' => $token,
-//             'token_type' => 'bearer',
-//             'expires_in' => auth()->factory()->getTTL() * 60
-//         ]);
-//     }
+        return $this->noContentResponse();
+    }
 }
