@@ -11,7 +11,7 @@ const HomePage = () => {
   useEffect(() => {
     call()
   }, [])
-  return <div>{title}</div>
+  return <div className="p-10">{title}</div>
 }
 
 export default HomePage
