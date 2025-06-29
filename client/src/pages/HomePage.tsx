@@ -1,18 +1,17 @@
+import { useEffect } from 'react'
 import useMainPage from '../hooks/useMainPage'
+import { remote } from '../remotes/remotes'
 
 const HomePage = () => {
   const { title } = useMainPage()
-  return (
-    <div>
-      {title}
-      <br />
-      <input />
-      <br />
-      <input />
-      <input /> <br />
-      <input /> <br />
-    </div>
-  )
+  const call = async () => {
+    const res = await remote.auth.login('test@example.com', 'password')
+    console.log(res)
+  }
+  useEffect(() => {
+    call()
+  }, [])
+  return <div>{title}</div>
 }
 
 export default HomePage
