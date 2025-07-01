@@ -11,10 +11,12 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('model')->nullable();
-            $table->decimal('buy_price')->nullable();
-            $table->decimal('sell_price')->nullable();
+            $table->decimal('buy_price', 10, 2)->nullable();
+            $table->decimal('sell_price', 10, 2)->nullable();
             $table->string('thumbnail')->nullable();
             $table->string('note')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
