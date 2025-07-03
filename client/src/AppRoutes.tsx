@@ -6,20 +6,23 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import GuestLayout from './layouts/GuestLayout'
 import ForgetPasswordPage from './pages/ForgetPasswordPage'
+import { GuestRoutes } from './routes/GuestRoutes'
+import ItemsPage from './pages/ItemsPage'
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route element={<GuestLayout />}>
-        <Route path={UserRoutes.REGISTER} element={<RegisterPage />} />
-        <Route path={UserRoutes.LOGIN} element={<LoginPage />} />
+        <Route path={GuestRoutes.REGISTER} element={<RegisterPage />} />
+        <Route path={GuestRoutes.LOGIN} element={<LoginPage />} />
         <Route
-          path={UserRoutes.FORGETPASSWORD}
+          path={GuestRoutes.FORGETPASSWORD}
           element={<ForgetPasswordPage />}
         />
       </Route>
       <Route element={<UserLayout />}>
         <Route path={UserRoutes.HOME} element={<HomePage />} />
+        <Route path={UserRoutes.ITEMS} element={<ItemsPage />} />
       </Route>
     </Routes>
   )
