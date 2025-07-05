@@ -7,7 +7,16 @@ const ItemsPage = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {items.map((item) => (
-        <Card key={item.id} className="hover:shadow-md transition">
+        <Card
+          key={item.id}
+          className="overflow-hidden hover:shadow-md transition">
+          {item.thumbnail && (
+            <img
+              src={item.thumbnail}
+              alt={item.name}
+              className="w-full h-48 object-cover"
+            />
+          )}
           <CardHeader>
             <CardTitle>{item.name}</CardTitle>
           </CardHeader>
