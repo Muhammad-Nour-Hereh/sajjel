@@ -4,6 +4,11 @@ import type { Item } from '@/models/Item'
 
 const useItemsPage = () => {
   const [items, setItems] = useState<Item[]>([])
+  const [search, setSearch] = useState('')
+
+  const filteredItems = items.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase()),
+  )
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -16,7 +21,7 @@ const useItemsPage = () => {
     fetchItems()
   }, [])
 
-  return { items }
+  return { search, setSearch, filteredItems }
 }
 
 export default useItemsPage
