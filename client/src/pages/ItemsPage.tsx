@@ -6,10 +6,10 @@ const ItemsPage = () => {
   const { search, setSearch, filteredItems } = useItemsPage()
 
   return (
-    <div>
+    <div className="p-4">
       <SearchBar value={search} onChange={setSearch} />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {filteredItems.map((item) => (
           <Card
             key={item.id}
