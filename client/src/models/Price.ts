@@ -27,3 +27,4 @@ export class Price {
     return new Price(newAmount, targetCurrency)
   }
 }
+

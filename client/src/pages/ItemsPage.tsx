@@ -2,9 +2,10 @@ import useItemsPage from '@/hooks/useItemsPage'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import SearchBar from '@/components/ui/Searchbar'
 import { EditableText } from '@/components/ui/EditableText'
+import { Price } from '@/models/Price'
 
 const ItemsPage = () => {
-  const { search, setSearch, filteredItems } = useItemsPage()
+  const { search, setSearch, filteredItems, updateItem } = useItemsPage()
 
   return (
     <div className="p-4">
@@ -26,22 +27,41 @@ const ItemsPage = () => {
               <CardTitle>
                 <EditableText
                   value={item.name}
-                  onChange={(val) => console.log('update name', val)}
+                  onChange={(val) =>
+                    updateItem({ id: item.id, data: { name: val } })
+                  }
                 />
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-1 text-sm">
               <EditableText
                 value={item.model || 'N/A'}
-                onChange={(val) => console.log('update model', val)}
+                onChange={(val) =>
+                  updateItem({ id: item.id, data: { model: val } })
+                }
               />
               <EditableText
-                value={item.buy_price?.toString() || '0'}
-                onChange={(val) => console.log('update buy_price', val)}
+                value={item.buy_price?.amount.toString() || '0'}
+                onChange={(val) => {
+                  const amount = parseFloat(val) || 0
+                  const price = new Price(
+                    amount,
+                    item.buy_price?.currency || 'USD',
+                  )
+                  updateItem({ id: item.id, data: { buy_price: price } })
+                }}
               />
+
               <EditableText
-                value={item.sell_price?.toString() || '0'}
-                onChange={(val) => console.log('update sell_price', val)}
+                value={item.sell_price?.amount.toString() || '0'}
+                onChange={(val) => {
+                  const amount = parseFloat(val) || 0
+                  const price = new Price(
+                    amount,
+                    item.sell_price?.currency || 'USD',
+                  )
+                  updateItem({ id: item.id, data: { sell_price: price } })
+                }}
               />
             </CardContent>
           </Card>

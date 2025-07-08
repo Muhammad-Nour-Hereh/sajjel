@@ -11,3 +11,15 @@ export interface Item {
   created_at: string
   updated_at: string
 }
+
+export function parseItem(raw: any): Item {
+  return {
+    ...raw,
+    buy_price: raw.buy_price
+      ? new Price(raw.buy_price.amount, raw.buy_price.currency)
+      : undefined,
+    sell_price: raw.sell_price
+      ? new Price(raw.sell_price.amount, raw.sell_price.currency)
+      : undefined,
+  }
+}
