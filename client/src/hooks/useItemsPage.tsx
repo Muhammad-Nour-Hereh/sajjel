@@ -1,27 +1,24 @@
 import { remote } from '@/remotes/remotes'
-import { useEffect, useState } from 'react'
-import type { Item } from '@/models/Item'
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 const useItemsPage = () => {
-  const [items, setItems] = useState<Item[]>([])
   const [search, setSearch] = useState('')
+
+  const {
+    data: items = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['items'],
+    queryFn: () => remote.items.fetchAll().then((res) => res.data),
+  })
 
   const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase()),
   )
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      const result = await remote.items.fetchAll()
-      console.log(result.data)
-      if (result.data === undefined) result.data = []
-      setItems(result.data)
-    }
-
-    fetchItems()
-  }, [])
-
-  return { search, setSearch, filteredItems }
+  return { search, setSearch, filteredItems, isLoading, isError }
 }
 
 export default useItemsPage

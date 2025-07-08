@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ItemFactory extends Factory {
     public function definition(): array {
-        $placeholderUrl = config('app.url') . '/thumbnails/item_thumbnail_placeholder.png';
+        $placeholderUrl = config('app.url'). ':8000' . '/thumbnails/item_thumbnail_placeholder.png';
 
         return [
             'name'       => $this->faker->word(),
