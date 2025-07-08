@@ -1,6 +1,7 @@
 import useItemsPage from '@/hooks/useItemsPage'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import SearchBar from '@/components/ui/Searchbar'
+import { EditableText } from '@/components/ui/EditableText'
 
 const ItemsPage = () => {
   const { search, setSearch, filteredItems } = useItemsPage()
@@ -22,12 +23,26 @@ const ItemsPage = () => {
               />
             )}
             <CardHeader>
-              <CardTitle>{item.name}</CardTitle>
+              <CardTitle>
+                <EditableText
+                  value={item.name}
+                  onChange={(val) => console.log('update name', val)}
+                />
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p>Model: {item.model || 'N/A'}</p>
-              <p>Buy: {item.buy_price?.toString()}</p>
-              <p>Sell: {item.sell_price?.toString()}</p>
+            <CardContent className="space-y-1 text-sm">
+              <EditableText
+                value={item.model || 'N/A'}
+                onChange={(val) => console.log('update model', val)}
+              />
+              <EditableText
+                value={item.buy_price?.toString() || '0'}
+                onChange={(val) => console.log('update buy_price', val)}
+              />
+              <EditableText
+                value={item.sell_price?.toString() || '0'}
+                onChange={(val) => console.log('update sell_price', val)}
+              />
             </CardContent>
           </Card>
         ))}
