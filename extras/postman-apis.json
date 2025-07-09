@@ -12,7 +12,6 @@
   "item": [
     {
       "name": "auth",
-      "description": "Authentication endpoints",
       "item": [
         {
           "name": "Register",
@@ -23,11 +22,7 @@
               "mode": "raw",
               "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\"\n}"
             },
-            "url": {
-              "raw": "{{base_url}}/auth/register",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "register"]
-            }
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] }
           }
         },
         {
@@ -39,11 +34,7 @@
               "mode": "raw",
               "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password\"\n}"
             },
-            "url": {
-              "raw": "{{base_url}}/auth/login",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "login"]
-            }
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
           }
         },
         {
@@ -51,11 +42,7 @@
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": {
-              "raw": "{{base_url}}/auth/me",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "me"]
-            }
+            "url": { "raw": "{{base_url}}/auth/me", "host": ["{{base_url}}"], "path": ["auth", "me"] }
           }
         },
         {
@@ -63,48 +50,41 @@
           "request": {
             "method": "POST",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": {
-              "raw": "{{base_url}}/auth/logout",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "logout"]
-            }
+            "url": { "raw": "{{base_url}}/auth/logout", "host": ["{{base_url}}"], "path": ["auth", "logout"] }
           }
         }
       ]
     },
     {
       "name": "items",
-      "description": "Item management endpoints",
       "item": [
         {
           "name": "Get All Items",
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": {
-              "raw": "{{base_url}}/items",
-              "host": ["{{base_url}}"],
-              "path": ["items"]
-            }
+            "url": { "raw": "{{base_url}}/items", "host": ["{{base_url}}"], "path": ["items"] }
           }
         },
         {
           "name": "Create Item",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Test Item\",\n  \"model\": \"X123\",\n  \"buy_price\": 100,\n  \"sell_price\": 150,\n  \"thumbnail\": \"http://example.com/image.jpg\",\n  \"note\": \"optional note\"\n}"
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Test Item", "type": "text" },
+                { "key": "model", "value": "Model-X", "type": "text" },
+                { "key": "note", "value": "Test Note", "type": "text" },
+                { "key": "buy_price[amount]", "value": "120.50", "type": "text" },
+                { "key": "buy_price[currency]", "value": "USD", "type": "text" },
+                { "key": "sell_price[amount]", "value": "180.00", "type": "text" },
+                { "key": "sell_price[currency]", "value": "USD", "type": "text" },
+                { "key": "thumbnail", "type": "file", "src": "" }
+              ]
             },
-            "url": {
-              "raw": "{{base_url}}/items",
-              "host": ["{{base_url}}"],
-              "path": ["items"]
-            }
+            "url": { "raw": "{{base_url}}/items", "host": ["{{base_url}}"], "path": ["items"] }
           }
         },
         {
@@ -112,30 +92,31 @@
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": {
-              "raw": "{{base_url}}/items/1",
-              "host": ["{{base_url}}"],
-              "path": ["items", "1"]
-            }
+            "url": { "raw": "{{base_url}}/items/1", "host": ["{{base_url}}"], "path": ["items", "1"] }
           }
         },
         {
           "name": "Update Item",
           "request": {
-            "method": "PUT",
+            "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "X-HTTP-Method-Override", "value": "PUT" }
             ],
             "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Item\",\n  \"model\": \"Y456\",\n  \"buy_price\": 120,\n  \"sell_price\": 180,\n  \"thumbnail\": \"http://example.com/image-updated.jpg\",\n  \"note\": \"updated note\"\n}"
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Updated Item", "type": "text" },
+                { "key": "model", "value": "Model-Y", "type": "text" },
+                { "key": "note", "value": "Updated Note", "type": "text" },
+                { "key": "buy_price[amount]", "value": "200", "type": "text" },
+                { "key": "buy_price[currency]", "value": "USD", "type": "text" },
+                { "key": "sell_price[amount]", "value": "260", "type": "text" },
+                { "key": "sell_price[currency]", "value": "LBP", "type": "text" },
+                { "key": "thumbnail", "type": "file", "src": "" }
+              ]
             },
-            "url": {
-              "raw": "{{base_url}}/items/1",
-              "host": ["{{base_url}}"],
-              "path": ["items", "1"]
-            }
+            "url": { "raw": "{{base_url}}/items/1", "host": ["{{base_url}}"], "path": ["items", "1"] }
           }
         },
         {
@@ -143,11 +124,7 @@
           "request": {
             "method": "DELETE",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": {
-              "raw": "{{base_url}}/items/1",
-              "host": ["{{base_url}}"],
-              "path": ["items", "1"]
-            }
+            "url": { "raw": "{{base_url}}/items/1", "host": ["{{base_url}}"], "path": ["items", "1"] }
           }
         }
       ]
