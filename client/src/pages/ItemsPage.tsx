@@ -19,7 +19,7 @@ const ItemsPage = () => {
             className="overflow-hidden hover:shadow-md transition">
             {item.thumbnail && (
               <img
-                src={item.thumbnail}
+                src={'http://localhost:8000/storage/' + item.thumbnail}
                 alt={item.name}
                 className="w-full h-48 object-cover"
               />

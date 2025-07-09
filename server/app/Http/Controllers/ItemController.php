@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;
@@ -18,7 +19,13 @@ class ItemController extends Controller
     public function store(StoreItemRequest $request)
     {
         $data = $this->flattenPrices($request->validated());
+
+        if ($request->hasFile('thumbnail')) {
+            $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+        }
+
         Item::create($data);
+
         return $this->createdResponse();
     }
 
@@ -36,7 +43,17 @@ class ItemController extends Controller
             return $this->notFoundResponse();
 
         $data = $this->flattenPrices($request->validated());
+        if ($request->hasFile('thumbnail')) {
+            // Optionally delete old thumbnail
+            if ($item->thumbnail) {
+                Storage::disk('public')->delete($item->thumbnail);
+            }
+
+            $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+        }
+
         $item->update($data);
+
         return $this->noContentResponse();
     }
 

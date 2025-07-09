@@ -8,7 +8,7 @@ class ItemFactory extends Factory
 {
     public function definition(): array
     {
-        $placeholderUrl = config('app.url') . ':8000' . '/thumbnails/item_thumbnail_placeholder.png';
+        $placeholderUrl = '/thumbnails/item_thumbnail_placeholder.png';
 
         return [
             'name' => $this->faker->word(),
