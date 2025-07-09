@@ -1,4 +1,4 @@
-import { Item, parseItem } from '@/models/Item'
+import { Item } from '@/models/Item'
 import { request } from './request'
 
 export const remote = {
@@ -39,7 +39,7 @@ export const remote = {
         method: 'GET',
         route: '/api/v1/items',
         auth: true,
-      }).then((res): Item[] => (res.data ?? []).map(parseItem)),
+      }).then((res) => res.data!),
 
     store: (data: Item) =>
       request<Item>({
@@ -54,7 +54,7 @@ export const remote = {
         method: 'GET',
         route: `/api/v1/items/${id}`,
         auth: true,
-      }).then((res) => parseItem(res.data!)),
+      }).then((res) => res.data!),
 
     update: (id: number, data: Partial<Item>) =>
       request<Item>({

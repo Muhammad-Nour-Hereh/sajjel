@@ -11,18 +11,3 @@ export interface Item {
   created_at: string
   updated_at: string
 }
-
-export function parseItem(raw: any): Item {
-  return {
-    ...raw,
-    buy_price:
-      raw.buy_price && raw.buy_price_currency
-        ? new Price(parseFloat(raw.buy_price), raw.buy_price_currency)
-        : undefined,
-
-    sell_price:
-      raw.sell_price && raw.sell_price_currency
-        ? new Price(parseFloat(raw.sell_price), raw.sell_price_currency)
-        : undefined,
-  }
-}
