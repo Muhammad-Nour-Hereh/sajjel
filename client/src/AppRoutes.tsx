@@ -8,6 +8,7 @@ import GuestLayout from './layouts/GuestLayout'
 import ForgetPasswordPage from './pages/ForgetPasswordPage'
 import { GuestRoutes } from './routes/GuestRoutes'
 import ItemsPage from './pages/ItemsPage'
+import RootPage from './pages/RootPage'
 
 const AppRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
         />
       </Route>
       <Route element={<UserLayout />}>
+        <Route path={UserRoutes.ROOT} element={<RootPage />} />
         <Route path={UserRoutes.HOME} element={<HomePage />} />
         <Route path={UserRoutes.ITEMS} element={<ItemsPage />} />
       </Route>
