@@ -28,7 +28,7 @@ const ItemsPage = () => {
                 <EditableText
                   value={item.name}
                   onChange={(val) =>
-                    updateItem({ id: item.id, data: { name: val } })
+                    updateItem({ id: item.id, data: { ...item, name: val } })
                   }
                 />
               </CardTitle>
@@ -37,30 +37,38 @@ const ItemsPage = () => {
               <EditableText
                 value={item.model || 'N/A'}
                 onChange={(val) =>
-                  updateItem({ id: item.id, data: { model: val } })
+                  updateItem({ id: item.id, data: { ...item, model: val } })
                 }
               />
               <EditableText
                 value={item.buy_price?.amount.toString() || '0'}
                 onChange={(val) => {
-                  const amount = parseFloat(val) || 0
-                  const price = new Price(
-                    amount,
-                    item.buy_price?.currency || 'USD',
-                  )
-                  updateItem({ id: item.id, data: { buy_price: price } })
+                  updateItem({
+                    id: item.id,
+                    data: {
+                      ...item,
+                      buy_price: new Price(
+                        parseFloat(val) || 0,
+                        item.buy_price?.currency || 'USD',
+                      ),
+                    },
+                  })
                 }}
               />
 
               <EditableText
                 value={item.sell_price?.amount.toString() || '0'}
                 onChange={(val) => {
-                  const amount = parseFloat(val) || 0
-                  const price = new Price(
-                    amount,
-                    item.sell_price?.currency || 'USD',
-                  )
-                  updateItem({ id: item.id, data: { sell_price: price } })
+                  updateItem({
+                    id: item.id,
+                    data: {
+                      ...item,
+                      sell_price: new Price(
+                        parseFloat(val) || 0,
+                        item.sell_price?.currency || 'USD',
+                      ),
+                    },
+                  })
                 }}
               />
             </CardContent>

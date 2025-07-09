@@ -14,13 +14,17 @@ class StoreItemRequest extends BaseFormRequest
         return [
             'name' => 'required|string|max:255',
             'model' => 'nullable|string|max:255',
-            'buy_price' => 'nullable|numeric|min:0',
-            'buy_price_currency' => 'required|in:USD,LBP',
-            'sell_price' => 'nullable|numeric|min:0',
-            'sell_price_currency' => 'required|in:USD,LBP',
+
+            'buy_price' => 'nullable|array',
+            'buy_price.amount' => 'required_with:buy_price|numeric|min:0',
+            'buy_price.currency' => 'required_with:buy_price|in:USD,LBP',
+
+            'sell_price' => 'nullable|array',
+            'sell_price.amount' => 'required_with:sell_price|numeric|min:0',
+            'sell_price.currency' => 'required_with:sell_price|in:USD,LBP',
+
             'thumbnail' => 'nullable|string|max:255',
             'note' => 'nullable|string|max:1000',
         ];
     }
-
 }

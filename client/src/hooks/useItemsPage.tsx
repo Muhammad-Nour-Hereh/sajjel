@@ -17,7 +17,7 @@ const useItemsPage = () => {
   })
 
   const updateItem = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Partial<Item> }) =>
+    mutationFn: ({ id, data }: { id: number; data: Item }) =>
       remote.items.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['items'] }),
   })
