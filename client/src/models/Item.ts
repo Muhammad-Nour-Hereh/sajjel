@@ -15,11 +15,14 @@ export interface Item {
 export function parseItem(raw: any): Item {
   return {
     ...raw,
-    buy_price: raw.buy_price
-      ? new Price(raw.buy_price.amount, raw.buy_price.currency)
-      : undefined,
-    sell_price: raw.sell_price
-      ? new Price(raw.sell_price.amount, raw.sell_price.currency)
-      : undefined,
+    buy_price:
+      raw.buy_price && raw.buy_price_currency
+        ? new Price(parseFloat(raw.buy_price), raw.buy_price_currency)
+        : undefined,
+
+    sell_price:
+      raw.sell_price && raw.sell_price_currency
+        ? new Price(parseFloat(raw.sell_price), raw.sell_price_currency)
+        : undefined,
   }
 }
