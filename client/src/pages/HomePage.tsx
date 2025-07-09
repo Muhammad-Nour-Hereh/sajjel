@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import useMainPage from '../hooks/useMainPage'
 import { remote } from '../remotes/remotes'
 import { useNavigate } from 'react-router-dom'
@@ -8,13 +7,6 @@ import { UserRoutes } from '@/routes/UserRoutes'
 const HomePage = () => {
   const { title } = useMainPage()
   const navigate = useNavigate()
-  const call = async () => {
-    const res = await remote.auth.login('test@example.com', 'password')
-    console.log(res)
-  }
-  useEffect(() => {
-    call()
-  }, [])
   return (
     <div className="p-10">
       <h1 className="font-bold text-3xl">{title}</h1>
