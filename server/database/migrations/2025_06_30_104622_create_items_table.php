@@ -11,9 +11,9 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('model')->nullable();
-            $table->decimal('buy_price', 10, 2)->nullable();
+            $table->decimal('buy_price_amount', 10, 2)->nullable();
             $table->enum('buy_price_currency', ['USD', 'LBP'])->default('USD');
-            $table->decimal('sell_price', 10, 2)->nullable();
+            $table->decimal('sell_price_amount', 10, 2)->nullable();
             $table->enum('sell_price_currency', ['USD', 'LBP'])->default('USD');
             $table->string('thumbnail')->nullable();
             $table->string('note')->nullable();

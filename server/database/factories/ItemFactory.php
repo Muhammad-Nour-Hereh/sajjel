@@ -13,9 +13,9 @@ class ItemFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'model' => $this->faker->bothify('Model-###??'),
-            'buy_price' => $this->faker->randomFloat(2, 10, 500),
+            'buy_price_amount' => $this->faker->randomFloat(2, 10, 500),
             'buy_price_currency' => 'USD',  // or pick randomly if you want
-            'sell_price' => $this->faker->randomFloat(2, 20, 1000),
+            'sell_price_amount' => $this->faker->randomFloat(2, 20, 1000),
             'sell_price_currency' => 'USD',
             'thumbnail' => $placeholderUrl,
             'note' => $this->faker->sentence(),
