@@ -1,8 +1,9 @@
 import useItemsPage from '@/hooks/useItemsPage'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import SearchBar from '@/components/ui/Searchbar'
-import { EditableText } from '@/components/ui/EditableText'
+import { TextInput } from '@/components/ui/TextInput'
 import { Price } from '@/models/Price'
+import { PriceInput } from '@/components/ui/PriceInput'
 
 const ItemsPage = () => {
   const { search, setSearch, filteredItems, updateItem } = useItemsPage()
@@ -25,7 +26,7 @@ const ItemsPage = () => {
             )}
             <CardHeader>
               <CardTitle>
-                <EditableText
+                <TextInput
                   value={item.name}
                   onChange={(val) =>
                     updateItem({ id: item.id, data: { ...item, name: val } })
@@ -34,42 +35,31 @@ const ItemsPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-1 text-sm">
-              <EditableText
+              <TextInput
                 value={item.model || 'N/A'}
                 onChange={(val) =>
                   updateItem({ id: item.id, data: { ...item, model: val } })
                 }
               />
-              <EditableText
-                value={item.buy_price?.amount.toString() || '0'}
-                onChange={(val) => {
+              <PriceInput
+                amount={item.buy_price?.amount || 0}
+                currency={item.buy_price?.currency || 'USD'}
+                onChange={({ amount, currency }) =>
                   updateItem({
                     id: item.id,
-                    data: {
-                      ...item,
-                      buy_price: new Price(
-                        parseFloat(val) || 0,
-                        item.buy_price?.currency || 'USD',
-                      ),
-                    },
+                    data: { ...item, buy_price: new Price(amount, currency) },
                   })
-                }}
+                }
               />
-
-              <EditableText
-                value={item.sell_price?.amount.toString() || '0'}
-                onChange={(val) => {
+              <PriceInput
+                amount={item.sell_price?.amount || 0}
+                currency={item.sell_price?.currency || 'USD'}
+                onChange={({ amount, currency }) =>
                   updateItem({
                     id: item.id,
-                    data: {
-                      ...item,
-                      sell_price: new Price(
-                        parseFloat(val) || 0,
-                        item.sell_price?.currency || 'USD',
-                      ),
-                    },
+                    data: { ...item, sell_price: new Price(amount, currency) },
                   })
-                }}
+                }
               />
             </CardContent>
           </Card>

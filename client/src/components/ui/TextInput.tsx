@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-export const EditableText = ({
+export const TextInput = ({
   value,
   onChange,
 }: {
@@ -18,11 +18,22 @@ export const EditableText = ({
         setEditing(false)
         onChange(temp)
       }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          setEditing(false)
+          onChange(temp)
+        }
+      }}
       autoFocus
       className="border px-2 py-1 text-sm w-full"
     />
   ) : (
-    <p onDoubleClick={() => setEditing(true)} className="cursor-pointer">
+    <p
+      onDoubleClick={() => {
+        setTemp(value)
+        setEditing(true)
+      }}
+      className="cursor-pointer">
       {value || 'N/A'}
     </p>
   )
