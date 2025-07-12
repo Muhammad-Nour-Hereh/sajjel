@@ -56,7 +56,7 @@ export const remote = {
         auth: true,
       }).then((res) => res.data!),
 
-    update: (id: number, data: Item) =>
+    update: (id: number, data: Item | FormData) =>
       request<Item>({
         method: 'PUT',
         route: `/api/v1/items/${id}`,

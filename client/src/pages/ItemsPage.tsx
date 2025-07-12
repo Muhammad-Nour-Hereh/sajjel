@@ -4,6 +4,7 @@ import SearchBar from '@/components/ui/Searchbar'
 import { TextInput } from '@/components/ui/TextInput'
 import { Price } from '@/models/Price'
 import { PriceInput } from '@/components/ui/PriceInput'
+import EditImage from '@/components/ui/EditImage'
 
 const ItemsPage = () => {
   const { search, setSearch, filteredItems, updateItem } = useItemsPage()
@@ -18,10 +19,17 @@ const ItemsPage = () => {
             key={item.id}
             className="overflow-hidden hover:shadow-md transition">
             {item.thumbnail && (
-              <img
+              <EditImage
                 src={'http://localhost:8000/storage/' + item.thumbnail}
                 alt={item.name}
-                className="w-full h-48 object-cover"
+                onChange={async (file: File) => {
+                  const formData = new FormData()
+                  formData.append('thumbnail', file)
+                  updateItem({
+                    id: item.id,
+                    data: formData,
+                  })
+                }}
               />
             )}
             <CardHeader>

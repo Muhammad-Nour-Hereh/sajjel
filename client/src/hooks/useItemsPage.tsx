@@ -17,7 +17,7 @@ const useItemsPage = () => {
   })
 
   const updateItem = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Item }) =>
+    mutationFn: ({ id, data }: { id: number; data: Item | FormData }) =>
       remote.items.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['items'] }),
   })

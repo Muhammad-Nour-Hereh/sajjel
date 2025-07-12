@@ -35,12 +35,19 @@ export const request = async <T = any>({
   optimistic,
   rollback,
 }: RequestParams): Promise<ResponseData<T>> => {
-  const headers: { [key: string]: string } = {
-    'Content-Type': 'application/json',
+  const isFormData = body instanceof FormData
+
+  const headers: { [key: string]: string } = {}
+
+  if (isFormData) {
+    body.append('_method', method)
+    method = 'POST'
+  } else {
+    headers['Content-Type'] = 'application/json'
   }
 
   if (auth) {
-    headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`
+    headers.Authorization = `Bearer ${localStorage.getItem('access_token') || ''}`
   }
 
   try {
