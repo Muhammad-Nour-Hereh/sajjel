@@ -26,6 +26,7 @@ Route::group(["prefix" => "v1"], function () {
             Route::post('/', [ItemController::class, 'store']);
             Route::get('/{item}', [ItemController::class, 'show']);
             Route::put('/{item}', [ItemController::class, 'update']);
+            Route::patch('/{item}/update-thumbnail', [ItemController::class, 'updateThumbnail']);
             Route::delete('/{item}', [ItemController::class, 'destroy']);
         });
     });

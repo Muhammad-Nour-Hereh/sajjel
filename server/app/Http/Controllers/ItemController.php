@@ -57,6 +57,10 @@ class ItemController extends Controller
         return $this->noContentResponse();
     }
 
+    public function updateThumbnail()
+    {
+        
+    }
     public function destroy($id)
     {
         $item = Item::find($id);

@@ -21,7 +21,7 @@ function EditImage({ src, alt, onChange }: EditImageProps) {
       <img
         src={src}
         alt={alt}
-        className="w-full h-48 object-cover cursor-pointer"
+        className="w-full h-48 cursor-pointer object-contain"
         onDoubleClick={handleDoubleClick}
       />
       <input
