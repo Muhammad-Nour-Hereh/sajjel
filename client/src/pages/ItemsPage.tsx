@@ -1,10 +1,11 @@
 import useItemsPage from '@/hooks/useItemsPage'
 import SearchBar from '@/components/ui/Searchbar'
-import FloatActionButton from '@/components/ui/FloatActionButton'
 import ItemCard from '@/components/ui/ItemCard'
+import CreateItemDialog from '@/components/ui/CreateItemDialog'
 
 const ItemsPage = () => {
-  const { search, setSearch, filteredItems, updateItem } = useItemsPage()
+  const { search, setSearch, filteredItems, createItem, updateItem } =
+    useItemsPage()
 
   return (
     <div className="p-4">
@@ -14,12 +15,9 @@ const ItemsPage = () => {
         {filteredItems.map((item) => (
           <ItemCard item={item} updateItem={updateItem} />
         ))}
-        <FloatActionButton
-          onClick={function (): void {
-            throw new Error('Function not implemented.')
-          }}
-        />
       </div>
+
+      <CreateItemDialog createItem={createItem} />
     </div>
   )
 }
