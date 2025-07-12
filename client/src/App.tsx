@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} position="top"  /> */}
     </QueryClientProvider>
   )
 }
