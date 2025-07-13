@@ -1,133 +1,336 @@
 {
-  "info": {
-    "name": "Sajjel",
-    "_postman_id": "a8d2b73f-9e52-4a1a-8c15-e6f9dc0c304a",
-    "description": "Sajjel API - Auth + Items (JWT)",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "variable": [
-    { "key": "base_url", "value": "http://localhost:8000/api/v1" },
-    { "key": "token", "value": "" }
-  ],
-  "item": [
-    {
-      "name": "auth",
-      "item": [
-        {
-          "name": "Register",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\"\n}"
-            },
-            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] }
-          }
-        },
-        {
-          "name": "Login",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password\"\n}"
-            },
-            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
-          }
-        },
-        {
-          "name": "Me",
-          "request": {
-            "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": { "raw": "{{base_url}}/auth/me", "host": ["{{base_url}}"], "path": ["auth", "me"] }
-          }
-        },
-        {
-          "name": "Logout",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": { "raw": "{{base_url}}/auth/logout", "host": ["{{base_url}}"], "path": ["auth", "logout"] }
-          }
-        }
-      ]
-    },
-    {
-      "name": "items",
-      "item": [
-        {
-          "name": "Get All Items",
-          "request": {
-            "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": { "raw": "{{base_url}}/items", "host": ["{{base_url}}"], "path": ["items"] }
-          }
-        },
-        {
-          "name": "Create Item",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                { "key": "name", "value": "Test Item", "type": "text" },
-                { "key": "model", "value": "Model-X", "type": "text" },
-                { "key": "note", "value": "Test Note", "type": "text" },
-                { "key": "buy_price[amount]", "value": "120.50", "type": "text" },
-                { "key": "buy_price[currency]", "value": "USD", "type": "text" },
-                { "key": "sell_price[amount]", "value": "180.00", "type": "text" },
-                { "key": "sell_price[currency]", "value": "USD", "type": "text" },
-                { "key": "thumbnail", "type": "file", "src": "" }
-              ]
-            },
-            "url": { "raw": "{{base_url}}/items", "host": ["{{base_url}}"], "path": ["items"] }
-          }
-        },
-        {
-          "name": "Get Single Item",
-          "request": {
-            "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": { "raw": "{{base_url}}/items/1", "host": ["{{base_url}}"], "path": ["items", "1"] }
-          }
-        },
-        {
-          "name": "Update Item",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" },
-              { "key": "X-HTTP-Method-Override", "value": "PUT" }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                { "key": "name", "value": "Updated Item", "type": "text" },
-                { "key": "model", "value": "Model-Y", "type": "text" },
-                { "key": "note", "value": "Updated Note", "type": "text" },
-                { "key": "buy_price[amount]", "value": "200", "type": "text" },
-                { "key": "buy_price[currency]", "value": "USD", "type": "text" },
-                { "key": "sell_price[amount]", "value": "260", "type": "text" },
-                { "key": "sell_price[currency]", "value": "LBP", "type": "text" },
-                { "key": "thumbnail", "type": "file", "src": "" }
-              ]
-            },
-            "url": { "raw": "{{base_url}}/items/1", "host": ["{{base_url}}"], "path": ["items", "1"] }
-          }
-        },
-        {
-          "name": "Delete Item",
-          "request": {
-            "method": "DELETE",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": { "raw": "{{base_url}}/items/1", "host": ["{{base_url}}"], "path": ["items", "1"] }
-          }
-        }
-      ]
-    }
-  ]
+	"info": {
+		"_postman_id": "2fd07df6-4ecb-4b80-b0e6-50a524574a9b",
+		"name": "Sajjel",
+		"description": "Sajjel API - Auth + Items (JWT)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43348946"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@admin.com\",\n  \"password\": \"121212\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "items",
+			"item": [
+				{
+					"name": "Get All Items",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Test Item",
+									"type": "text"
+								},
+								{
+									"key": "model",
+									"value": "Model-X",
+									"type": "text"
+								},
+								{
+									"key": "note",
+									"value": "Test Note",
+									"type": "text"
+								},
+								{
+									"key": "buy_price[amount]",
+									"value": "120.50",
+									"type": "text"
+								},
+								{
+									"key": "buy_price[currency]",
+									"value": "USD",
+									"type": "text"
+								},
+								{
+									"key": "sell_price[amount]",
+									"value": "180.00",
+									"type": "text"
+								},
+								{
+									"key": "sell_price[currency]",
+									"value": "USD",
+									"type": "text"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "postman-cloud:///1f05fd73-2734-4d70-9a1c-68f4030397a4"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Item",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/items/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"items",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Item",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Item\",\n  \"model\": \"Model-Y\",\n  \"note\": \"Updated Note\",\n  \"buy_price\": {\n    \"amount\": 200,\n    \"currency\": \"USD\"\n  },\n  \"sell_price\": {\n    \"amount\": 260,\n    \"currency\": \"LBP\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/items/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"items",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Thumbnail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "postman-cloud:///1f05fd73-2734-4d70-9a1c-68f4030397a4"
+								},
+								{
+									"key": "_method",
+									"value": "PATCH",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/items/1/update-thumbnail",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"items",
+								"1",
+								"update-thumbnail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Item",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/items/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"items",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api/v1"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
 }
