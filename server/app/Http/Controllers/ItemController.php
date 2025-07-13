@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateItemThumbnailRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
@@ -39,27 +40,35 @@ class ItemController extends Controller
     public function update(UpdateItemRequest $request, $id)
     {
         $item = Item::find($id);
-        if (!$item)
+        if (!$item) {
             return $this->notFoundResponse();
+        }
 
         $data = $this->flattenPrices($request->validated());
-        if ($request->hasFile('thumbnail')) {
-            // Optionally delete old thumbnail
-            if ($item->thumbnail) {
-                Storage::disk('public')->delete($item->thumbnail);
-            }
-
-            $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
-        }
 
         $item->update($data);
 
         return $this->noContentResponse();
     }
 
-    public function updateThumbnail()
+    public function updateThumbnail(UpdateItemThumbnailRequest $request, $id)
     {
-        
+        $item = Item::find($id);
+        if (!$item) {
+            return $this->notFoundResponse();
+        }
+
+        if ($request->hasFile('thumbnail')) {
+            if ($item->thumbnail) {
+                Storage::disk('public')->delete($item->thumbnail);
+            }
+
+            $path = $request->file('thumbnail')->store('thumbnails', 'public');
+            $item->thumbnail = $path;
+            $item->save();
+        }
+
+        return $this->successResponse(['thumbnail' => $item->thumbnail]);
     }
     public function destroy($id)
     {

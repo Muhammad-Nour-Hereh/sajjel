@@ -23,7 +23,6 @@ class UpdateItemRequest extends BaseFormRequest
             'sell_price.amount' => 'required_with:sell_price|numeric|min:0',
             'sell_price.currency' => 'required_with:sell_price|in:USD,LBP',
 
-            'thumbnail' => 'nullable|image|max:2048',
             'note' => 'nullable|string|max:1000',
         ];
     }
