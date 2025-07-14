@@ -4,8 +4,14 @@ import ItemCard from '@/components/ui/ItemCard'
 import CreateItemDialog from '@/components/ui/CreateItemDialog'
 
 const ItemsPage = () => {
-  const { search, setSearch, filteredItems, createItem, updateItem } =
-    useItemsPage()
+  const {
+    search,
+    setSearch,
+    filteredItems,
+    createItem,
+    updateItem,
+    updateThumbnail,
+  } = useItemsPage()
 
   return (
     <div className="p-4">
@@ -13,7 +19,11 @@ const ItemsPage = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {filteredItems.map((item) => (
-          <ItemCard item={item} updateItem={updateItem} />
+          <ItemCard
+            item={item}
+            updateItem={updateItem}
+            updateThumbnail={updateThumbnail}
+          />
         ))}
       </div>
 

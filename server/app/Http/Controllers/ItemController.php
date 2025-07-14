@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateItemThumbnailRequest;
 use App\Services\ThumbnailService;
-use App\Traits\Traits\Utils;
+use App\Traits\Utils;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;

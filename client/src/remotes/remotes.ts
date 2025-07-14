@@ -66,7 +66,7 @@ export const remote = {
 
     updateThumbnail: (id: number, data: FormData) => {
       return request<{ thumbnail: string }>({
-        method: 'POST',
+        method: 'PATCH',
         route: `/api/v1/items/${id}/update-thumbnail`,
         body: data,
         auth: true,

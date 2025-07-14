@@ -16,14 +16,20 @@ const useItemsPage = () => {
     queryFn: remote.items.fetchAll,
   })
 
+  const createItem = useMutation({
+    mutationFn: (data: FormData) => remote.items.store(data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['items'] }),
+  })
+
   const updateItem = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Item | FormData }) =>
+    mutationFn: ({ id, data }: { id: number; data: Item }) =>
       remote.items.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['items'] }),
   })
 
-  const createItem = useMutation({
-    mutationFn: (data: Item) => remote.items.store(data),
+  const updateThumbnail = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: FormData }) =>
+      remote.items.updateThumbnail(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['items'] }),
   })
 
@@ -42,6 +48,7 @@ const useItemsPage = () => {
     filteredItems,
     isLoading,
     isError,
+    updateThumbnail: updateThumbnail.mutate,
     updateItem: updateItem.mutate,
     createItem: createItem.mutate,
     deleteItem: deleteItem.mutate,

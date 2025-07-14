@@ -8,9 +8,10 @@ import { Item } from '@/models/Item'
 interface props {
   item: Item
   updateItem: Function
+  updateThumbnail: Function
 }
 
-const ItemCard = ({ item, updateItem }: props) => {
+const ItemCard = ({ item, updateItem, updateThumbnail }: props) => {
   return (
     <Card key={item.id} className="overflow-hidden hover:shadow-md transition">
       {item.thumbnail && (
@@ -20,7 +21,7 @@ const ItemCard = ({ item, updateItem }: props) => {
           onChange={async (file: File) => {
             const formData = new FormData()
             formData.append('thumbnail', file)
-            updateItem({
+            updateThumbnail({
               id: item.id,
               data: formData,
             })
