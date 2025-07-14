@@ -41,7 +41,7 @@ export const remote = {
         auth: true,
       }).then((res) => res.data!),
 
-    store: (data: Item) =>
+    store: (data: FormData) =>
       request<Item>({
         method: 'POST',
         route: '/api/v1/items',
@@ -56,13 +56,22 @@ export const remote = {
         auth: true,
       }).then((res) => res.data!),
 
-    update: (id: number, data: Item | FormData) =>
+    update: (id: number, data: Item) =>
       request<Item>({
         method: 'PUT',
         route: `/api/v1/items/${id}`,
         body: data,
         auth: true,
       }),
+
+    updateThumbnail: (id: number, data: FormData) => {
+      return request<{ thumbnail: string }>({
+        method: 'POST',
+        route: `/api/v1/items/${id}/update-thumbnail`,
+        body: data,
+        auth: true,
+      })
+    },
 
     destroy: (id: number) =>
       request<void>({
