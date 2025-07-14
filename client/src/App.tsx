@@ -1,12 +1,19 @@
-import { BrowserRouter } from "react-router-dom";
-import AppRoutes from "./AppRoutes";
+import { BrowserRouter } from 'react-router-dom'
+import AppRoutes from './AppRoutes'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  );
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+      {/* <ReactQueryDevtools initialIsOpen={false} position="top"  /> */}
+    </QueryClientProvider>
+  )
 }
 
-export default App;
+export default App

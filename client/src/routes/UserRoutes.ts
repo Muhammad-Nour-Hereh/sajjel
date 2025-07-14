@@ -1,9 +1,7 @@
 export const UserRoutes = {
   ROOT: '/',
   HOME: '/home',
-  LOGIN: '/login',
-  REGISTER: '/register',
-  FORGETPASSWORD: '/forget-password',
+  ITEMS: '/items',
   SETTINGS: '/settings',
   PROFILE: '/profile',
   HELP: '/help',
