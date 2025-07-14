@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateItemThumbnailRequest;
+use App\Services\ThumbnailService;
 use App\Traits\Traits\Utils;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;
@@ -12,6 +12,14 @@ use App\Models\Item;
 class ItemController extends Controller
 {
     use Utils;
+
+    protected ThumbnailService $thumbnailService;
+
+    public function __construct(ThumbnailService $thumbnailService)
+    {
+        $this->thumbnailService = $thumbnailService;
+    }
+
     public function index()
     {
         $items = Item::all();
@@ -22,8 +30,9 @@ class ItemController extends Controller
     {
         $data = $this->flattenPrices($request->validated());
 
-        if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+        $file = $request->file('thumbnail');
+        if ($file) {
+            $data['thumbnail'] = $this->thumbnailService->replace(null, $file);
         }
 
         Item::create($data);
@@ -58,16 +67,12 @@ class ItemController extends Controller
         if (!$item) {
             return $this->notFoundResponse();
         }
+        
+        $file = $request->file('thumbnail');
+        $path = $this->thumbnailService->replace($item->thumbnail, $file);
 
-        if ($request->hasFile('thumbnail')) {
-            if ($item->thumbnail) {
-                Storage::disk('public')->delete($item->thumbnail);
-            }
-
-            $path = $request->file('thumbnail')->store('thumbnails', 'public');
-            $item->thumbnail = $path;
-            $item->save();
-        }
+        $item->thumbnail = $path;
+        $item->save();
 
         return $this->successResponse(['thumbnail' => $item->thumbnail]);
     }

@@ -3,17 +3,14 @@
 namespace App\Providers;
 
 use App\Services\AuthService;
+use App\Services\ThumbnailService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register(): void {
+    public function register(): void
+    {
         $this->app->singleton(AuthService::class, fn() => new AuthService());
-        $this->app->singleton(OpenAIService::class, function ($app) {
-            return new OpenAIService(
-                $app->make(GuildbookFileService::class),
-                config('services.openai.api_key')
-            );
-        });
+        $this->app->singleton(ThumbnailService::class, fn() => new ThumbnailService());
     }
 }
