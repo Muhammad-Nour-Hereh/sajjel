@@ -20,7 +20,7 @@ const HomePage = () => {
         </li>
         <li
           onClick={() => {
-            navigate(UserRoutes.ORDERS)
+            navigate(UserRoutes.SALES)
           }}
           className="block cursor-pointer py-2 text-sm select-none hover:text-gray-700">
           Orders

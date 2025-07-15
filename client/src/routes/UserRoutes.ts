@@ -2,7 +2,7 @@ export const UserRoutes = {
   ROOT: '/',
   HOME: '/home',
   ITEMS: '/items',
-  ORDERS: '/orders',
+  SALES: '/sales',
   SETTINGS: '/settings',
   PROFILE: '/profile',
   HELP: '/help',

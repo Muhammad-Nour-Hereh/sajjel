@@ -9,7 +9,7 @@ import ForgetPasswordPage from './pages/ForgetPasswordPage'
 import { GuestRoutes } from './routes/GuestRoutes'
 import ItemsPage from './pages/ItemsPage'
 import RootPage from './pages/RootPage'
-import OrdersPage from './pages/OrdersPage'
+import SalesPage from './pages/SalesPage'
 
 const AppRoutes = () => {
   return (
@@ -26,7 +26,7 @@ const AppRoutes = () => {
         <Route path={UserRoutes.ROOT} element={<RootPage />} />
         <Route path={UserRoutes.HOME} element={<HomePage />} />
         <Route path={UserRoutes.ITEMS} element={<ItemsPage />} />
-        <Route path={UserRoutes.ORDERS} element={<OrdersPage />} />
+        <Route path={UserRoutes.SALES} element={<SalesPage />} />
       </Route>
     </Routes>
   )
