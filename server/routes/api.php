@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(["prefix" => "v1"], function () {
@@ -28,6 +29,15 @@ Route::group(["prefix" => "v1"], function () {
             Route::put('/{item}', [ItemController::class, 'update']);
             Route::patch('/{item}/update-thumbnail', [ItemController::class, 'updateThumbnail']);
             Route::delete('/{item}', [ItemController::class, 'destroy']);
+        });
+
+        // sales
+        Route::prefix('sales')->group(function () {
+            Route::get('/', [SaleController::class, 'index']);
+            Route::post('/', [SaleController::class, 'store']);
+            Route::get('/{sale}', [SaleController::class, 'show']);
+            Route::put('/{sale}', [SaleController::class, 'update']);
+            Route::delete('/{sale}', [SaleController::class, 'destroy']);
         });
     });
 });
