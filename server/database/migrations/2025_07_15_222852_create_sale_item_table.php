@@ -1,0 +1,28 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+
+    public function up(): void
+    {
+        Schema::create('sale_item', function (Blueprint $table) {
+            $table->primary(['sale_id', 'item_id']);
+            $table->foreignId('sale_id')->constrained('sales');
+            $table->foreignId('item_id')->constrained('items');
+            $table->decimal('sell_price_amount');
+            $table->enum('sell_price_currency', ['USD', 'LBP']);
+            $table->decimal('buy_price_amount');
+            $table->enum('buy_price_currency', ['USD', 'LBP']);
+            $table->unsignedInteger('quantity')->default(1);
+            $table->softDeletes();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('sale_item');
+    }
+};
