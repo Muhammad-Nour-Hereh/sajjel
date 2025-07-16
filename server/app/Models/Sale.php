@@ -42,7 +42,12 @@ class Sale extends Model
 
     public function getProfitAttribute()
     {
-        return ($this->sell_price_amount - $this->buy_price_amount) * $this->quantity;
+        /** @var \Illuminate\Database\Eloquent\Collection|\App\Models\Item[] $items */
+        $items = $this->items;
+        return $items->sum(
+            fn($item) =>
+            ($item->pivot->sell_price_amount - $item->pivot->buy_price_amount) * $item->pivot->quantity
+        );
     }
 
     public function items()
