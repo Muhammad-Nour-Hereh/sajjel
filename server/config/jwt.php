@@ -88,8 +88,8 @@ return [
     | Notice: If you set this to null you should remove 'exp' element from 'required_claims' list.
     |
     */
-
-    'ttl' => (int) env('JWT_TTL', 60),
+    // 10080 min 
+    'ttl' => (int) env('JWT_TTL', 10080),
 
     /*
     |--------------------------------------------------------------------------
