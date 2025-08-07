@@ -1,5 +1,6 @@
 import { Item } from '@/models/Item'
 import { request } from './request'
+import { Sale } from '@/models/Sale'
 
 export const remote = {
   // Auth APIs:
@@ -77,6 +78,45 @@ export const remote = {
       request<void>({
         method: 'DELETE',
         route: `/api/v1/items/${id}`,
+        auth: true,
+      }),
+  },
+  // Sales APIs:
+  sales: {
+    fetchAll: (): Promise<Sale[]> =>
+      request<Sale[]>({
+        method: 'GET',
+        route: '/api/v1/sales',
+        auth: true,
+      }).then((res) => res.data!),
+
+    store: (data: Partial<Sale>) =>
+      request<Sale>({
+        method: 'POST',
+        route: '/api/v1/sales',
+        body: data,
+        auth: true,
+      }),
+
+    show: (id: number): Promise<Sale> =>
+      request<Sale>({
+        method: 'GET',
+        route: `/api/v1/sales/${id}`,
+        auth: true,
+      }).then((res) => res.data!),
+
+    update: (id: number, data: Partial<Sale>) =>
+      request<Sale>({
+        method: 'PUT',
+        route: `/api/v1/sales/${id}`,
+        body: data,
+        auth: true,
+      }),
+
+    destroy: (id: number) =>
+      request<void>({
+        method: 'DELETE',
+        route: `/api/v1/sales/${id}`,
         auth: true,
       }),
   },

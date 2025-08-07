@@ -2,10 +2,14 @@ import { Item } from './Item'
 import { Price } from './Price'
 
 export interface Sale {
-  id: Number
+  id: number
+  total_amount: string
+  total_currency: string
+  profit_amount: string
+  profit_currency: string
   profit?: Price
   total?: Price
-  item: Item[]
-  time: Time
-  date: Date
+  items: Item[]
+  date: string
+  time: string
 }
