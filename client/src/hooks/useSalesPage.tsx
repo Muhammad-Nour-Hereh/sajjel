@@ -3,9 +3,23 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Sale } from '@/models/Sale'
 
+type DateFilter =
+  | 'all'
+  | 'today'
+  | 'week'
+  | 'month'
+  | 'quarter'
+  | 'year'
+  | 'custom'
+
 const useSalesPage = () => {
   const [search, setSearch] = useState('')
   const queryClient = useQueryClient()
+
+  // for filter
+  const [dateFilter, setDateFilter] = useState<DateFilter>('all')
+  const [customStartDate, setCustomStartDate] = useState<string>('')
+  const [customEndDate, setCustomEndDate] = useState<string>('')
 
   // Fetch all sales
   const {
@@ -35,8 +49,21 @@ const useSalesPage = () => {
     mutationFn: (id: number) => remote.sales.destroy(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sales'] }),
   })
+  const handleDateFilterChange = (filter: DateFilter) => {
+    setDateFilter(filter)
+    if (filter !== 'custom') {
+      setCustomStartDate('')
+      setCustomEndDate('')
+    }
+  }
 
-
+  const handleCustomDateChange = (startDate: string, endDate: string) => {
+    setCustomStartDate(startDate)
+    setCustomEndDate(endDate)
+    if (startDate && endDate) {
+      setDateFilter('custom')
+    }
+  }
   return {
     sales,
     search,
@@ -46,6 +73,12 @@ const useSalesPage = () => {
     createSale: createSale.mutate,
     updateSale: updateSale.mutate,
     deleteSale: deleteSale.mutate,
+
+    dateFilter,
+    customStartDate,
+    customEndDate,
+    handleDateFilterChange,
+    handleCustomDateChange,
   }
 }
 

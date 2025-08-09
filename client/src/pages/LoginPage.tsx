@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 
 import useLoginPage from '../hooks/useLoginPage'
-import { Input } from '@/components/ui/Input'
+import { Input } from '@/components/ui/Input2'
 
 const LoginPage = () => {
   const {

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/Input'
+import { Input } from '@/components/ui/Input2'
 import useRegisterPage from '@/hooks/useRegisterPage'
 
 const RegisterPage = () => {

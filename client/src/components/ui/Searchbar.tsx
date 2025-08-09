@@ -1,4 +1,4 @@
-import { Input } from '@/components/ui/Input'
+import { Input } from '@/components/ui/Input2'
 import { Search } from 'lucide-react'
 
 const SearchBar = ({
