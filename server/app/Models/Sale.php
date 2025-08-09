@@ -18,16 +18,16 @@ class Sale extends Model
         'profit_currency',
     ];
 
-    protected $appends = ['date', 'time', 'buy_price', 'sell_price'];
+    protected $appends = ['date', 'time', 'total', 'profit'];
 
     protected $hidden = [
+        'total_amount',
+        'total_currency',
+        'profit_amount',
+        'profit_currency',
         'created_at',
         'updated_at',
         'deleted_at',
-        'buy_price_amount',
-        'buy_price_currency',
-        'sell_price_amount',
-        'sell_price_currency',
     ];
 
     public function getDateAttribute()
@@ -42,14 +42,29 @@ class Sale extends Model
 
     public function getProfitAttribute()
     {
-        /** @var \Illuminate\Database\Eloquent\Collection|\App\Models\Item[] $items */
-        $items = $this->items;
-        return $items->sum(
+        $amount = $this->items->sum(
             fn($item) =>
-            ($item->pivot->sell_price_amount - $item->pivot->buy_price_amount) * $item->pivot->quantity
+            ($item->pivot->sell_price_amount - $item->pivot->buy_price_amount)
+            * $item->pivot->quantity
         );
+
+        return [
+            'amount' => round($amount, 2),
+            'currency' => 'USD',
+        ];
     }
 
+    public function getTotalAttribute()
+    {
+        $items = $this->items;
+        $amount = $items->sum(
+            fn($item) => $item->pivot->buy_price_amount * $item->pivot->quantity
+        );
+        return [
+            'amount' => round($amount, 2),
+            'currency' => 'USD'
+        ];
+    }
     public function items()
     {
         return $this->belongsToMany(Item::class, 'sale_item')

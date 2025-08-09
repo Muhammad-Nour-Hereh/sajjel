@@ -31,8 +31,8 @@ const SalesPage = () => {
               <div className="flex flex-col text-left">
                 <span className="font-semibold">Sale #{sale.id}</span>
                 <div className="text-sm text-muted-foreground">
-                  Total: {sale.total_amount} {sale.total_currency} — Profit:{' '}
-                  {sale.profit_amount} {sale.profit_currency}
+                  Total: {sale.total?.amount} {sale.total?.currency} — Profit:{' '}
+                  {sale.profit?.amount} {sale.profit?.currency}
                 </div>
               </div>
               <div className="flex gap-2">
