@@ -2,23 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DateRangeRequest;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
 use App\Models\Sale;
 use Illuminate\Support\Facades\DB;
 
+
 class SaleController extends Controller
 {
-    public function index()
+    public function index(DateRangeRequest $request)
     {
-        $sales = Sale::with('items')->latest()->get();
+        $query = Sale::with('items')->latest();
+
+        if ($request->filled('start_date')) {
+            $query->where('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->where('created_at', '<=', $request->end_date);
+        }
+
+        $sales = $query->get();
         return $this->successResponse($sales);
     }
 
     public function show($id)
     {
         $sale = Sale::with('items')->find($id);
-        if (!$sale) return $this->notFoundResponse();
+        if (!$sale)
+            return $this->notFoundResponse();
         return $this->successResponse($sale);
     }
 
@@ -62,7 +75,8 @@ class SaleController extends Controller
     public function update(UpdateSaleRequest $request, $id)
     {
         $sale = Sale::find($id);
-        if (!$sale) return $this->notFoundResponse();
+        if (!$sale)
+            return $this->notFoundResponse();
 
         $data = $request->validated();
 
@@ -99,7 +113,8 @@ class SaleController extends Controller
     public function destroy($id)
     {
         $sale = Sale::find($id);
-        if (!$sale) return $this->notFoundResponse();
+        if (!$sale)
+            return $this->notFoundResponse();
 
         $sale->delete();
         return $this->noContentResponse();

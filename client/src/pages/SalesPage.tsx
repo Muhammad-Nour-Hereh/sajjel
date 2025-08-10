@@ -27,12 +27,13 @@ import useSalesPage from '@/hooks/useSalesPage'
 import { Calendar, Filter } from 'lucide-react'
 
 const dateFilterOptions = [
-  { value: 'all', label: 'All Time' },
   { value: 'today', label: 'Today' },
+  { value: 'yesterday', label: 'yesterday' },
   { value: 'week', label: 'This Week' },
   { value: 'month', label: 'This Month' },
   { value: 'quarter', label: 'This Quarter' },
   { value: 'year', label: 'This Year' },
+  { value: 'all', label: 'All Time' },
   { value: 'custom', label: 'Custom Range' },
 ]
 

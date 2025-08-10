@@ -1,11 +1,12 @@
 import { remote } from '@/remotes/remotes'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Sale } from '@/models/Sale'
 
 type DateFilter =
   | 'all'
   | 'today'
+  | 'yesterday'
   | 'week'
   | 'month'
   | 'quarter'
@@ -17,9 +18,13 @@ const useSalesPage = () => {
   const queryClient = useQueryClient()
 
   // for filter
-  const [dateFilter, setDateFilter] = useState<DateFilter>('all')
-  const [customStartDate, setCustomStartDate] = useState<string>('')
-  const [customEndDate, setCustomEndDate] = useState<string>('')
+  const [dateFilter, setDateFilter] = useState<DateFilter>('today')
+  const [startDate, setStartDate] = useState<string>('')
+  const [endDate, setEndDate] = useState<string>('')
+
+  useEffect(() => {
+    console.log(startDate, endDate)
+  }, [endDate, startDate])
 
   // Fetch all sales
   const {
@@ -27,8 +32,8 @@ const useSalesPage = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['sales'],
-    queryFn: remote.sales.fetchAll,
+    queryKey: ['sales', startDate, endDate],
+    queryFn: () => remote.sales.fetchAll(startDate, endDate),
   })
 
   // Create sale
@@ -49,18 +54,85 @@ const useSalesPage = () => {
     mutationFn: (id: number) => remote.sales.destroy(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sales'] }),
   })
+
   const handleDateFilterChange = (filter: DateFilter) => {
-    setDateFilter(filter)
-    if (filter !== 'custom') {
-      setCustomStartDate('')
-      setCustomEndDate('')
+    const today = new Date()
+    let startDate = ''
+    let endDate = ''
+
+    switch (filter) {
+      case 'all':
+        startDate = ''
+        endDate = ''
+        break
+
+      case 'today':
+        startDate = formatDate(today)
+        endDate = formatDate(today)
+        break
+
+      case 'yesterday':
+        const yesterday = new Date(today)
+        yesterday.setDate(yesterday.getDate() - 1)
+        startDate = formatDate(yesterday)
+        endDate = formatDate(yesterday)
+        break
+
+      case 'week':
+        // Week starts on Sunday by default
+        const firstDayOfWeek = new Date(today)
+        firstDayOfWeek.setDate(today.getDate() - today.getDay())
+        startDate = formatDate(firstDayOfWeek)
+        endDate = formatDate(today)
+        break
+
+      case 'month':
+        const firstDayOfMonth = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          1,
+        )
+        startDate = formatDate(firstDayOfMonth)
+        endDate = formatDate(today)
+        break
+
+      case 'quarter':
+        const currentMonth = today.getMonth()
+        const firstMonthOfQuarter = currentMonth - (currentMonth % 3)
+        const firstDayOfQuarter = new Date(
+          today.getFullYear(),
+          firstMonthOfQuarter,
+          1,
+        )
+        startDate = formatDate(firstDayOfQuarter)
+        endDate = formatDate(today)
+        break
+
+      case 'year':
+        const firstDayOfYear = new Date(today.getFullYear(), 0, 1)
+        startDate = formatDate(firstDayOfYear)
+        endDate = formatDate(today)
+        break
+
+      case 'custom':
+        // keep existing custom dates, do nothing here
+        return
     }
+
+    setStartDate(startDate)
+    setEndDate(endDate)
+    setDateFilter(filter)
+  }
+
+  // Helper to format date as 'YYYY-MM-DD'
+  const formatDate = (date: Date): string => {
+    return date.toISOString().split('T')[0]
   }
 
   const handleCustomDateChange = (startDate: string, endDate: string) => {
-    setCustomStartDate(startDate)
-    setCustomEndDate(endDate)
-    if (startDate && endDate) {
+    setStartDate(startDate)
+    setEndDate(endDate)
+    if (startDate || endDate) {
       setDateFilter('custom')
     }
   }
@@ -75,8 +147,8 @@ const useSalesPage = () => {
     deleteSale: deleteSale.mutate,
 
     dateFilter,
-    customStartDate,
-    customEndDate,
+    customStartDate: startDate,
+    customEndDate: endDate,
     handleDateFilterChange,
     handleCustomDateChange,
   }

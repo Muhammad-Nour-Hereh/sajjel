@@ -83,10 +83,10 @@ export const remote = {
   },
   // Sales APIs:
   sales: {
-    fetchAll: (): Promise<Sale[]> =>
+    fetchAll: (start?: string, end?: string): Promise<Sale[]> =>
       request<Sale[]>({
         method: 'GET',
-        route: '/api/v1/sales',
+        route: `/api/v1/sales?start_date=${start}&end_date=${end}`,
         auth: true,
       }).then((res) => res.data!),
 
