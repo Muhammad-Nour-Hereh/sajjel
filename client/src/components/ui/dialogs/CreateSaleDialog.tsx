@@ -23,6 +23,7 @@ import { Item } from '@/models/Item'
 import ItemCard from '../ItemCard'
 import { SaleDTO } from '@/dto models/SaleDTO'
 import { Price } from '@/models/Price'
+import { SaleDetailsForm } from '../forms/SaleDetailsForm'
 
 const CreateSaleDialog = () => {
   const [open, setOpen] = useState(false)
@@ -181,71 +182,25 @@ const CreateSaleDialog = () => {
         )}
 
         {step === 2 && (
-          <div className="flex flex-col flex-1 overflow-hidden">
-            <div className="flex-1 overflow-auto space-y-4">
-              {selectedItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="border rounded p-4 space-y-3 bg-white">
-                  <h4 className="font-semibold">{item.name}</h4>
-                  <input
-                    type="number"
-                    placeholder="Quantity"
-                    value={quantities[item.id] || 1}
-                    onChange={(e) =>
-                      setQuantities((prev) => ({
-                        ...prev,
-                        [item.id]: parseInt(e.target.value) || 1,
-                      }))
-                    }
-                    className="w-full border rounded p-2"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Sell Price"
-                    value={prices[item.id] ?? item.sell_price?.amount ?? ''}
-                    onChange={(e) =>
-                      setPrices((prev) => ({
-                        ...prev,
-                        [item.id]: parseFloat(e.target.value) || 0,
-                      }))
-                    }
-                    className="w-full border rounded p-2"
-                  />
-                  <textarea
-                    placeholder="Notes"
-                    value={notes[item.id] || ''}
-                    onChange={(e) =>
-                      setNotes((prev) => ({
-                        ...prev,
-                        [item.id]: e.target.value,
-                      }))
-                    }
-                    className="w-full border rounded p-2"
-                    rows={2}
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Sale Summary */}
-            <div className="border-t pt-4 mt-4 text-sm">
-              <p>Total items: {totals.totalItems}</p>
-              <p>Total sale: ${totals.totalSale.toFixed(2)}</p>
-              <p>Net profit: ${totals.netProfit.toFixed(2)}</p>
-            </div>
-
-            <div className="mt-auto pt-4 flex justify-between">
-              <Button variant="outline" onClick={() => setStep(1)}>
-                Back
-              </Button>
-              <Button
-                onClick={handleSaveSale}
-                disabled={createSale.isPending || !selectedItems.length}>
-                {createSale.isPending ? 'Saving...' : 'Save Sale'}
-              </Button>
-            </div>
-          </div>
+          <SaleDetailsForm
+            selectedItems={selectedItems}
+            quantities={quantities}
+            prices={prices}
+            notes={notes}
+            totals={totals}
+            isSaving={createSale.isPending}
+            onQuantityChange={(id, val) =>
+              setQuantities((prev) => ({ ...prev, [id]: val }))
+            }
+            onPriceChange={(id, val) =>
+              setPrices((prev) => ({ ...prev, [id]: val }))
+            }
+            onNoteChange={(id, val) =>
+              setNotes((prev) => ({ ...prev, [id]: val }))
+            }
+            onBack={() => setStep(1)}
+            onSave={handleSaveSale}
+          />
         )}
       </DialogContent>
     </Dialog>
