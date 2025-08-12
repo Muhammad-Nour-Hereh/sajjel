@@ -40,29 +40,40 @@ class SaleController extends Controller
         $data = $request->validated();
 
         return DB::transaction(function () use ($data) {
+            // Create the sale record
             $sale = Sale::create([
-                'total_amount' => 0, // will be updated
-                'total_currency' => $data['items'][0]['sell_price_currency'],
+                'total_amount' => 0,
+                'total_currency' => $data['items'][0]['sell_price']['currency'],
                 'profit_amount' => 0,
-                'profit_currency' => $data['items'][0]['sell_price_currency'],
+                'profit_currency' => $data['items'][0]['sell_price']['currency'],
             ]);
 
             $total = 0;
             $profit = 0;
 
             foreach ($data['items'] as $item) {
+                $sellAmount = $item['sell_price']['amount'];
+                $sellCurrency = $item['sell_price']['currency'];
+
+                $buyAmount = $item['buy_price']['amount'] ?? 0;
+                $buyCurrency = $item['buy_price']['currency'] ?? $sellCurrency;
+
+                $quantity = $item['quantity'];
+
+                // Attach item with pivot data
                 $sale->items()->attach($item['item_id'], [
-                    'quantity' => $item['quantity'],
-                    'sell_price_amount' => $item['sell_price_amount'],
-                    'sell_price_currency' => $item['sell_price_currency'],
-                    'buy_price_amount' => $item['buy_price_amount'],
-                    'buy_price_currency' => $item['buy_price_currency'],
+                    'quantity' => $quantity,
+                    'sell_price_amount' => $sellAmount,
+                    'sell_price_currency' => $sellCurrency,
+                    'buy_price_amount' => $buyAmount,
+                    'buy_price_currency' => $buyCurrency,
                 ]);
 
-                $total += $item['sell_price_amount'] * $item['quantity'];
-                $profit += ($item['sell_price_amount'] - $item['buy_price_amount']) * $item['quantity'];
+                $total += $sellAmount * $quantity;
+                $profit += ($sellAmount - $buyAmount) * $quantity;
             }
 
+            // Update totals
             $sale->update([
                 'total_amount' => $total,
                 'profit_amount' => $profit,

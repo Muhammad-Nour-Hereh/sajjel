@@ -1,14 +1,15 @@
 import { Input } from '@/components/ui/Input2'
 import { Search } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
-const SearchBar = ({
-  value,
-  onChange,
-}: {
+interface SearchBarProps {
   value: string
   onChange: (v: string) => void
-}) => (
-  <div className="relative w-full max-w-md mx-auto mb-6">
+  className?: string
+}
+
+const SearchBar = ({ value, onChange, className }: SearchBarProps) => (
+  <div className={cn('relative w-full max-w-md mx-auto mb-6', className)}>
     <Search
       className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
       size={18}

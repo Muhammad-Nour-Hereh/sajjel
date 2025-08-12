@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import CreateSaleDialog from '@/components/ui/dialogs/CreateSaleDialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -58,8 +59,10 @@ const SalesPage = () => {
         </div>
 
         <div className="flex flex-wrap items-end gap-4">
-          <div className="flex-1 min-w-[200px]">
-            <Label htmlFor="date-filter">Date Range</Label>
+          <div className="flex-1 min-w-[200px] ">
+            <Label className="pb-1" htmlFor="date-filter">
+              Date Range
+            </Label>
             <Select value={dateFilter} onValueChange={handleDateFilterChange}>
               <SelectTrigger id="date-filter">
                 <SelectValue placeholder="Select date range" />
@@ -113,6 +116,7 @@ const SalesPage = () => {
         </div>
       </div>
 
+      {/* sales list  */}
       <Accordion type="single" collapsible className="w-full space-y-2">
         {sales.map((sale) => (
           <AccordionItem
@@ -170,6 +174,7 @@ const SalesPage = () => {
           </AccordionItem>
         ))}
       </Accordion>
+      <CreateSaleDialog />
     </div>
   )
 }

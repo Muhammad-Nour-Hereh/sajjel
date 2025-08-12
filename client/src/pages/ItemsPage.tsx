@@ -1,7 +1,7 @@
 import useItemsPage from '@/hooks/useItemsPage'
 import SearchBar from '@/components/ui/Searchbar'
 import ItemCard from '@/components/ui/ItemCard'
-import CreateItemDialog from '@/components/ui/CreateItemDialog'
+import CreateItemDialog from '@/components/ui/dialogs/CreateItemDialog'
 
 const ItemsPage = () => {
   const {
