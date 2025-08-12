@@ -1,6 +1,7 @@
 import { Item } from '@/models/Item'
 import { request } from './request'
 import { Sale } from '@/models/Sale'
+import { SaleDTO } from '@/dto models/SaleDTO'
 
 export const remote = {
   // Auth APIs:
@@ -90,7 +91,7 @@ export const remote = {
         auth: true,
       }).then((res) => res.data!),
 
-    store: (data: Partial<Sale>) =>
+    store: (data: SaleDTO) =>
       request<Sale>({
         method: 'POST',
         route: '/api/v1/sales',

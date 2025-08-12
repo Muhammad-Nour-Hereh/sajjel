@@ -20,7 +20,7 @@ class SaleController extends Controller
         }
 
         if ($request->filled('end_date')) {
-            $query->where('created_at', '<=', $request->end_date);
+            $query->where('created_at', '<=', $request->end_date . ' 23:59:59');
         }
 
         $sales = $query->get();

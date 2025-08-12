@@ -21,7 +21,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { remote } from '@/remotes/remotes'
 import { Item } from '@/models/Item'
 import ItemCard from '../ItemCard'
-import { Sale } from '@/models/Sale'
+import { SaleDTO } from '@/dto models/SaleDTO'
+import { Price } from '@/models/Price'
 
 const CreateSaleDialog = () => {
   const [open, setOpen] = useState(false)
@@ -40,7 +41,7 @@ const CreateSaleDialog = () => {
   })
 
   const createSale = useMutation({
-    mutationFn: (data: Sale) => remote.sales.store(data),
+    mutationFn: (data: SaleDTO) => remote.sales.store(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sales'] })
       setOpen(false)
@@ -56,27 +57,19 @@ const CreateSaleDialog = () => {
   }
 
   const handleSaveSale = () => {
-    const itemsDetails: Item[] = selectedItems.map((item) => ({
-      item_id: item.id,
-      name: item.name,
-      quantity: quantities[item.id] || 1,
-      sell_price: {
-        amount: prices[item.id] ?? item.sell_price?.amount ?? 0,
-        currency: 'USD',
-      },
-      buy_price: {
-        amount: item.buy_price?.amount ?? 0,
-        currency: 'USD',
-      },
-      notes: notes[item.id] || '',
-    }))
+    const itemsDetails: SaleDTO = {
+      items: selectedItems.map((item) => ({
+        item_id: item.id,
+        quantity: quantities[item.id] || 1,
+        sell_price: new Price(
+          prices[item.id] ?? item.sell_price?.amount ?? 0,
+          'USD',
+        ),
+        buy_price: new Price(item.buy_price?.amount ?? 0, 'USD'),
+      })),
+    }
 
-    createSale.mutate({
-      items: itemsDetails,
-      id: 0,
-      date: '',
-      time: '',
-    })
+    createSale.mutate(itemsDetails)
   }
 
   const totals = useMemo(() => {
