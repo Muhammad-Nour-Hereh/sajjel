@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import ConfirmationDialog from '@/components/ui/dialogs/ConfirmationDialog'
 import CreateSaleDialog from '@/components/ui/dialogs/CreateSaleDialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -25,7 +26,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import useSalesPage from '@/hooks/useSalesPage'
-import { Calendar, Filter } from 'lucide-react'
+import { Calendar, Filter, Trash2 } from 'lucide-react'
+import { useState } from 'react'
 
 const dateFilterOptions = [
   { value: 'today', label: 'Today' },
@@ -47,6 +49,8 @@ const SalesPage = () => {
     handleDateFilterChange,
     handleCustomDateChange,
   } = useSalesPage()
+
+  const [confirmOpen, setConfirmOpen] = useState(false)
 
   return (
     <div className="p-6">
@@ -124,19 +128,31 @@ const SalesPage = () => {
             value={`sale-${sale.id}`}
             className="border rounded-lg">
             <AccordionTrigger className="px-4 py-3 flex justify-between items-center w-full">
-              <div className="flex flex-col text-left">
-                <span className="font-semibold">Sale #{sale.id}</span>
-                <div className="text-sm text-muted-foreground">
-                  Total: {sale.total?.amount} {sale.total?.currency} — Profit:{' '}
-                  {sale.profit?.amount} {sale.profit?.currency}
+              <div className="flex justify-between items-center w-full">
+                <div className="flex flex-col text-left">
+                  <span className="font-semibold">Sale #{sale.id}</span>
+                  <div className="text-sm text-muted-foreground">
+                    Total: {sale.total?.amount} {sale.total?.currency} — Profit:{' '}
+                    {sale.profit?.amount} {sale.profit?.currency}
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-2">
-                {sale.items.map((item) => (
-                  <Badge key={item.id} variant="secondary">
-                    {item.name}
-                  </Badge>
-                ))}
+                <div className="flex gap-2">
+                  {sale.items.map((item) => (
+                    <Badge key={item.id} variant="secondary">
+                      {item.name}
+                    </Badge>
+                  ))}
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    // handleDeleteSale(sale.id)
+                    setConfirmOpen(true)
+                  }}
+                  aria-label="Delete sale"
+                  className="ml-4 text-red-500 hover:text-red-700 active:text-red-900 transition-colors duration-150">
+                  <Trash2 />
+                </button>
               </div>
             </AccordionTrigger>
             <AccordionContent className="bg-muted px-4 pb-4">
@@ -175,6 +191,16 @@ const SalesPage = () => {
         ))}
       </Accordion>
       <CreateSaleDialog />
+      <ConfirmationDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        onConfirm={function (): void {
+          throw new Error('Function not implemented.')
+        }}
+        onCancel={function (): void {
+          setConfirmOpen(false)
+        }}
+      />
     </div>
   )
 }
