@@ -22,6 +22,10 @@ const useSalesPage = () => {
   const [startDate, setStartDate] = useState<string>('')
   const [endDate, setEndDate] = useState<string>('')
 
+  // for confirmation dialog
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [saleToDelete, setSaleToDelete] = useState<number | null>(null)
+
   useEffect(() => {
     console.log(startDate, endDate)
   }, [endDate, startDate])
@@ -34,12 +38,6 @@ const useSalesPage = () => {
   } = useQuery({
     queryKey: ['sales', startDate, endDate],
     queryFn: () => remote.sales.fetchAll(startDate, endDate),
-  })
-
-  // Create sale
-  const createSale = useMutation({
-    mutationFn: (data: Partial<Sale>) => remote.sales.store(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sales'] }),
   })
 
   // Update sale
@@ -142,15 +140,20 @@ const useSalesPage = () => {
     setSearch,
     isLoading,
     isError,
-    createSale: createSale.mutate,
     updateSale: updateSale.mutate,
-    deleteSale: deleteSale.mutate,
 
     dateFilter,
     customStartDate: startDate,
     customEndDate: endDate,
     handleDateFilterChange,
     handleCustomDateChange,
+
+    // for sale delete confimation dialog
+    deleteSale: deleteSale.mutate,
+    confirmOpen,
+    setConfirmOpen,
+    saleToDelete,
+    setSaleToDelete,
   }
 }
 

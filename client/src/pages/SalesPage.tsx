@@ -27,7 +27,6 @@ import {
 } from '@/components/ui/table'
 import useSalesPage from '@/hooks/useSalesPage'
 import { Calendar, Filter, Trash2 } from 'lucide-react'
-import { useState } from 'react'
 
 const dateFilterOptions = [
   { value: 'today', label: 'Today' },
@@ -48,9 +47,14 @@ const SalesPage = () => {
     customEndDate,
     handleDateFilterChange,
     handleCustomDateChange,
-  } = useSalesPage()
 
-  const [confirmOpen, setConfirmOpen] = useState(false)
+    // for sale delete confimation dialog
+    deleteSale,
+    confirmOpen,
+    setConfirmOpen,
+    saleToDelete,
+    setSaleToDelete,
+  } = useSalesPage()
 
   return (
     <div className="p-6">
@@ -146,7 +150,7 @@ const SalesPage = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    // handleDeleteSale(sale.id)
+                    setSaleToDelete(sale.id)
                     setConfirmOpen(true)
                   }}
                   aria-label="Delete sale"
@@ -195,9 +199,10 @@ const SalesPage = () => {
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         onConfirm={function (): void {
-          throw new Error('Function not implemented.')
+          deleteSale(saleToDelete!)
         }}
         onCancel={function (): void {
+          setSaleToDelete(null)
           setConfirmOpen(false)
         }}
       />
