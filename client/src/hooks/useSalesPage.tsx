@@ -18,7 +18,7 @@ const useSalesPage = () => {
   const queryClient = useQueryClient()
 
   // for filter
-  const [dateFilter, setDateFilter] = useState<DateFilter>('today')
+  const [dateFilter, setDateFilter] = useState<DateFilter>('all')
   const [startDate, setStartDate] = useState<string>('')
   const [endDate, setEndDate] = useState<string>('')
 
@@ -32,8 +32,8 @@ const useSalesPage = () => {
   const [isUpdating, setIsUpdating] = useState(false)
 
   useEffect(() => {
-    console.log(startDate, endDate)
-  }, [endDate, startDate])
+    handleDateFilterChange('today')
+  }, [])
 
   // Fetch all sales
   const {
