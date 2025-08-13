@@ -63,7 +63,7 @@ const SalesPage = () => {
     saleToEdit,
     setSaleToEdit,
     isUpdating,
-    setIsUpdating,
+    // setIsUpdating,
   } = useSalesPage()
 
   return (
@@ -157,27 +157,45 @@ const SalesPage = () => {
                     </Badge>
                   ))}
                 </div>
-                <div>
-                  <button
+                <div className="flex">
+                  <div
                     onClick={(e) => {
                       e.stopPropagation()
                       setSaleToEdit(sale)
                       setUpdateOpen(true)
                     }}
-                    aria-label="Delete sale"
-                    className="ml-4 text-gray-500 hover:text-gray-700 active:text-gray-900 transition-colors duration-150">
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.stopPropagation()
+                        setSaleToEdit(sale)
+                        setUpdateOpen(true)
+                      }
+                    }}
+                    aria-label="Edit sale"
+                    className="ml-4 text-gray-500 hover:text-gray-700 active:text-gray-900 transition-colors duration-150 cursor-pointer">
                     <Pen />
-                  </button>
-                  <button
+                  </div>
+                  <div
                     onClick={(e) => {
                       e.stopPropagation()
                       setSaleToDelete(sale.id)
                       setConfirmOpen(true)
                     }}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.stopPropagation()
+                        setSaleToDelete(sale.id)
+                        setConfirmOpen(true)
+                      }
+                    }}
                     aria-label="Delete sale"
-                    className="ml-4 text-red-500 hover:text-red-700 active:text-red-900 transition-colors duration-150">
+                    className="ml-4 text-red-500 hover:text-red-700 active:text-red-900 transition-colors duration-150 cursor-pointer">
                     <Trash2 />
-                  </button>
+                  </div>
                 </div>
               </div>
             </AccordionTrigger>
