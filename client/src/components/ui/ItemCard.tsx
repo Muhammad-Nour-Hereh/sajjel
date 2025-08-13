@@ -51,7 +51,7 @@ const ItemCard = ({ item, updateItem, updateThumbnail }: props) => {
           onChange={({ amount, currency }) =>
             updateItem({
               id: item.id,
-              data: { ...item, buy_price: new Price(amount, currency) },
+              data: { ...item, buy_price: { amount, currency } },
             })
           }
         />
@@ -61,7 +61,7 @@ const ItemCard = ({ item, updateItem, updateThumbnail }: props) => {
           onChange={({ amount, currency }) =>
             updateItem({
               id: item.id,
-              data: { ...item, sell_price: new Price(amount, currency) },
+              data: { ...item, sell_price: { amount, currency } },
             })
           }
         />

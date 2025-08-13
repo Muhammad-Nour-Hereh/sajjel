@@ -8,6 +8,7 @@ import {
 } from '../utils/validators'
 import { remote } from '../remotes/remotes'
 import { UserRoutes } from '../routes/UserRoutes'
+import { GuestRoutes } from '@/routes/GuestRoutes'
 
 type FieldErrors = Record<string, string>
 
@@ -53,7 +54,7 @@ const useRegisterPage = () => {
     }
   }
 
-  const navigateLoginHandle = () => navigate(UserRoutes.LOGIN)
+  const navigateLoginHandle = () => navigate(GuestRoutes.LOGIN)
 
   useEffect(() => {
     console.log('register page is loaded')

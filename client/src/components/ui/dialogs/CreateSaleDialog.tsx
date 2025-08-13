@@ -62,11 +62,15 @@ const CreateSaleDialog = () => {
       items: selectedItems.map((item) => ({
         item_id: item.id,
         quantity: quantities[item.id] || 1,
-        sell_price: new Price(
-          prices[item.id] ?? item.sell_price?.amount ?? 0,
-          'USD',
-        ),
-        buy_price: new Price(item.buy_price?.amount ?? 0, 'USD'),
+        sell_price: {
+          amount: prices[item.id] ?? item.sell_price?.amount ?? 0,
+          currency: 'USD',
+        },
+        buy_price: {
+          amount: item.buy_price?.amount ?? 0,
+          currency: 'USD',
+        },
+        notes: notes[item.id] || '',
       })),
     }
 
@@ -162,6 +166,7 @@ const CreateSaleDialog = () => {
                       item={item}
                       updateItem={() => {}}
                       updateThumbnail={() => {}}
+                      // readOnly={true}
                     />
                   </div>
                 ))}
