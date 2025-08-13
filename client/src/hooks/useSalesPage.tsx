@@ -26,6 +26,11 @@ const useSalesPage = () => {
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [saleToDelete, setSaleToDelete] = useState<number | null>(null)
 
+  // for updating sale
+  const [updateOpen, setUpdateOpen] = useState(false)
+  const [saleToEdit, setSaleToEdit] = useState<Sale | null>(null)
+  const [isUpdating, setIsUpdating] = useState(false)
+
   useEffect(() => {
     console.log(startDate, endDate)
   }, [endDate, startDate])
@@ -42,7 +47,7 @@ const useSalesPage = () => {
 
   // Update sale
   const updateSale = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Partial<Sale> }) =>
+    mutationFn: ({ id, data }: { id: number; data: any }) =>
       remote.sales.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sales'] }),
   })
@@ -140,8 +145,6 @@ const useSalesPage = () => {
     setSearch,
     isLoading,
     isError,
-    updateSale: updateSale.mutate,
-
     dateFilter,
     customStartDate: startDate,
     customEndDate: endDate,
@@ -154,6 +157,15 @@ const useSalesPage = () => {
     setConfirmOpen,
     saleToDelete,
     setSaleToDelete,
+
+    // for updating sale
+    updateSale: updateSale.mutate,
+    updateOpen,
+    setUpdateOpen,
+    saleToEdit,
+    setSaleToEdit,
+    isUpdating,
+    setIsUpdating,
   }
 }
 

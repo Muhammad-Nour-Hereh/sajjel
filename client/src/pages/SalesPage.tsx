@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import ConfirmationDialog from '@/components/ui/dialogs/ConfirmationDialog'
 import CreateSaleDialog from '@/components/ui/dialogs/CreateSaleDialog'
+import UpdateSaleDialog from '@/components/ui/dialogs/UpdateSaleDialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -54,6 +55,15 @@ const SalesPage = () => {
     setConfirmOpen,
     saleToDelete,
     setSaleToDelete,
+
+    // for updating sale
+    updateSale,
+    updateOpen,
+    setUpdateOpen,
+    saleToEdit,
+    setSaleToEdit,
+    isUpdating,
+    setIsUpdating,
   } = useSalesPage()
 
   return (
@@ -151,6 +161,8 @@ const SalesPage = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
+                      setSaleToEdit(sale)
+                      setUpdateOpen(true)
                     }}
                     aria-label="Delete sale"
                     className="ml-4 text-gray-500 hover:text-gray-700 active:text-gray-900 transition-colors duration-150">
@@ -204,6 +216,8 @@ const SalesPage = () => {
           </AccordionItem>
         ))}
       </Accordion>
+
+      {/* dialogs  */}
       <CreateSaleDialog />
       <ConfirmationDialog
         open={confirmOpen}
@@ -215,6 +229,13 @@ const SalesPage = () => {
           setSaleToDelete(null)
           setConfirmOpen(false)
         }}
+      />
+      <UpdateSaleDialog
+        sale={saleToEdit!}
+        open={updateOpen}
+        onOpenChange={setUpdateOpen}
+        onUpdate={updateSale}
+        isUpdating={isUpdating}
       />
     </div>
   )
