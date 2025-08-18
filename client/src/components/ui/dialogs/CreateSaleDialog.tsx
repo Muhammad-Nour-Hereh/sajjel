@@ -22,7 +22,6 @@ import { remote } from '@/remotes/remotes'
 import { Item } from '@/models/Item'
 import ItemCard from '../ItemCard'
 import { SaleDTO } from '@/dto models/SaleDTO'
-import { Price } from '@/models/Price'
 import { SaleDetailsForm } from '../forms/SaleDetailsForm'
 
 const CreateSaleDialog = () => {
@@ -156,7 +155,7 @@ const CreateSaleDialog = () => {
                 .map((item) => (
                   <div
                     key={item.id}
-                    className={`border rounded p-3 cursor-pointer ${
+                    className={`rounded p-3 cursor-pointer ${
                       selectedItems.find((i) => i.id === item.id)
                         ? 'border-primary bg-primary/10'
                         : ''
@@ -166,7 +165,7 @@ const CreateSaleDialog = () => {
                       item={item}
                       updateItem={() => {}}
                       updateThumbnail={() => {}}
-                      // readOnly={true}
+                      editable={false}
                     />
                   </div>
                 ))}

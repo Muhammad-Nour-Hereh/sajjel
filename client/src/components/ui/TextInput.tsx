@@ -1,16 +1,16 @@
 import { useState } from 'react'
 
-export const TextInput = ({
-  value,
-  onChange,
-}: {
+interface props {
   value: string
   onChange: (newValue: string) => void
-}) => {
+  editable?: boolean
+}
+
+export const TextInput = ({ value, onChange, editable = true }: props) => {
   const [editing, setEditing] = useState(false)
   const [temp, setTemp] = useState(value)
 
-  return editing ? (
+  return editable && editing ? (
     <input
       value={temp}
       onChange={(e) => setTemp(e.target.value)}

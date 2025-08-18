@@ -69,6 +69,10 @@ const SalesPage = () => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Sales</h1>
+      {/* date of the day */}
+      <div>
+        20/20/20
+      </div>
       {/* Date Filter Controls */}
       <div className="bg-gray-50 p-4 rounded-lg mb-6 space-y-4">
         <div className="flex items-center gap-2 mb-3">
@@ -133,7 +137,6 @@ const SalesPage = () => {
           )}
         </div>
       </div>
-
       {/* sales list  */}
       <Accordion type="single" collapsible className="w-full space-y-2">
         {sales.map((sale) => (
@@ -234,7 +237,6 @@ const SalesPage = () => {
           </AccordionItem>
         ))}
       </Accordion>
-
       {/* dialogs  */}
       <CreateSaleDialog />
       <ConfirmationDialog

@@ -1,12 +1,13 @@
 import { useRef } from 'react'
 
-type EditImageProps = {
+interface props {
   src: string
   alt: string
+  editable?: boolean
   onChange: (file: File) => void
 }
 
-function EditImage({ src, alt, onChange }: EditImageProps) {
+function EditImage({ src, alt, editable = true, onChange }: props) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleDoubleClick = () => fileInputRef.current?.click()
@@ -22,7 +23,9 @@ function EditImage({ src, alt, onChange }: EditImageProps) {
         src={src}
         alt={alt}
         className="w-full h-48 cursor-pointer object-contain"
-        onDoubleClick={handleDoubleClick}
+        onDoubleClick={() => {
+          if (editable) handleDoubleClick()
+        }}
       />
       <input
         type="file"

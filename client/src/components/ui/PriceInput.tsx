@@ -1,15 +1,19 @@
 import { currency } from '@/models/Price'
 import { useEffect, useRef, useState } from 'react'
 
+interface props {
+  amount: number
+  currency: currency
+  editable?: boolean
+  onChange: (val: { amount: number; currency: currency }) => void
+}
+
 export const PriceInput = ({
   amount,
   currency,
+  editable = true,
   onChange,
-}: {
-  amount: number
-  currency: currency
-  onChange: (val: { amount: number; currency: currency }) => void
-}) => {
+}: props) => {
   const [editing, setEditing] = useState(false)
   const [tempAmount, setTempAmount] = useState(amount.toString())
   const [tempCurrency, setTempCurrency] = useState<any>(currency)
@@ -34,7 +38,7 @@ export const PriceInput = ({
     }, 100)
   }
 
-  return editing ? (
+  return editable && editing ? (
     <div
       ref={containerRef}
       onBlur={handleBlur}

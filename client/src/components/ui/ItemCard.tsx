@@ -2,22 +2,28 @@ import { Card, CardContent, CardHeader, CardTitle } from './card'
 import EditImage from './EditImage'
 import { TextInput } from './TextInput'
 import { PriceInput } from './PriceInput'
-import { Price } from '@/models/Price'
 import { Item } from '@/models/Item'
 
 interface props {
   item: Item
+  editable?: boolean
   updateItem: Function
   updateThumbnail: Function
 }
 
-const ItemCard = ({ item, updateItem, updateThumbnail }: props) => {
+const ItemCard = ({
+  item,
+  editable = true,
+  updateItem,
+  updateThumbnail,
+}: props) => {
   return (
     <Card key={item.id} className="overflow-hidden hover:shadow-md transition">
       {item.thumbnail && (
         <EditImage
           src={'http://localhost:8000/storage/' + item.thumbnail}
           alt={item.name}
+          editable={editable}
           onChange={async (file: File) => {
             const formData = new FormData()
             formData.append('thumbnail', file)
@@ -35,6 +41,7 @@ const ItemCard = ({ item, updateItem, updateThumbnail }: props) => {
             onChange={(val) =>
               updateItem({ id: item.id, data: { ...item, name: val } })
             }
+            editable={editable}
           />
         </CardTitle>
       </CardHeader>
@@ -44,10 +51,12 @@ const ItemCard = ({ item, updateItem, updateThumbnail }: props) => {
           onChange={(val) =>
             updateItem({ id: item.id, data: { ...item, model: val } })
           }
+          editable={editable}
         />
         <PriceInput
           amount={item.buy_price?.amount || 0}
           currency={item.buy_price?.currency || 'USD'}
+          editable={false}
           onChange={({ amount, currency }) =>
             updateItem({
               id: item.id,
@@ -58,6 +67,7 @@ const ItemCard = ({ item, updateItem, updateThumbnail }: props) => {
         <PriceInput
           amount={item.sell_price?.amount || 0}
           currency={item.sell_price?.currency || 'USD'}
+          editable={false}
           onChange={({ amount, currency }) =>
             updateItem({
               id: item.id,
