@@ -8,9 +8,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import ConfirmationDialog from '@/components/ui/dialogs/ConfirmationDialog'
 import CreateSaleDialog from '@/components/ui/dialogs/CreateSaleDialog'
-import UpdateSaleDialog from '@/components/ui/dialogs/UpdateSaleDialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { PriceInput } from '@/components/ui/PriceInput'
 import {
   Select,
   SelectContent,
@@ -26,8 +26,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { TextInput } from '@/components/ui/TextInput'
 import useSalesPage from '@/hooks/useSalesPage'
-import { Calendar, Filter, Pen, Trash2 } from 'lucide-react'
+import { currency } from '@/models/Price'
+import { Calendar, Filter, Trash2 } from 'lucide-react'
 
 const dateFilterOptions = [
   { value: 'today', label: 'Today' },
@@ -58,21 +60,13 @@ const SalesPage = () => {
 
     // for updating sale
     updateSale,
-    updateOpen,
-    setUpdateOpen,
-    saleToEdit,
-    setSaleToEdit,
-    isUpdating,
-    // setIsUpdating,
   } = useSalesPage()
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Sales</h1>
       {/* date of the day */}
-      <div>
-        20/20/20
-      </div>
+      <div>20/20/20</div>
       {/* Date Filter Controls */}
       <div className="bg-gray-50 p-4 rounded-lg mb-6 space-y-4">
         <div className="flex items-center gap-2 mb-3">
@@ -137,6 +131,7 @@ const SalesPage = () => {
           )}
         </div>
       </div>
+
       {/* sales list  */}
       <Accordion type="single" collapsible className="w-full space-y-2">
         {sales.map((sale) => (
@@ -147,7 +142,8 @@ const SalesPage = () => {
             <AccordionTrigger className="px-4 py-3 flex justify-between items-center w-full">
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-col text-left">
-                  <span className="font-semibold">Sale #{sale.id}</span>
+                  {/* <span className="font-semibold">Sale #{sale.id}</span> */}
+                  <span className="font-semibold">{sale.date} - {sale.time}</span>
                   <div className="text-sm text-muted-foreground">
                     Total: {sale.total?.amount} {sale.total?.currency} — Profit:{' '}
                     {sale.profit?.amount} {sale.profit?.currency}
@@ -161,25 +157,6 @@ const SalesPage = () => {
                   ))}
                 </div>
                 <div className="flex">
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setSaleToEdit(sale)
-                      setUpdateOpen(true)
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.stopPropagation()
-                        setSaleToEdit(sale)
-                        setUpdateOpen(true)
-                      }
-                    }}
-                    aria-label="Edit sale"
-                    className="ml-4 text-gray-500 hover:text-gray-700 active:text-gray-900 transition-colors duration-150 cursor-pointer">
-                    <Pen />
-                  </div>
                   <div
                     onClick={(e) => {
                       e.stopPropagation()
@@ -210,17 +187,43 @@ const SalesPage = () => {
                     <TableHead>Buy Price</TableHead>
                     <TableHead>Sell Price</TableHead>
                     <TableHead>Profit</TableHead>
+                    <TableHead>Note</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sale.items.map((item) => (
-                    <TableRow key={item.id}>
+                    <TableRow className="" key={item.id}>
                       <TableCell>{item.name}</TableCell>
                       <TableCell>
-                        {item.buy_price?.amount} {item.buy_price?.currency}
+                        <PriceInput
+                          amount={item.buy_price?.amount || 0}
+                          currency={item.buy_price?.currency || 'USD'}
+                          onChange={(val) =>
+                            updateSale({
+                              id: sale.id,
+                              data: {
+                                ...sale,
+                                items: sale.items.map((i) =>
+                                  i.id === item.id
+                                    ? { ...i, buy_price: val }
+                                    : i,
+                                ),
+                              },
+                            })
+                          }
+                        />
                       </TableCell>
                       <TableCell>
-                        {item.sell_price?.amount} {item.sell_price?.currency}
+                        <PriceInput
+                          amount={item.sell_price?.amount || 0}
+                          currency={item.sell_price?.currency || 'USD'}
+                          onChange={function (val: {
+                            amount: number
+                            currency: currency
+                          }): void {
+                            throw new Error('Function not implemented.')
+                          }}
+                        />
                       </TableCell>
                       <TableCell>
                         {(
@@ -228,6 +231,35 @@ const SalesPage = () => {
                           (item.buy_price?.amount ?? 0)
                         ).toFixed(2)}{' '}
                         {item.sell_price?.currency}
+                      </TableCell>
+                      <TableCell>
+                        <TextInput
+                          value={'note'}
+                          onChange={function (newValue: string): void {
+                            throw new Error('Function not implemented.')
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell className="flex justify-end mr-6">
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setSaleToDelete(sale.id)
+                            setConfirmOpen(true)
+                          }}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.stopPropagation()
+                              setSaleToDelete(sale.id)
+                              setConfirmOpen(true)
+                            }
+                          }}
+                          aria-label="Delete sale"
+                          className="text-red-500 hover:text-red-700 active:text-red-900 transition-colors duration-150 cursor-pointer">
+                          <Trash2 />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -249,13 +281,6 @@ const SalesPage = () => {
           setSaleToDelete(null)
           setConfirmOpen(false)
         }}
-      />
-      <UpdateSaleDialog
-        sale={saleToEdit!}
-        open={updateOpen}
-        onOpenChange={setUpdateOpen}
-        onUpdate={updateSale}
-        isUpdating={isUpdating}
       />
     </div>
   )

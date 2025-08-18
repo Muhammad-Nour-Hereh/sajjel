@@ -1,7 +1,7 @@
+import { Sale } from '@/models/Sale'
 import { remote } from '@/remotes/remotes'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { Sale } from '@/models/Sale'
 
 type DateFilter =
   | 'all'
@@ -26,11 +26,6 @@ const useSalesPage = () => {
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [saleToDelete, setSaleToDelete] = useState<number | null>(null)
 
-  // for updating sale
-  const [updateOpen, setUpdateOpen] = useState(false)
-  const [saleToEdit, setSaleToEdit] = useState<Sale | null>(null)
-  const [isUpdating, setIsUpdating] = useState(false)
-
   useEffect(() => {
     handleDateFilterChange('today')
   }, [])
@@ -47,7 +42,7 @@ const useSalesPage = () => {
 
   // Update sale
   const updateSale = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: any }) =>
+    mutationFn: ({ id, data }: { id: number; data: Sale }) =>
       remote.sales.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sales'] }),
   })
@@ -160,12 +155,6 @@ const useSalesPage = () => {
 
     // for updating sale
     updateSale: updateSale.mutate,
-    updateOpen,
-    setUpdateOpen,
-    saleToEdit,
-    setSaleToEdit,
-    isUpdating,
-    setIsUpdating,
   }
 }
 

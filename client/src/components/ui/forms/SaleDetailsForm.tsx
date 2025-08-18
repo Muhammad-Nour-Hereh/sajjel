@@ -21,12 +21,10 @@ export const SaleDetailsForm = ({
   selectedItems,
   quantities,
   prices,
-  notes,
   totals,
   isSaving,
   onQuantityChange,
   onPriceChange,
-  onNoteChange,
   onBack,
   onSave,
 }: SaleDetailsFormProps) => {
@@ -55,14 +53,6 @@ export const SaleDetailsForm = ({
                 onPriceChange(item.id, parseFloat(e.target.value) || 0)
               }
               className="w-full border rounded p-2"
-            />
-
-            <textarea
-              placeholder="Notes"
-              value={notes[item.id] || ''}
-              onChange={(e) => onNoteChange(item.id, e.target.value)}
-              className="w-full border rounded p-2"
-              rows={2}
             />
           </div>
         ))}

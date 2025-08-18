@@ -13,12 +13,14 @@ class UpdateSaleRequest extends BaseFormRequest
     {
         return [
             'items' => 'sometimes|array|min:1',
-            'items.*.item_id' => 'required_with:items|exists:items,id',
-            'items.*.quantity' => 'required_with:items|integer|min:1',
-            'items.*.sell_price_amount' => 'required_with:items|numeric|min:0',
-            'items.*.sell_price_currency' => 'required_with:items|in:USD,LBP',
-            'items.*.buy_price_amount' => 'required_with:items|numeric|min:0',
-            'items.*.buy_price_currency' => 'required_with:items|in:USD,LBP',
+            'items.*.id' => 'required_with:items|exists:items,id',
+            // 'items.*.quantity' => 'required_with:items|integer|min:1',
+            
+            'items.*.sell_price.amount' => 'required|numeric|min:0',
+            'items.*.sell_price.currency' => 'required|in:USD,LBP',
+
+            'items.*.buy_price.amount' => 'nullable|numeric|min:0',
+            'items.*.buy_price.currency' => 'nullable|in:USD,LBP',
         ];
     }
 }

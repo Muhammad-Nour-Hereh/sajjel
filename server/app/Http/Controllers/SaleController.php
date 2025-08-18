@@ -93,23 +93,36 @@ class SaleController extends Controller
 
         return DB::transaction(function () use ($sale, $data) {
             if (isset($data['items'])) {
-                $sale->items()->detach();
 
                 $total = 0;
                 $profit = 0;
 
-                foreach ($data['items'] as $item) {
-                    $sale->items()->attach($item['item_id'], [
-                        'quantity' => $item['quantity'],
-                        'sell_price_amount' => $item['sell_price_amount'],
-                        'sell_price_currency' => $item['sell_price_currency'],
-                        'buy_price_amount' => $item['buy_price_amount'],
-                        'buy_price_currency' => $item['buy_price_currency'],
-                    ]);
+                // Build an array to sync the items
+                $syncData = [];
 
-                    $total += $item['sell_price_amount'] * $item['quantity'];
-                    $profit += ($item['sell_price_amount'] - $item['buy_price_amount']) * $item['quantity'];
+                foreach ($data['items'] as $item) {
+                    $quantity = $item['quantity'] ?? 1;
+
+                    $sellAmount = $item['sell_price']['amount'];
+                    $sellCurrency = $item['sell_price']['currency'];
+
+                    $buyAmount = $item['buy_price']['amount'] ?? 0;
+                    $buyCurrency = $item['buy_price']['currency'] ?? $sellCurrency;
+
+                    $syncData[$item['id']] = [
+                        'quantity' => $quantity,
+                        'sell_price_amount' => $sellAmount,
+                        'sell_price_currency' => $sellCurrency,
+                        'buy_price_amount' => $buyAmount,
+                        'buy_price_currency' => $buyCurrency,
+                    ];
+
+                    $total += $sellAmount * $quantity;
+                    $profit += ($sellAmount - $buyAmount) * $quantity;
                 }
+
+                // Sync avoids duplicates and automatically handles detach/attach
+                $sale->items()->sync($syncData);
 
                 $sale->update([
                     'total_amount' => $total,
@@ -117,7 +130,17 @@ class SaleController extends Controller
                 ]);
             }
 
-            return $this->successResponse($sale->load('items'));
+            return $this->successResponse(
+                $sale->load([
+                    'items' => fn($q) => $q->withPivot(
+                        'quantity',
+                        'sell_price_amount',
+                        'sell_price_currency',
+                        'buy_price_amount',
+                        'buy_price_currency'
+                    )
+                ])
+            );
         });
     }
 
