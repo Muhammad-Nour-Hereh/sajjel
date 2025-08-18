@@ -28,7 +28,6 @@ import {
 } from '@/components/ui/table'
 import { TextInput } from '@/components/ui/TextInput'
 import useSalesPage from '@/hooks/useSalesPage'
-import { currency } from '@/models/Price'
 import { Calendar, Filter, Trash2 } from 'lucide-react'
 
 const dateFilterOptions = [
@@ -143,7 +142,9 @@ const SalesPage = () => {
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-col text-left">
                   {/* <span className="font-semibold">Sale #{sale.id}</span> */}
-                  <span className="font-semibold">{sale.date} - {sale.time}</span>
+                  <span className="font-semibold">
+                    {sale.date} - {sale.time}
+                  </span>
                   <div className="text-sm text-muted-foreground">
                     Total: {sale.total?.amount} {sale.total?.currency} — Profit:{' '}
                     {sale.profit?.amount} {sale.profit?.currency}
@@ -184,8 +185,9 @@ const SalesPage = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Item</TableHead>
-                    <TableHead>Buy Price</TableHead>
-                    <TableHead>Sell Price</TableHead>
+                    <TableHead>Buy Price each</TableHead>
+                    <TableHead>Sell Price total</TableHead>
+                    <TableHead>Quantity</TableHead>
                     <TableHead>Profit</TableHead>
                     <TableHead>Note</TableHead>
                   </TableRow>
@@ -217,14 +219,12 @@ const SalesPage = () => {
                         <PriceInput
                           amount={item.sell_price?.amount || 0}
                           currency={item.sell_price?.currency || 'USD'}
-                          onChange={function (val: {
-                            amount: number
-                            currency: currency
-                          }): void {
+                          onChange={function (): void {
                             throw new Error('Function not implemented.')
                           }}
                         />
                       </TableCell>
+                      <TableCell>1</TableCell>
                       <TableCell>
                         {(
                           (item.sell_price?.amount ?? 0) -
@@ -235,7 +235,7 @@ const SalesPage = () => {
                       <TableCell>
                         <TextInput
                           value={'note'}
-                          onChange={function (newValue: string): void {
+                          onChange={function (): void {
                             throw new Error('Function not implemented.')
                           }}
                         />
