@@ -11,7 +11,8 @@ type DateFilter =
   | 'month'
   | 'quarter'
   | 'year'
-  | 'custom'
+  | 'day'
+  | 'range'
 
 const useSalesPage = () => {
   const [search, setSearch] = useState('')
@@ -112,7 +113,13 @@ const useSalesPage = () => {
         endDate = formatDate(today)
         break
 
-      case 'custom':
+      case 'day':
+        const day = new Date(date)
+        startDate = formatDate(day)
+        endDate = formatDate(day)
+        break
+
+      case 'range':
         // keep existing custom dates, do nothing here
         return
     }
@@ -131,9 +138,24 @@ const useSalesPage = () => {
     setStartDate(startDate)
     setEndDate(endDate)
     if (startDate || endDate) {
-      setDateFilter('custom')
+      setDateFilter('range')
     }
   }
+
+  // for date
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0])
+  const changeDate = (days: number) => {
+    const current = new Date(date)
+    current.setDate(current.getDate() + days)
+    // format as YYYY-MM-DD
+    const formatted = current.toISOString().split('T')[0]
+    setDate(formatted)
+  }
+
+  useEffect(() => {
+    handleDateFilterChange('day')
+    console.log(date, startDate, endDate)
+  }, [date])
   return {
     sales,
     search,
@@ -155,6 +177,11 @@ const useSalesPage = () => {
 
     // for updating sale
     updateSale: updateSale.mutate,
+
+    // for date
+    date,
+    setDate,
+    changeDate,
   }
 }
 

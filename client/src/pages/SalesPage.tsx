@@ -28,7 +28,13 @@ import {
 } from '@/components/ui/table'
 import { TextInput } from '@/components/ui/TextInput'
 import useSalesPage from '@/hooks/useSalesPage'
-import { Calendar, Filter, Trash2 } from 'lucide-react'
+import {
+  ArrowLeftCircle,
+  ArrowRightCircle,
+  Calendar,
+  Filter,
+  Trash2,
+} from 'lucide-react'
 
 const dateFilterOptions = [
   { value: 'today', label: 'Today' },
@@ -38,7 +44,8 @@ const dateFilterOptions = [
   { value: 'quarter', label: 'This Quarter' },
   { value: 'year', label: 'This Year' },
   { value: 'all', label: 'All Time' },
-  { value: 'custom', label: 'Custom Range' },
+  { value: 'day', label: 'day' },
+  { value: 'range', label: 'Custom Range' },
 ]
 
 const SalesPage = () => {
@@ -59,13 +66,48 @@ const SalesPage = () => {
 
     // for updating sale
     updateSale,
+
+    // for date
+    date,
+    setDate,
+    changeDate,
   } = useSalesPage()
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Sales</h1>
       {/* date of the day */}
-      <div>20/20/20</div>
+      <div className="bg-gray-50 p-4 rounded-lg mb-6 space-y-4">
+        <div className="flex justify-between">
+          <div className="flex gap-2 items-center">
+            <ArrowLeftCircle
+              className="cursor-pointer"
+              onClick={() => changeDate(-1)}
+            />
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="border px-2 py-1 rounded"
+            />
+            <ArrowRightCircle
+              className="cursor-pointer"
+              onClick={() => changeDate(1)}
+            />
+          </div>
+          <span className="font-semibold text-2xl">
+            بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ
+          </span>
+          <div className="grid gap-1">
+            <span>
+              open time: <input type="time" defaultValue="11:11" />
+            </span>
+            <span>
+              close time: <input type="time" defaultValue="11:11" />
+            </span>
+          </div>
+        </div>
+      </div>
       {/* Date Filter Controls */}
       <div className="bg-gray-50 p-4 rounded-lg mb-6 space-y-4">
         <div className="flex items-center gap-2 mb-3">
@@ -92,7 +134,7 @@ const SalesPage = () => {
             </Select>
           </div>
 
-          {dateFilter === 'custom' && (
+          {dateFilter === 'range' && (
             <>
               <div className="flex-1 min-w-[150px]">
                 <Label htmlFor="start-date">Start Date</Label>
