@@ -260,7 +260,7 @@ const SalesPage = () => {
                       <TableCell>
                         <PriceInput
                           amount={item.sell_price?.amount || 0}
-                          currency={item.sell_price?.currency || 'USD'}
+                          currency={item.sell_price?.currency || ' '}
                           onChange={function (): void {
                             throw new Error('Function not implemented.')
                           }}

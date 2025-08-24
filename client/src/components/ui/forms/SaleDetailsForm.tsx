@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Item } from '@/models/Item'
+import { PriceInput } from '../PriceInput'
+import { currency } from '@/models/Price'
 
 interface SaleDetailsFormProps {
   selectedItems: Item[]
@@ -44,15 +46,25 @@ export const SaleDetailsForm = ({
               }
               className="w-full border rounded p-2"
             />
-
-            <input
-              type="number"
-              placeholder="Sell Price"
-              value={prices[item.id] ?? item.sell_price?.amount ?? ''}
-              onChange={(e) =>
-                onPriceChange(item.id, parseFloat(e.target.value) || 0)
-              }
-              className="w-full border rounded p-2"
+            <PriceInput
+              amount={prices[item.id] ?? item.sell_price?.amount ?? ''}
+              currency={'USD'}
+              onChange={function (val: {
+                amount: number
+                currency: currency
+              }): void {
+                onPriceChange(item.id, val.amount || 0)
+              }}
+            />
+            <PriceInput
+              amount={prices[item.id] ?? item.sell_price?.amount ?? ''}
+              currency={'USD'}
+              onChange={function (val: {
+                amount: number
+                currency: currency
+              }): void {
+                onPriceChange(item.id, val.amount || 0)
+              }}
             />
           </div>
         ))}

@@ -39,14 +39,21 @@ class Sale extends Model
     {
         return Carbon::parse($this->created_at)->toTimeString();
     }
-
     public function getProfitAttribute()
     {
-        $amount = $this->items->sum(
-            fn($item) =>
-            ($item->pivot->sell_price_amount - $item->pivot->buy_price_amount)
-            * $item->pivot->quantity
-        );
+        $USD_LB_RATE = 89_500;
+
+        $amount = $this->items->sum(function ($item) use ($USD_LB_RATE) {
+            $sell_usd_amount = ($item->pivot->sell_price_currency == 'USD')
+                ? $item->pivot->sell_price_amount
+                : $item->pivot->sell_price_amount / $USD_LB_RATE;
+
+            $buy_usd_amount = ($item->pivot->buy_price_currency == 'USD')
+                ? $item->pivot->buy_price_amount
+                : $item->pivot->buy_price_amount / $USD_LB_RATE;
+
+            return ($sell_usd_amount - $buy_usd_amount) * $item->pivot->quantity;
+        });
 
         return [
             'amount' => round($amount, 2),
@@ -56,15 +63,22 @@ class Sale extends Model
 
     public function getTotalAttribute()
     {
+        $USD_LB_RATE = 89_500;
         $items = $this->items;
         $amount = $items->sum(
-            fn($item) => $item->pivot->buy_price_amount * $item->pivot->quantity
+            function ($item) use ($USD_LB_RATE) {
+                $buy_usd_amount = ($item->pivot->buy_price_currency == 'USD')
+                    ? $item->pivot->buy_price_amount
+                    : $item->pivot->buy_price_amount / $USD_LB_RATE;
+                return $buy_usd_amount * $item->pivot->quantity;
+            }
         );
         return [
             'amount' => round($amount, 2),
             'currency' => 'USD'
         ];
     }
+
     public function items()
     {
         return $this->belongsToMany(Item::class, 'sale_item')

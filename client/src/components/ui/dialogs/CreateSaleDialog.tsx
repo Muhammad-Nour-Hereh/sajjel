@@ -22,15 +22,19 @@ import { remote } from '@/remotes/remotes'
 import { Item } from '@/models/Item'
 import ItemCard from '../ItemCard'
 import { SaleDTO } from '@/dto models/SaleDTO'
-import { SaleDetailsForm } from '../forms/SaleDetailsForm'
+import { PriceInput } from '../PriceInput'
+import { currency, Price } from '@/models/Price'
 
 const CreateSaleDialog = () => {
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState<1 | 2>(1)
   const [search, setSearch] = useState('')
   const [selectedItems, setSelectedItems] = useState<Item[]>([])
+
+  // form data
   const [quantities, setQuantities] = useState<Record<number, number>>({})
-  const [prices, setPrices] = useState<Record<number, number>>({})
+  const [sellPrices, setSellPrices] = useState<Record<number, Price>>({})
+  const [buyPrices, setBuyPrices] = useState<Record<number, Price>>({})
   const [notes, setNotes] = useState<Record<number, string>>({})
 
   const queryClient = useQueryClient()
@@ -62,12 +66,14 @@ const CreateSaleDialog = () => {
         item_id: item.id,
         quantity: quantities[item.id] || 1,
         sell_price: {
-          amount: prices[item.id] ?? item.sell_price?.amount ?? 0,
-          currency: 'USD',
+          amount: sellPrices[item.id]?.amount ?? item.sell_price?.amount ?? 0,
+          currency:
+            sellPrices[item.id]?.currency ?? item.sell_price?.currency ?? 'USD',
         },
         buy_price: {
-          amount: item.buy_price?.amount ?? 0,
-          currency: 'USD',
+          amount: buyPrices[item.id]?.amount ?? item.buy_price?.amount ?? 0,
+          currency:
+            buyPrices[item.id]?.currency ?? item.buy_price?.currency ?? 'USD',
         },
         notes: notes[item.id] || '',
       })),
@@ -79,8 +85,8 @@ const CreateSaleDialog = () => {
   const totals = useMemo(() => {
     const totalSale = selectedItems.reduce((sum, item) => {
       const qty = quantities[item.id] || 1
-      const price = prices[item.id] ?? item.sell_price?.amount ?? 0
-      return sum + qty * price
+      const price = sellPrices[item.id] ?? item.sell_price
+      return sum + qty * price.amount
     }, 0)
 
     // Placeholder net profit calc: price - 70% (cost assumption)
@@ -91,7 +97,7 @@ const CreateSaleDialog = () => {
       totalSale,
       netProfit,
     }
-  }, [selectedItems, quantities, prices])
+  }, [selectedItems, quantities, sellPrices, buyPrices])
 
   return (
     <Dialog
@@ -102,7 +108,8 @@ const CreateSaleDialog = () => {
           setStep(1)
           setSelectedItems([])
           setQuantities({})
-          setPrices({})
+          setSellPrices({})
+          setBuyPrices({})
           setNotes({})
         }
       }}>
@@ -186,25 +193,109 @@ const CreateSaleDialog = () => {
         )}
 
         {step === 2 && (
-          <SaleDetailsForm
-            selectedItems={selectedItems}
-            quantities={quantities}
-            prices={prices}
-            notes={notes}
-            totals={totals}
-            isSaving={createSale.isPending}
-            onQuantityChange={(id, val) =>
-              setQuantities((prev) => ({ ...prev, [id]: val }))
-            }
-            onPriceChange={(id, val) =>
-              setPrices((prev) => ({ ...prev, [id]: val }))
-            }
-            onNoteChange={(id, val) =>
-              setNotes((prev) => ({ ...prev, [id]: val }))
-            }
-            onBack={() => setStep(1)}
-            onSave={handleSaveSale}
-          />
+          // <SaleDetailsForm
+          //   selectedItems={selectedItems}
+          //   quantities={quantities}
+          //   prices={prices}
+          //   notes={notes}
+          //   totals={totals}
+          //   isSaving={createSale.isPending}
+          //   onQuantityChange={(id, val) =>
+          //     setQuantities((prev) => ({ ...prev, [id]: val }))
+          //   }
+          //   onPriceChange={(id, val) =>
+          //     setPrices((prev) => ({ ...prev, [id]: val }))
+          //   }
+          //   onNoteChange={(id, val) =>
+          //     setNotes((prev) => ({ ...prev, [id]: val }))
+          //   }
+          //   onBack={() => setStep(1)}
+          //   onSave={handleSaveSale}
+          // />
+
+          <div className="flex flex-col flex-1 overflow-hidden">
+            <div className="flex-1 overflow-auto space-y-4">
+              {selectedItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="border rounded p-4 space-y-3 bg-white">
+                  <h4 className="font-semibold">{item.name}</h4>
+
+                  <input
+                    type="number"
+                    min={1}
+                    placeholder="Quantity"
+                    value={quantities[item.id] || 1}
+                    onChange={(e) =>
+                      setQuantities((prev) => ({
+                        ...prev,
+                        [item.id]: Number(e.target.value),
+                      }))
+                    }
+                    className="w-full border rounded p-2"
+                  />
+                  <PriceInput
+                    amount={
+                      sellPrices[item.id]?.amount ??
+                      item.sell_price?.amount ??
+                      0
+                    }
+                    currency={
+                      sellPrices[item.id]?.currency ??
+                      item.sell_price?.currency ??
+                      'USD'
+                    }
+                    onChange={(val: { amount: number; currency: currency }) => {
+                      setSellPrices((prev) => ({ ...prev, [item.id]: val }))
+                    }}
+                  />
+
+                  <PriceInput
+                    amount={
+                      buyPrices[item.id]?.amount ?? item.buy_price?.amount ?? 0
+                    }
+                    currency={
+                      buyPrices[item.id]?.currency ??
+                      item.buy_price?.currency ??
+                      'USD'
+                    }
+                    onChange={(val: { amount: number; currency: currency }) => {
+                      setBuyPrices((prev) => ({ ...prev, [item.id]: val }))
+                    }}
+                  />
+                  <textarea
+                    placeholder="Notes"
+                    value={notes[item.id] || ''}
+                    onChange={(e) =>
+                      setNotes((prev) => ({
+                        ...prev,
+                        [item.id]: e.target.value,
+                      }))
+                    }
+                    className="w-full border rounded p-2"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Sale Summary */}
+            <div className="border-t pt-4 mt-4 text-sm">
+              <p>Total items: {totals.totalItems}</p>
+              <p>Total sale: ${totals.totalSale.toFixed(2)}</p>
+              <p>Net profit: ${totals.netProfit.toFixed(2)}</p>
+            </div>
+
+            <div className="mt-auto pt-4 flex justify-between">
+              <Button variant="outline" onClick={() => setStep(1)}>
+                Back
+              </Button>
+              <Button
+                onClick={handleSaveSale}
+                disabled={createSale.isPending || !selectedItems.length}>
+                {createSale.isPending ? 'Saving...' : 'Save Sale'}
+              </Button>
+            </div>
+          </div>
         )}
       </DialogContent>
     </Dialog>
