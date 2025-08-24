@@ -39,45 +39,6 @@ class Sale extends Model
     {
         return Carbon::parse($this->created_at)->toTimeString();
     }
-    public function getProfitAttribute()
-    {
-        $USD_LB_RATE = 89_500;
-
-        $amount = $this->items->sum(function ($item) use ($USD_LB_RATE) {
-            $sell_usd_amount = ($item->pivot->sell_price_currency == 'USD')
-                ? $item->pivot->sell_price_amount
-                : $item->pivot->sell_price_amount / $USD_LB_RATE;
-
-            $buy_usd_amount = ($item->pivot->buy_price_currency == 'USD')
-                ? $item->pivot->buy_price_amount
-                : $item->pivot->buy_price_amount / $USD_LB_RATE;
-
-            return ($sell_usd_amount - $buy_usd_amount) * $item->pivot->quantity;
-        });
-
-        return [
-            'amount' => round($amount, 2),
-            'currency' => 'USD',
-        ];
-    }
-
-    public function getTotalAttribute()
-    {
-        $USD_LB_RATE = 89_500;
-        $items = $this->items;
-        $amount = $items->sum(
-            function ($item) use ($USD_LB_RATE) {
-                $buy_usd_amount = ($item->pivot->buy_price_currency == 'USD')
-                    ? $item->pivot->buy_price_amount
-                    : $item->pivot->buy_price_amount / $USD_LB_RATE;
-                return $buy_usd_amount * $item->pivot->quantity;
-            }
-        );
-        return [
-            'amount' => round($amount, 2),
-            'currency' => 'USD'
-        ];
-    }
 
     public function items()
     {
@@ -100,12 +61,19 @@ class Sale extends Model
         ];
     }
 
-    public function getSellPriceAttribute()
+    public function getProfitAttribute()
     {
         return [
-            'amount' => (float) $this->sell_price_amount,
-            'currency' => $this->sell_price_currency,
+            'amount' => (float) $this->profit_amount,
+            'currency' => $this->profit_currency,
         ];
     }
 
+    public function getTotalAttribute()
+    {
+        return [
+            'amount' => (float) $this->total_amount,
+            'currency' => $this->total_currency,
+        ];
+    }
 }

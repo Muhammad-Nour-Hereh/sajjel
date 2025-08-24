@@ -48,6 +48,22 @@ class SaleItem extends Pivot
     }
     public function getProfitAttribute()
     {
-        return ($this->sell_price_amount - $this->buy_price_amount) * $this->quantity;
+        return [
+            'amount' => (float) (
+                $this->convertToUsd($this->sell_price_amount, $this->sell_price_currency)
+                - $this->convertToUsd($this->buy_price_amount, $this->buy_price_currency)
+            ) * $this->quantity,
+            'currency' => "USD"
+        ];
+    }
+
+    private function convertToUsd(float $amount, string $currency): float
+    {
+        $USD_LB_RATE = 89_500;
+        return match ($currency) {
+            'USD' => $amount,
+            'LBP' => $amount / $USD_LB_RATE,
+            default => throw new \InvalidArgumentException("Unsupported currency: $currency"),
+        };
     }
 }

@@ -18,6 +18,7 @@ class SaleItemResource extends JsonResource
             'quantity' => data_get($this, 'pivot.quantity', 1),
             'buy_price' => data_get($this, 'pivot.buy_price', $this->buy_price),
             'sell_price' => data_get($this, 'pivot.sell_price', $this->sell_price),
+            'profit' => data_get($this, 'pivot.profit'),
         ];
     }
 }
