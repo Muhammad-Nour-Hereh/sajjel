@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DateRangeRequest;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
+use App\Http\Resources\SaleResource;
 use App\Models\Sale;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +25,7 @@ class SaleController extends Controller
         }
 
         $sales = $query->get();
-        return $this->successResponse($sales);
+        return $this->successResponse(SaleResource::collection($sales));
     }
 
     public function show($id)
@@ -32,7 +33,7 @@ class SaleController extends Controller
         $sale = Sale::with('items')->find($id);
         if (!$sale)
             return $this->notFoundResponse();
-        return $this->successResponse($sale);
+        return $this->successResponse(new SaleResource($sale));
     }
 
     public function store(StoreSaleRequest $request)
@@ -79,7 +80,7 @@ class SaleController extends Controller
                 'profit_amount' => $profit,
             ]);
 
-            return $this->createdResponse($sale->load('items'));
+            return $this->createdResponse(new SaleResource($sale->load('items')));
         });
     }
 
