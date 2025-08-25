@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
+use App\ValueObjects\Money;
+use App\ValueObjects\Currency;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -10,7 +13,7 @@ class SaleItem extends Pivot
     use SoftDeletes;
 
     public $timestamps = false;
-
+    
     protected $table = 'sale_item';
 
     protected $fillable = [
@@ -22,6 +25,7 @@ class SaleItem extends Pivot
         'buy_price_currency',
         'quantity',
     ];
+
     protected $hidden = [
         'buy_price_amount',
         'buy_price_currency',
@@ -29,41 +33,22 @@ class SaleItem extends Pivot
         'sell_price_currency',
     ];
 
-    protected $appends = ['buy_price', 'sell_price'];
+    protected $appends = ['profit'];
 
-    public function getBuyPriceAttribute()
-    {
-        return [
-            'amount' => (float) $this->buy_price_amount,
-            'currency' => $this->buy_price_currency,
-        ];
-    }
+    protected $casts = [
+        'buy_price' => MoneyCast::class,
+        'sell_price' => MoneyCast::class,
+    ];
 
-    public function getSellPriceAttribute()
-    {
-        return [
-            'amount' => (float) $this->sell_price_amount,
-            'currency' => $this->sell_price_currency,
-        ];
-    }
     public function getProfitAttribute()
     {
-        return [
-            'amount' => (float) (
-                $this->convertToUsd($this->sell_price_amount, $this->sell_price_currency)
-                - $this->convertToUsd($this->buy_price_amount, $this->buy_price_currency)
-            ) * $this->quantity,
-            'currency' => "USD"
-        ];
-    }
-
-    private function convertToUsd(float $amount, string $currency): float
-    {
-        $USD_LB_RATE = 89_500;
-        return match ($currency) {
-            'USD' => $amount,
-            'LBP' => $amount / $USD_LB_RATE,
-            default => throw new \InvalidArgumentException("Unsupported currency: $currency"),
-        };
+        // Convert both prices to USD for calculation
+        $sellPriceUSD = $this->sell_price->toUSD();
+        $buyPriceUSD = $this->buy_price->toUSD();
+        
+        // Calculate profit per unit, then multiply by quantity
+        $profitPerUnit = $sellPriceUSD->subtract($buyPriceUSD);
+        
+        return new Money($profitPerUnit->amount * $this->quantity, Currency::USD);
     }
 }
