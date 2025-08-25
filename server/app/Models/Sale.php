@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Casts\MoneyCast;
+use App\Casts\AsMoney;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,8 +32,8 @@ class Sale extends Model
     ];
 
     protected $casts = [
-        'total' => MoneyCast::class,
-        'profit' => MoneyCast::class,
+        'total' => AsMoney::class,
+        'profit' => AsMoney::class,
     ];
 
     public function getDateAttribute()

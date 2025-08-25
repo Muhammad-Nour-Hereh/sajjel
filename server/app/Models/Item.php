@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Casts\MoneyCast;
+use App\Casts\AsMoney;
 use App\Traits\FindOrRespond;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +31,7 @@ class Item extends Model
     ];
 
     protected $casts = [
-        'buy_price' => MoneyCast::class,
-        'sell_price' => MoneyCast::class,
+        'buy_price' => AsMoney::class,
+        'sell_price' => AsMoney::class,
     ];
 }

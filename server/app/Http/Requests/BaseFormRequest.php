@@ -7,10 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BaseFormRequest extends FormRequest {
+class BaseFormRequest extends FormRequest
+{
     use ResponseTrait;
 
-    public function failedValidation(Validator $validator) {
+    public function failedValidation(Validator $validator)
+    {
         $errors = $validator->errors()->toArray();
 
         $specificMessage = [
@@ -26,5 +28,12 @@ class BaseFormRequest extends FormRequest {
         throw new HttpResponseException(
             $this->unprocessableContentResponse($validator->errors())
         );
+    }
+    /**
+     * Get validated data. Override in child classes that need casting.
+     */
+    public function validatedWithCasts(): array
+    {
+        return $this->validated();
     }
 }
