@@ -3,6 +3,7 @@
 namespace App\ValueObjects;
 
 use App\ValueObjects\Currency;
+
 class Money
 {
     public float $amount;
@@ -19,23 +20,26 @@ class Money
     /** Convert this money to USD */
     public function toUSD(): self
     {
-        if ($this->currency === 'USD')
+        if ($this->currency === Currency::USD)
             return $this;
+
         return new self($this->amount / self::USD_LBP_RATE, Currency::USD);
     }
 
     /** Convert this money to LBP */
     public function toLBP(): self
     {
-        if ($this->currency === 'LBP')
+        if ($this->currency === Currency::LBP)
             return $this;
+
         return new self($this->amount * self::USD_LBP_RATE, Currency::LBP);
     }
+
 
     /** Add two Money objects, converting currencies if necessary */
     public function add(Money $other): self
     {
-        $base = $this->toUSD();           // use USD as standard
+        $base = $this->toUSD(); // use USD as standard
         $otherUSD = $other->toUSD();
         return new self($base->amount + $otherUSD->amount, Currency::USD);
     }
@@ -51,6 +55,6 @@ class Money
     /** Format nicely */
     public function __toString(): string
     {
-        return number_format($this->amount, 2) . ' ' . $this->currency;
+        return number_format($this->amount, 2) . ' ' . $this->currency->value;
     }
 }
