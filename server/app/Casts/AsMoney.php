@@ -6,69 +6,51 @@ use App\ValueObjects\Money;
 use App\ValueObjects\Currency;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
-use InvalidArgumentException;
 
 class AsMoney implements CastsAttributes
 {
-    /**
-     * Cast the given value to Money object.
-     */
+    protected $amountField;
+    protected $currencyField;
+
+    public function __construct(?string $amountField = null, ?string $currencyField = null)
+    {
+        $this->amountField = $amountField;
+        $this->currencyField = $currencyField;
+    }
+
     public function get(Model $model, string $key, $value, array $attributes): ?Money
     {
-        if ($value === null) {
-            return null;
-        }
+        // Determine field names
+        $amountField = $this->amountField ?? $key . '_amount';
+        $currencyField = $this->currencyField ?? $key . '_currency';
 
-        // If it's already a Money object, return it
-        if ($value instanceof Money) {
-            return $value;
-        }
-
-        // Get the corresponding amount and currency attributes
-        $amountKey = $key . '_amount';
-        $currencyKey = $key . '_currency';
-
-        $amount = $attributes[$amountKey] ?? null;
-        $currency = $attributes[$currencyKey] ?? null;
+        // Get amount and currency from attributes
+        $amount = $attributes[$amountField] ?? null;
+        $currency = $attributes[$currencyField] ?? null;
 
         if ($amount === null || $currency === null) {
             return null;
         }
 
-        return new Money((float) $amount, Currency::from($currency));
+        return new Money($amount, Currency::from($currency));
     }
 
-    /**
-     * Prepare the given value for storage.
-     */
     public function set(Model $model, string $key, $value, array $attributes): array
     {
         if ($value === null) {
             return [
-                $key . '_amount' => null,
-                $key . '_currency' => null,
+                $this->amountField ?? $key . '_amount' => null,
+                $this->currencyField ?? $key . '_currency' => null,
             ];
         }
 
-        // Handle Money objects
-        if ($value instanceof Money) {
-            return [
-                $key . '_amount' => $value->amount,
-                $key . '_currency' => $value->currency->value,
-            ];
+        if (!$value instanceof Money) {
+            throw new \InvalidArgumentException('Value must be a Money instance');
         }
 
-        // Handle nested arrays from requests (e.g., ['amount' => 100, 'currency' => 'USD'])
-        if (is_array($value)) {
-            $amount = $value['amount'] ?? 0;
-            $currency = $value['currency'] ?? 'USD';
-
-            return [
-                $key . '_amount' => (float) $amount,
-                $key . '_currency' => $currency,
-            ];
-        }
-
-        throw new InvalidArgumentException('Value must be an instance of Money or an array with amount/currency keys');
+        return [
+            $this->amountField ?? $key . '_amount' => $value->amount,
+            $this->currencyField ?? $key . '_currency' => $value->currency->value,
+        ];
     }
 }

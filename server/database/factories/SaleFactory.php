@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Sale;
 use App\Models\Item;
+use App\ValueObjects\Money;
+use App\ValueObjects\Currency;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SaleFactory extends Factory
@@ -12,15 +14,10 @@ class SaleFactory extends Factory
 
     public function definition(): array
     {
-        $currency = $this->faker->randomElement(['USD', 'LBP']);
-        $profitCurrency = $this->faker->randomElement(['USD', 'LBP']);
-
         return [
-            'total_amount' => 0, // placeholder, we update later
-            'total_currency' => $currency,
-            'profit_amount' => 0, // placeholder, we update later
-            'profit_currency' => $profitCurrency,
-            'created_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
+            'total_cost' => new Money(0, Currency::USD),
+            'total_revenue' => new Money(0, Currency::USD),
+            'sold_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
         ];
     }
 
@@ -29,31 +26,99 @@ class SaleFactory extends Factory
         return $this->afterCreating(function (Sale $sale) {
             $items = Item::inRandomOrder()->take(rand(1, 5))->get();
 
-            $total = 0;
-            $profit = 0;
+            // Filter out items that don't have both cost and price
+            $validItems = $items->filter(function ($item) {
+                return $item->cost !== null && $item->price !== null;
+            });
 
-            foreach ($items as $item) {
+            if ($validItems->isEmpty()) {
+                // If no valid items, create one with default values
+                $defaultItem = Item::factory()->create([
+                    'cost' => new Money(100, \App\ValueObjects\Currency::USD),
+                    'price' => new Money(150, \App\ValueObjects\Currency::USD),
+                ]);
+                $validItems = collect([$defaultItem]);
+            }
+
+            $totalCostUSD = new Money(0, \App\ValueObjects\Currency::USD);
+            $totalRevenueUSD = new Money(0, \App\ValueObjects\Currency::USD);
+
+            foreach ($validItems as $item) {
                 $quantity = rand(1, 3);
-                $sell = $item->sell_price_amount ?? rand(10, 200);
-                $buy = $item->buy_price_amount ?? rand(5, $sell - 1);
 
+                // Double check the item has cost and price
+                if (!$item->cost || !$item->price) {
+                    continue;
+                }
+
+                // Attach the item to the sale with pivot data
                 $sale->items()->attach($item->id, [
-                    'sell_price_amount' => $sell,
-                    'sell_price_currency' => $sale->total_currency,
-                    'buy_price_amount' => $buy,
-                    'buy_price_currency' => $sale->profit_currency,
+                    'cost_amount' => $item->cost->amount,
+                    'cost_currency' => $item->cost->currency->value,
+                    'price_amount' => $item->price->amount,
+                    'price_currency' => $item->price->currency->value,
                     'quantity' => $quantity,
                 ]);
 
-                $total += $sell * $quantity;
-                $profit += ($sell - $buy) * $quantity;
+                // Calculate totals in USD for consistency
+                $itemCostUSD = $item->cost->toUSD();
+                $itemPriceUSD = $item->price->toUSD();
+
+                $itemTotalCost = new Money($itemCostUSD->amount * $quantity, \App\ValueObjects\Currency::USD);
+                $itemTotalRevenue = new Money($itemPriceUSD->amount * $quantity, \App\ValueObjects\Currency::USD);
+
+                $totalCostUSD = $totalCostUSD->add($itemTotalCost);
+                $totalRevenueUSD = $totalRevenueUSD->add($itemTotalRevenue);
+            }
+
+            // Update the sale with calculated totals
+            $sale->update([
+                'total_cost' => $totalCostUSD,
+                'total_revenue' => $totalRevenueUSD,
+            ]);
+        });
+    }
+
+    /**
+     * Create a sale with mixed currencies
+     */
+    public function mixedCurrencies(): static
+    {
+        return $this->afterCreating(function (Sale $sale) {
+            // Create some USD and LBP items specifically for this sale
+            $usdItems = Item::factory()->usd()->count(2)->create();
+            $lbpItems = Item::factory()->lbp()->count(2)->create();
+
+            $items = $usdItems->merge($lbpItems);
+
+            $totalCostUSD = new Money(0, Currency::USD);
+            $totalRevenueUSD = new Money(0, Currency::USD);
+
+            foreach ($items as $item) {
+                $quantity = rand(1, 2);
+
+                $sale->items()->attach($item->id, [
+                    'cost_amount' => $item->cost->amount,
+                    'cost_currency' => $item->cost->currency->value,
+                    'price_amount' => $item->price->amount,
+                    'price_currency' => $item->price->currency->value,
+                    'quantity' => $quantity,
+                ]);
+
+                $itemCostUSD = $item->cost->toUSD();
+                $itemPriceUSD = $item->price->toUSD();
+
+                $itemTotalCost = new Money($itemCostUSD->amount * $quantity, Currency::USD);
+                $itemTotalRevenue = new Money($itemPriceUSD->amount * $quantity, Currency::USD);
+
+                $totalCostUSD = $totalCostUSD->add($itemTotalCost);
+                $totalRevenueUSD = $totalRevenueUSD->add($itemTotalRevenue);
             }
 
             $sale->update([
-                'total_amount' => $total,
-                'profit_amount' => $profit,
+                'total_cost' => $totalCostUSD,
+                'total_revenue' => $totalRevenueUSD,
             ]);
         });
     }
 }
-

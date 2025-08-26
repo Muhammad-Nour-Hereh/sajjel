@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SaleResource extends JsonResource
@@ -13,8 +12,9 @@ class SaleResource extends JsonResource
             'id' => $this->id,
             'date' => $this->date,
             'time' => $this->time,
-            'total' => $this->total,
-            'profit' => $this->profit,
+            'total_cost' => $this->total_cost,
+            'total_revenue' => $this->total_revenue,
+            'total_profit' => $this->total_profit,
             'items' => SaleItemResource::collection($this->whenLoaded('items')),
         ];
     }

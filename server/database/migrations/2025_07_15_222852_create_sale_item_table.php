@@ -12,12 +12,13 @@ return new class extends Migration {
             $table->primary(['sale_id', 'item_id']);
             $table->foreignId('sale_id')->constrained('sales');
             $table->foreignId('item_id')->constrained('items');
-            $table->decimal('sell_price_amount');
-            $table->enum('sell_price_currency', ['USD', 'LBP']);
-            $table->decimal('buy_price_amount');
-            $table->enum('buy_price_currency', ['USD', 'LBP']);
+            $table->decimal('cost_amount', 15, 2);
+            $table->enum('cost_currency', ['USD', 'LBP']);
+            $table->decimal('price_amount', 15, 2);
+            $table->enum('price_currency', ['USD', 'LBP']);
             $table->unsignedInteger('quantity')->default(1);
             $table->softDeletes();
+            $table->index(['sale_id', 'item_id']);
         });
     }
 

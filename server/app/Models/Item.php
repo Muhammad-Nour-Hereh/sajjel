@@ -3,35 +3,35 @@
 namespace App\Models;
 
 use App\Casts\AsMoney;
-use App\Traits\FindOrRespond;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model
 {
-    use HasFactory, SoftDeletes, FindOrRespond;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
         'model',
-        'buy_price_amount',
-        'buy_price_currency',
-        'sell_price_amount',
-        'sell_price_currency',
+        'cost',
+        'price',
         'thumbnail',
         'note',
     ];
 
     protected $hidden = [
-        'buy_price_amount',
-        'buy_price_currency',
-        'sell_price_amount',
-        'sell_price_currency',
+        'cost_amount',
+        'cost_currency',
+        'price_amount',
+        'price_currency',
+        'deleted_at',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [
-        'buy_price' => AsMoney::class,
-        'sell_price' => AsMoney::class,
+        'cost' => AsMoney::class,
+        'price' => AsMoney::class,
     ];
 }

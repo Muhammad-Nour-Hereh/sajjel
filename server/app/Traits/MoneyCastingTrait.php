@@ -1,44 +1,30 @@
 <?php
+
 namespace App\Traits;
 
 use App\ValueObjects\Money;
 use App\ValueObjects\Currency;
+use Illuminate\Validation\ValidationException;
 
 trait MoneyCastingTrait
 {
     /**
-     * Cast a money array to Money object
+     * Cast multiple fields into Money objects if present.
      */
-    protected function castMoneyField(?array $moneyData, ?Currency $defaultCurrency = null): ?Money
+    protected function castMoneyFields(array $data, array $fields): array
     {
-        if (!$moneyData || !isset($moneyData['amount'])) {
-            return null;
-        }
+        foreach ($data["items"] as $index => $item)
+            foreach ($fields as $field) {
+                if (!isset($item[$field]))
+                    throw ValidationException::withMessages([
+                        "items.{$index}.{$field}" => "The {$field} field is required for item at index {$index}."
+                    ]);
 
-        $currency = isset($moneyData['currency'])
-            ? Currency::from($moneyData['currency'])
-            : ($defaultCurrency ?? Currency::USD);
-
-        return new Money((float) $moneyData['amount'], $currency);
-    }
-
-    /**
-     * Cast money fields for sale items
-     */
-    protected function castSaleItemMoney(array &$item): void
-    {
-        // Cast sell_price to Money object
-        $item['sell_price'] = $this->castMoneyField($item['sell_price']);
-
-        // Cast buy_price to Money object if provided, defaulting to sell_price currency
-        if (isset($item['buy_price']['amount'])) {
-            $item['buy_price'] = $this->castMoneyField(
-                $item['buy_price'],
-                $item['sell_price']->currency
-            );
-        } else {
-            // Default buy price to 0 in the same currency as sell price
-            $item['buy_price'] = new Money(0, $item['sell_price']->currency);
-        }
+                $data['items'][$index][$field] = new Money(
+                    (float) $item[$field]['amount'],
+                    Currency::from($item[$field]['currency'])
+                );
+            }
+        return $data;
     }
 }

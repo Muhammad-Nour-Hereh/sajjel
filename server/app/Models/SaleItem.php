@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Casts\AsMoney;
 use App\ValueObjects\Money;
-use App\ValueObjects\Currency;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -13,42 +12,39 @@ class SaleItem extends Pivot
     use SoftDeletes;
 
     public $timestamps = false;
-
     protected $table = 'sale_item';
 
     protected $fillable = [
         'sale_id',
         'item_id',
-        'sell_price_amount',
-        'sell_price_currency',
-        'buy_price_amount',
-        'buy_price_currency',
+        'cost',
+        'price',
         'quantity',
     ];
 
     protected $hidden = [
-        'buy_price_amount',
-        'buy_price_currency',
-        'sell_price_amount',
-        'sell_price_currency',
+        'cost_amount',
+        'cost_currency',
+        'price_amount',
+        'price_currency',
     ];
-
-    protected $appends = ['profit'];
 
     protected $casts = [
-        'buy_price' => AsMoney::class,
-        'sell_price' => AsMoney::class,
+        'cost' => AsMoney::class,
+        'price' => AsMoney::class,
     ];
 
-    public function getProfitAttribute()
+    protected $appends = ['revenue', 'profit'];
+
+    public function getRevenueAttribute(): Money
     {
-        // Convert both prices to USD for calculation
-        $sellPriceUSD = $this->sell_price->toUSD();
-        $buyPriceUSD = $this->buy_price->toUSD();
+        return new Money($this->price->amount * $this->quantity, $this->price->currency);
+    }
 
-        // Calculate profit per unit, then multiply by quantity
-        $profitPerUnit = $sellPriceUSD->subtract($buyPriceUSD);
-
-        return new Money($profitPerUnit->amount * $this->quantity, Currency::USD);
+    public function getProfitAttribute(): Money
+    {
+        return $this->revenue->subtract(
+            new Money($this->cost->amount * $this->quantity, $this->cost->currency)
+        );
     }
 }

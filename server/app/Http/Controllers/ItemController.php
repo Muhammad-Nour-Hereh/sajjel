@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateItemThumbnailRequest;
 use App\Services\ThumbnailService;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Http\Resources\ItemResource;
 use App\Models\Item;
 
 class ItemController extends Controller
@@ -20,16 +21,14 @@ class ItemController extends Controller
     public function index()
     {
         $items = Item::all();
-        return $this->successResponse($items);
+        return $this->successResponse(ItemResource::collection($items));
     }
 
     public function store(StoreItemRequest $request)
     {
-        $data = $request->validatedWithCasts(); // Now gets Money objects
-
-        $item = Item::create($data); // Cast handles Money -> array conversion
-
-        return $this->createdResponse($item);
+        $data = $request->validatedWithCasts();
+        $item = Item::create($data);
+        return $this->createdResponse(new ItemResource($item));
     }
 
     public function show($id)
@@ -38,23 +37,21 @@ class ItemController extends Controller
         if (!$item)
             return $this->notFoundResponse();
 
-        return $this->successResponse($item);
+        return $this->successResponse(new ItemResource($item));
     }
 
     public function update(UpdateItemRequest $request, $id)
     {
         $item = Item::find($id);
-
         if (!$item) {
             return $this->notFoundResponse();
         }
 
-        $data = $request->validatedWithCasts(); // Now gets Money objects
-
-        $item->update($data); // Cast handles Money -> array conversion
-
-        return $this->successResponse($item);
+        $data = $request->validatedWithCasts();
+        $item->update($data);
+        return $this->successResponse(new ItemResource($item));
     }
+
     public function updateThumbnail(UpdateItemThumbnailRequest $request, $id)
     {
         $item = Item::find($id);

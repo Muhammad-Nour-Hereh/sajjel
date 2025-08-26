@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DateRangeRequest;
@@ -38,7 +39,6 @@ class SaleController extends Controller
     public function show($id)
     {
         $sale = Sale::with('items')->find($id);
-        
         if (!$sale) {
             return $this->notFoundResponse();
         }
@@ -51,25 +51,16 @@ class SaleController extends Controller
         $data = $request->validatedWithCasts();
 
         return DB::transaction(function () use ($data) {
-            // Create empty sale with currency from first item
-            $initialCurrency = $data['items'][0]['sell_price']->currency;
-            
+
+            // calc totals
             $sale = Sale::create([
-                'total' => new Money(0, $initialCurrency),
-                'profit' => new Money(0, $initialCurrency),
+                'sold_at' => $data['sold_at'],
+                'total_cost' => Money::Zero(),
+                'total_revenue' => Money::Zero(),
             ]);
 
-            // Use SaleService to attach items
             $this->saleService->attachItems($sale, $data['items']);
-
-            // Calculate totals & profit using Money objects
-            $totals = $this->saleService->calculateTotals($data['items']);
-
-            // Update sale totals
-            $sale->update([
-                'total' => $totals['total'],
-                'profit' => $totals['profit'],
-            ]);
+            $this->saleService->updateSaleTotals($sale);
 
             return $this->createdResponse(new SaleResource($sale->load('items')));
         });
@@ -78,7 +69,6 @@ class SaleController extends Controller
     public function update(UpdateSaleRequest $request, $id)
     {
         $sale = Sale::find($id);
-        
         if (!$sale) {
             return $this->notFoundResponse();
         }
@@ -88,13 +78,7 @@ class SaleController extends Controller
         return DB::transaction(function () use ($sale, $data) {
             if (isset($data['items'])) {
                 $this->saleService->attachItems($sale, $data['items']);
-                
-                $totals = $this->saleService->calculateTotals($data['items']);
-                
-                $sale->update([
-                    'total' => $totals['total'],
-                    'profit' => $totals['profit'],
-                ]);
+                $this->saleService->updateSaleTotals($sale);
             }
 
             return $this->successResponse(new SaleResource($sale->load('items')));
@@ -104,7 +88,6 @@ class SaleController extends Controller
     public function destroy($id)
     {
         $sale = Sale::find($id);
-        
         if (!$sale) {
             return $this->notFoundResponse();
         }

@@ -9,12 +9,32 @@ class Money
     public float $amount;
     public Currency $currency;
 
-    public const int USD_LBP_RATE = 89500;
+    public const USD_LBP_RATE = 89500;
 
     public function __construct(float $amount, Currency $currency)
     {
         $this->amount = $amount;
         $this->currency = $currency;
+    }
+
+    public static function of(float $amount, Currency $currency): self
+    {
+        return new self($amount, $currency);
+    }
+
+    public static function usd(float $amount): self
+    {
+        return new self($amount, Currency::USD);
+    }
+
+    public static function lbp(float $amount): self
+    {
+        return new self($amount, Currency::LBP);
+    }
+    
+    public static function zero(): self
+    {
+        return new self(0, Currency::USD);
     }
 
     /** Convert this money to USD */
@@ -50,6 +70,14 @@ class Money
         $base = $this->toUSD();
         $otherUSD = $other->toUSD();
         return new self($base->amount - $otherUSD->amount, Currency::USD);
+    }
+
+    public function multiply(int|float $multiplier): self
+    {
+        return new self(
+            $this->amount * $multiplier,
+            $this->currency
+        );
     }
 
     /** Format nicely */
