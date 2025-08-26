@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Sale;
 use App\Models\Item;
 use App\ValueObjects\Money;
-use App\ValueObjects\Currency;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SaleFactory extends Factory
@@ -15,8 +14,8 @@ class SaleFactory extends Factory
     public function definition(): array
     {
         return [
-            'total_cost' => new Money(0, Currency::USD),
-            'total_revenue' => new Money(0, Currency::USD),
+            'total_cost' => Money::Zero(),
+            'total_revenue' => Money::Zero(),
             'sold_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
         ];
     }
@@ -34,14 +33,14 @@ class SaleFactory extends Factory
             if ($validItems->isEmpty()) {
                 // If no valid items, create one with default values
                 $defaultItem = Item::factory()->create([
-                    'cost' => new Money(100, \App\ValueObjects\Currency::USD),
-                    'price' => new Money(150, \App\ValueObjects\Currency::USD),
+                    'cost' => Money::usd(100),
+                    'price' => Money::usd(150),
                 ]);
                 $validItems = collect([$defaultItem]);
             }
 
-            $totalCostUSD = new Money(0, \App\ValueObjects\Currency::USD);
-            $totalRevenueUSD = new Money(0, \App\ValueObjects\Currency::USD);
+            $totalCostUSD = Money::Zero();
+            $totalRevenueUSD = Money::Zero();
 
             foreach ($validItems as $item) {
                 $quantity = rand(1, 3);
@@ -64,8 +63,8 @@ class SaleFactory extends Factory
                 $itemCostUSD = $item->cost->toUSD();
                 $itemPriceUSD = $item->price->toUSD();
 
-                $itemTotalCost = new Money($itemCostUSD->amount * $quantity, \App\ValueObjects\Currency::USD);
-                $itemTotalRevenue = new Money($itemPriceUSD->amount * $quantity, \App\ValueObjects\Currency::USD);
+                $itemTotalCost = Money::usd($itemCostUSD->amount * $quantity);
+                $itemTotalRevenue = Money::usd($itemPriceUSD->amount * $quantity);
 
                 $totalCostUSD = $totalCostUSD->add($itemTotalCost);
                 $totalRevenueUSD = $totalRevenueUSD->add($itemTotalRevenue);
@@ -91,8 +90,8 @@ class SaleFactory extends Factory
 
             $items = $usdItems->merge($lbpItems);
 
-            $totalCostUSD = new Money(0, Currency::USD);
-            $totalRevenueUSD = new Money(0, Currency::USD);
+            $totalCostUSD = Money::Zero();
+            $totalRevenueUSD = Money::Zero();
 
             foreach ($items as $item) {
                 $quantity = rand(1, 2);
@@ -108,8 +107,8 @@ class SaleFactory extends Factory
                 $itemCostUSD = $item->cost->toUSD();
                 $itemPriceUSD = $item->price->toUSD();
 
-                $itemTotalCost = new Money($itemCostUSD->amount * $quantity, Currency::USD);
-                $itemTotalRevenue = new Money($itemPriceUSD->amount * $quantity, Currency::USD);
+                $itemTotalCost = Money::usd($itemCostUSD->amount * $quantity);
+                $itemTotalRevenue = Money::usd($itemPriceUSD->amount * $quantity);
 
                 $totalCostUSD = $totalCostUSD->add($itemTotalCost);
                 $totalRevenueUSD = $totalRevenueUSD->add($itemTotalRevenue);

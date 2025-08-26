@@ -38,13 +38,13 @@ class SaleItem extends Pivot
 
     public function getRevenueAttribute(): Money
     {
-        return new Money($this->price->amount * $this->quantity, $this->price->currency);
+        return $this->price->multiply($this->quantity);
     }
 
     public function getProfitAttribute(): Money
     {
         return $this->revenue->subtract(
-            new Money($this->cost->amount * $this->quantity, $this->cost->currency)
+            $this->cost->multiply($this->quantity)
         );
     }
 }

@@ -32,7 +32,7 @@ class AsMoney implements CastsAttributes
             return null;
         }
 
-        return new Money($amount, Currency::from($currency));
+        return Money::of($amount, Currency::from($currency));
     }
 
     public function set(Model $model, string $key, $value, array $attributes): array

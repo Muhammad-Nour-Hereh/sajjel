@@ -20,7 +20,7 @@ trait MoneyCastingTrait
                         "items.{$index}.{$field}" => "The {$field} field is required for item at index {$index}."
                     ]);
 
-                $data['items'][$index][$field] = new Money(
+                $data['items'][$index][$field] = Money::of(
                     (float) $item[$field]['amount'],
                     Currency::from($item[$field]['currency'])
                 );

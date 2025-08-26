@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Item;
+use App\ValueObjects\Currency;
 use App\ValueObjects\Money;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,7 +18,7 @@ class ItemFactory extends Factory
 
         $currencies = ['USD', 'LBP'];
         $currency = $this->faker->randomElement($currencies);
-        
+
         if ($currency === 'USD') {
             $costAmount = $this->faker->randomFloat(2, 10, 500);
             $priceAmount = $costAmount * $this->faker->randomFloat(2, 1.2, 3.0);
@@ -29,8 +30,8 @@ class ItemFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'model' => $this->faker->bothify('Model-###??'),
-            'cost' => new Money($costAmount, \App\ValueObjects\Currency::from($currency)),
-            'price' => new Money($priceAmount, \App\ValueObjects\Currency::from($currency)),
+            'cost' => Money::of($costAmount, Currency::from($currency)),
+            'price' => Money::of($priceAmount, Currency::from($currency)),
             'thumbnail' => $placeholderUrl,
             'note' => $this->faker->sentence(),
         ];
@@ -44,10 +45,10 @@ class ItemFactory extends Factory
         return $this->state(function (array $attributes) {
             $costAmount = $this->faker->randomFloat(2, 10, 500);
             $priceAmount = $costAmount * $this->faker->randomFloat(2, 1.2, 3.0);
-            
+
             return [
-                'cost' => new Money($costAmount, \App\ValueObjects\Currency::USD),
-                'price' => new Money($priceAmount, \App\ValueObjects\Currency::USD),
+                'cost' => Money::usd($costAmount),
+                'price' => Money::usd($priceAmount),
             ];
         });
     }
@@ -60,10 +61,10 @@ class ItemFactory extends Factory
         return $this->state(function (array $attributes) {
             $costAmount = $this->faker->randomFloat(2, 500000, 25000000);
             $priceAmount = $costAmount * $this->faker->randomFloat(2, 1.2, 3.0);
-            
+
             return [
-                'cost' => new Money($costAmount, \App\ValueObjects\Currency::LBP),
-                'price' => new Money($priceAmount, \App\ValueObjects\Currency::LBP),
+                'cost' => Money::lbp($costAmount),
+                'price' => Money::lbp($priceAmount),
             ];
         });
     }
