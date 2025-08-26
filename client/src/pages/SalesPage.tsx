@@ -240,17 +240,15 @@ const SalesPage = () => {
                       <TableCell>{item.name}</TableCell>
                       <TableCell>
                         <PriceInput
-                          amount={item.buy_price?.amount || 0}
-                          currency={item.buy_price?.currency || 'USD'}
+                          amount={item.cost?.amount || 0}
+                          currency={item.cost?.currency || 'USD'}
                           onChange={(val) =>
                             updateSale({
                               id: sale.id,
                               data: {
                                 ...sale,
                                 items: sale.items.map((i) =>
-                                  i.id === item.id
-                                    ? { ...i, buy_price: val }
-                                    : i,
+                                  i.id === item.id ? { ...i, cost: val } : i,
                                 ),
                               },
                             })
@@ -259,8 +257,8 @@ const SalesPage = () => {
                       </TableCell>
                       <TableCell>
                         <PriceInput
-                          amount={item.sell_price?.amount || 0}
-                          currency={item.sell_price?.currency || ' '}
+                          amount={item.price?.amount || 0}
+                          currency={item.price?.currency || ' '}
                           onChange={function (): void {
                             throw new Error('Function not implemented.')
                           }}
@@ -269,10 +267,9 @@ const SalesPage = () => {
                       <TableCell>1</TableCell>
                       <TableCell>
                         {(
-                          (item.sell_price?.amount ?? 0) -
-                          (item.buy_price?.amount ?? 0)
+                          (item.price?.amount ?? 0) - (item.cost?.amount ?? 0)
                         ).toFixed(2)}{' '}
-                        {item.sell_price?.currency}
+                        {item.price?.currency}
                       </TableCell>
                       <TableCell>
                         <TextInput

@@ -142,22 +142,22 @@
                   "type": "text"
                 },
                 {
-                  "key": "buy_price[amount]",
+                  "key": "cost[amount]",
                   "value": "120.50",
                   "type": "text"
                 },
                 {
-                  "key": "buy_price[currency]",
+                  "key": "cost[currency]",
                   "value": "USD",
                   "type": "text"
                 },
                 {
-                  "key": "sell_price[amount]",
+                  "key": "price[amount]",
                   "value": "180.00",
                   "type": "text"
                 },
                 {
-                  "key": "sell_price[currency]",
+                  "key": "price[currency]",
                   "value": "USD",
                   "type": "text"
                 },
@@ -210,7 +210,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Item\",\n  \"model\": \"Model-Y\",\n  \"note\": \"Updated Note\",\n  \"buy_price\": {\n    \"amount\": 200,\n    \"currency\": \"USD\"\n  },\n  \"sell_price\": {\n    \"amount\": 260,\n    \"currency\": \"LBP\"\n  }\n}"
+              "raw": "{\n  \"name\": \"Updated Item\",\n  \"model\": \"Model-Y\",\n  \"note\": \"Updated Note\",\n  \"cost\": {\n    \"amount\": 200,\n    \"currency\": \"USD\"\n  },\n  \"price\": {\n    \"amount\": 260,\n    \"currency\": \"LBP\"\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/items/1",
@@ -328,7 +328,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"items\": [\n    {\n      \"item_id\": 1,\n      \"quantity\": 2,\n      \"buy_price_amount\": 100,\n      \"buy_price_currency\": \"USD\",\n      \"sell_price_amount\": 120,\n      \"sell_price_currency\": \"USD\"\n    },\n    {\n      \"item_id\": 2,\n      \"quantity\": 1,\n      \"buy_price_amount\": 50,\n      \"buy_price_currency\": \"USD\",\n      \"sell_price_amount\": 75,\n      \"sell_price_currency\": \"USD\"\n    }\n  ]\n}"
+              "raw": "{\n  \"items\": [\n    {\n      \"item_id\": 1,\n      \"quantity\": 2,\n      \"cost_amount\": 100,\n      \"cost_currency\": \"USD\",\n      \"price_amount\": 120,\n      \"price_currency\": \"USD\"\n    },\n    {\n      \"item_id\": 2,\n      \"quantity\": 1,\n      \"cost_amount\": 50,\n      \"cost_currency\": \"USD\",\n      \"price_amount\": 75,\n      \"price_currency\": \"USD\"\n    }\n  ]\n}"
             },
             "url": {
               "raw": "{{base_url}}/sales",
@@ -354,7 +354,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"items\": [\n    {\n      \"item_id\": 3,\n      \"quantity\": 1,\n      \"buy_price_amount\": 60,\n      \"buy_price_currency\": \"USD\",\n      \"sell_price_amount\": 100,\n      \"sell_price_currency\": \"USD\"\n    }\n  ]\n}"
+              "raw": "{\n  \"items\": [\n    {\n      \"item_id\": 3,\n      \"quantity\": 1,\n      \"cost_amount\": 60,\n      \"cost_currency\": \"USD\",\n      \"price_amount\": 100,\n      \"price_currency\": \"USD\"\n    }\n  ]\n}"
             },
             "url": {
               "raw": "{{base_url}}/sales/1",

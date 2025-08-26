@@ -1,10 +1,8 @@
-export const USD_LB_RATE = 89_500
+import { Currency, USD_LB_RATE } from './Currency'
 
-export type currency = 'USD' | 'LBP'
-
-export interface Price {
+export interface Money {
   amount: number
-  currency: currency
+  currency: Currency
 }
 
 /**
@@ -14,7 +12,7 @@ export interface Price {
  * @param locale - Optional locale string for formatting (default: 'en-US').
  * @returns A string formatted as currency (e.g., "$1,234.56" for USD)
  */
-export const formatPrice = (price: Price, locale = 'en-US'): string => {
+export const formatPrice = (price: Money, locale = 'en-US'): string => {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: price.currency,
@@ -30,10 +28,10 @@ export const formatPrice = (price: Price, locale = 'en-US'): string => {
  * @returns A new Price object in the target currency.
  */
 export const convertPriceTo = (
-  price: Price,
-  targetCurrency: currency,
+  price: Money,
+  targetCurrency: Currency,
   rate: number = USD_LB_RATE,
-): Price => {
+): Money => {
   const newAmount =
     price.currency === targetCurrency
       ? price.amount

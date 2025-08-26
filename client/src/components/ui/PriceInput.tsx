@@ -1,11 +1,11 @@
-import { currency } from '@/models/Price'
+import { Currency } from '@/value objects/Currency'
 import { useEffect, useRef, useState } from 'react'
 
 interface props {
   amount: number
-  currency: currency
+  currency: Currency
   editable?: boolean
-  onChange: (val: { amount: number; currency: currency }) => void
+  onChange: (val: { amount: number; currency: Currency }) => void
 }
 
 export const PriceInput = ({

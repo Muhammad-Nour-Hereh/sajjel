@@ -41,7 +41,7 @@ const UpdateSaleDialog = ({
 
       sale.items.forEach((item) => {
         q[item.id] = item.quantity
-        p[item.id] = item.sell_price?.amount ?? 0
+        p[item.id] = item.price?.amount ?? 0
         n[item.id] = item.note ?? ''
       })
 
@@ -58,12 +58,12 @@ const UpdateSaleDialog = ({
       items: sale.items.map((item) => ({
         item_id: item.id,
         quantity: quantities[item.id] || 1,
-        sell_price: {
+        price: {
           amount: prices[item.id] ?? 0,
           currency: 'USD',
         },
-        buy_price: {
-          amount: item.buy_price?.amount ?? 0,
+        cost: {
+          amount: item.cost?.amount ?? 0,
           currency: 'USD',
         },
         notes: notes[item.id] || '',

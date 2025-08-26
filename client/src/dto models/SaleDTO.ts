@@ -1,10 +1,10 @@
-import { Price } from '@/models/Price'
+import { Money } from '@/value objects/Money'
 
 interface Item {
   item_id: number
   quantity: number
-  sell_price: Price
-  buy_price?: Price
+  price: Money
+  cost?: Money
 }
 
 export interface SaleDTO {

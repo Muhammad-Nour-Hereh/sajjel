@@ -60,14 +60,14 @@ const CreateItemDialog = ({ createItem }: Props) => {
           <div className="flex gap-2">
             <input
               type="number"
-              name="buy_price[amount]"
+              name="cost[amount]"
               placeholder="Buy price"
               min="0"
               step="0.01"
               className="w-full border rounded p-2"
             />
             <select
-              name="buy_price[currency]"
+              name="cost[currency]"
               className="border rounded p-2"
               defaultValue="USD">
               <option value="USD">USD</option>
@@ -78,14 +78,14 @@ const CreateItemDialog = ({ createItem }: Props) => {
           <div className="flex gap-2">
             <input
               type="number"
-              name="sell_price[amount]"
+              name="price[amount]"
               placeholder="Sell price"
               min="0"
               step="0.01"
               className="w-full border rounded p-2"
             />
             <select
-              name="sell_price[currency]"
+              name="price[currency]"
               className="border rounded p-2"
               defaultValue="USD">
               <option value="USD">USD</option>

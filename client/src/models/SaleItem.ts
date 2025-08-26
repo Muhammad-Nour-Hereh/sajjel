@@ -1,11 +1,13 @@
 import { Money } from '../value objects/Money'
 
-export interface Item {
+export interface SaleItem {
   id: number
   name: string
   model?: string
-  thumbnail?: string
   note?: string
-  cost?: Money
-  price?: Money
+  quantity: number
+  cost: Money
+  price: Money
+  revenue: Money
+  profit: Money
 }

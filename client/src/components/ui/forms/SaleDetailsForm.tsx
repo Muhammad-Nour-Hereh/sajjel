@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Item } from '@/models/Item'
 import { PriceInput } from '../PriceInput'
-import { currency } from '@/models/Price'
+import { Currency } from '@/value objects/Money'
 
 interface SaleDetailsFormProps {
   selectedItems: Item[]
@@ -47,21 +47,21 @@ export const SaleDetailsForm = ({
               className="w-full border rounded p-2"
             />
             <PriceInput
-              amount={prices[item.id] ?? item.sell_price?.amount ?? ''}
+              amount={prices[item.id] ?? item.price?.amount ?? ''}
               currency={'USD'}
               onChange={function (val: {
                 amount: number
-                currency: currency
+                currency: Currency
               }): void {
                 onPriceChange(item.id, val.amount || 0)
               }}
             />
             <PriceInput
-              amount={prices[item.id] ?? item.sell_price?.amount ?? ''}
+              amount={prices[item.id] ?? item.price?.amount ?? ''}
               currency={'USD'}
               onChange={function (val: {
                 amount: number
-                currency: currency
+                currency: Currency
               }): void {
                 onPriceChange(item.id, val.amount || 0)
               }}

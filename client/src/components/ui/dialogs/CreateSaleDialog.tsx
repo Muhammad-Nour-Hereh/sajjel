@@ -23,7 +23,8 @@ import { Item } from '@/models/Item'
 import ItemCard from '../ItemCard'
 import { SaleDTO } from '@/dto models/SaleDTO'
 import { PriceInput } from '../PriceInput'
-import { currency, Price } from '@/models/Price'
+import { Money } from '@/value objects/Money'
+import { Currency } from '@/value objects/Currency'
 
 const CreateSaleDialog = () => {
   const [open, setOpen] = useState(false)
@@ -33,8 +34,8 @@ const CreateSaleDialog = () => {
 
   // form data
   const [quantities, setQuantities] = useState<Record<number, number>>({})
-  const [sellPrices, setSellPrices] = useState<Record<number, Price>>({})
-  const [buyPrices, setBuyPrices] = useState<Record<number, Price>>({})
+  const [sellPrices, setSellPrices] = useState<Record<number, Money>>({})
+  const [buyPrices, setBuyPrices] = useState<Record<number, Money>>({})
   const [notes, setNotes] = useState<Record<number, string>>({})
 
   const queryClient = useQueryClient()
@@ -65,15 +66,15 @@ const CreateSaleDialog = () => {
       items: selectedItems.map((item) => ({
         item_id: item.id,
         quantity: quantities[item.id] || 1,
-        sell_price: {
-          amount: sellPrices[item.id]?.amount ?? item.sell_price?.amount ?? 0,
+        price: {
+          amount: sellPrices[item.id]?.amount ?? item.price?.amount ?? 0,
           currency:
-            sellPrices[item.id]?.currency ?? item.sell_price?.currency ?? 'USD',
+            sellPrices[item.id]?.currency ?? item.price?.currency ?? 'USD',
         },
-        buy_price: {
-          amount: buyPrices[item.id]?.amount ?? item.buy_price?.amount ?? 0,
+        cost: {
+          amount: buyPrices[item.id]?.amount ?? item.cost?.amount ?? 0,
           currency:
-            buyPrices[item.id]?.currency ?? item.buy_price?.currency ?? 'USD',
+            buyPrices[item.id]?.currency ?? item.cost?.currency ?? 'USD',
         },
         notes: notes[item.id] || '',
       })),
@@ -85,7 +86,7 @@ const CreateSaleDialog = () => {
   const totals = useMemo(() => {
     const totalSale = selectedItems.reduce((sum, item) => {
       const qty = quantities[item.id] || 1
-      const price = sellPrices[item.id] ?? item.sell_price
+      const price = sellPrices[item.id] ?? item.price
       return sum + qty * price.amount
     }, 0)
 
@@ -236,30 +237,28 @@ const CreateSaleDialog = () => {
                   />
                   <PriceInput
                     amount={
-                      sellPrices[item.id]?.amount ??
-                      item.sell_price?.amount ??
-                      0
+                      sellPrices[item.id]?.amount ?? item.price?.amount ?? 0
                     }
                     currency={
                       sellPrices[item.id]?.currency ??
-                      item.sell_price?.currency ??
+                      item.price?.currency ??
                       'USD'
                     }
-                    onChange={(val: { amount: number; currency: currency }) => {
+                    onChange={(val: { amount: number; currency: Currency }) => {
                       setSellPrices((prev) => ({ ...prev, [item.id]: val }))
                     }}
                   />
 
                   <PriceInput
                     amount={
-                      buyPrices[item.id]?.amount ?? item.buy_price?.amount ?? 0
+                      buyPrices[item.id]?.amount ?? item.cost?.amount ?? 0
                     }
                     currency={
                       buyPrices[item.id]?.currency ??
-                      item.buy_price?.currency ??
+                      item.cost?.currency ??
                       'USD'
                     }
-                    onChange={(val: { amount: number; currency: currency }) => {
+                    onChange={(val: { amount: number; currency: Currency }) => {
                       setBuyPrices((prev) => ({ ...prev, [item.id]: val }))
                     }}
                   />

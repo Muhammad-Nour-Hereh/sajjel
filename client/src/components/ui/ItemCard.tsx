@@ -54,24 +54,24 @@ const ItemCard = ({
           editable={editable}
         />
         <PriceInput
-          amount={item.buy_price?.amount || 0}
-          currency={item.buy_price?.currency || 'USD'}
+          amount={item.cost?.amount || 0}
+          currency={item.cost?.currency || 'USD'}
           editable={false}
           onChange={({ amount, currency }) =>
             updateItem({
               id: item.id,
-              data: { ...item, buy_price: { amount, currency } },
+              data: { ...item, cost: { amount, currency } },
             })
           }
         />
         <PriceInput
-          amount={item.sell_price?.amount || 0}
-          currency={item.sell_price?.currency || 'USD'}
+          amount={item.price?.amount || 0}
+          currency={item.price?.currency || 'USD'}
           editable={false}
           onChange={({ amount, currency }) =>
             updateItem({
               id: item.id,
-              data: { ...item, sell_price: { amount, currency } },
+              data: { ...item, price: { amount, currency } },
             })
           }
         />

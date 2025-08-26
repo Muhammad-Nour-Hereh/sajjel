@@ -1,18 +1,12 @@
-import { Item } from './Item'
-import { Price } from './Price'
-
-export interface SaleItem extends Item {
-  quantity: number
-  sell_price: Price
-  buy_price: Price
-  note: string
-}
+import { Money } from '../value objects/Money'
+import { SaleItem } from './SaleItem'
 
 export interface Sale {
   id: number
-  items: SaleItem[]
-  profit?: Price
-  total?: Price
   date: string
   time: string
+  total_profit?: Money
+  total_revenue?: Money
+  total_cost?: Money
+  items: SaleItem[]
 }
