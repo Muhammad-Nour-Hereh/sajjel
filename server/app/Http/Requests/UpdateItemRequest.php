@@ -31,6 +31,6 @@ class UpdateItemRequest extends BaseFormRequest
     public function validatedWithCasts(): array
     {
         $validated = $this->validated();
-        return $this->castMoneyFields($validated, ['cost', 'price']);
+        return $this->castMoneyItemFields($validated, ['cost', 'price']);
     }
 }

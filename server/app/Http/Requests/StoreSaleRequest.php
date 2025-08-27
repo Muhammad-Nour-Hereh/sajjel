@@ -36,6 +36,7 @@ class StoreSaleRequest extends BaseFormRequest
     public function validatedWithCasts(): array
     {
         $validated = $this->validated();
-        return $this->castMoneyFields($validated, ['cost', 'price']);
+        $validated->items = $this->castMoneyItemsFields($validated->items, ['cost', 'price']);
+        return $validated;
     }
 }

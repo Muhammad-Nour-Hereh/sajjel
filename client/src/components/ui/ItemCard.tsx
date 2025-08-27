@@ -56,7 +56,7 @@ const ItemCard = ({
         <PriceInput
           amount={item.cost?.amount || 0}
           currency={item.cost?.currency || 'USD'}
-          editable={false}
+          editable={editable}
           onChange={({ amount, currency }) =>
             updateItem({
               id: item.id,
@@ -67,7 +67,7 @@ const ItemCard = ({
         <PriceInput
           amount={item.price?.amount || 0}
           currency={item.price?.currency || 'USD'}
-          editable={false}
+          editable={editable}
           onChange={({ amount, currency }) =>
             updateItem({
               id: item.id,

@@ -11,20 +11,36 @@ trait MoneyCastingTrait
     /**
      * Cast multiple fields into Money objects if present.
      */
-    protected function castMoneyFields(array $data, array $fields): array
+    protected function castMoneyItemsFields(array $items, array $fields): array
     {
-        foreach ($data["items"] as $index => $item)
+        foreach ($items as $index => $item)
             foreach ($fields as $field) {
                 if (!isset($item[$field]))
                     throw ValidationException::withMessages([
                         "items.{$index}.{$field}" => "The {$field} field is required for item at index {$index}."
                     ]);
 
-                $data['items'][$index][$field] = Money::of(
+                $items[$index][$field] = Money::of(
                     (float) $item[$field]['amount'],
                     Currency::from($item[$field]['currency'])
                 );
             }
-        return $data;
+        return $items;
+    }
+
+    protected function castMoneyItemFields(array $item, array $fields): array
+    {
+        foreach ($fields as $field) {
+            if (!isset($item[$field]))
+                throw ValidationException::withMessages([
+                    "items{$field}" => "The {$field} field is required for item."
+                ]);
+
+            $item[$field] = Money::of(
+                (float) $item[$field]['amount'],
+                Currency::from($item[$field]['currency'])
+            );
+        }
+        return $item;
     }
 }
