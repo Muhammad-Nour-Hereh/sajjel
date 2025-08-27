@@ -10,13 +10,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Plus, X } from 'lucide-react'
 import SearchBar from '@/components/ui/Searchbar'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { remote } from '@/remotes/remotes'
 import { Item } from '@/models/Item'
