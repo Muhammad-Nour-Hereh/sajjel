@@ -188,13 +188,14 @@ const SalesPage = () => {
                     {sale.date} - {sale.time}
                   </span>
                   <div className="text-sm text-muted-foreground">
-                    Total: {sale.total?.amount} {sale.total?.currency} — Profit:{' '}
-                    {sale.profit?.amount} {sale.profit?.currency}
+                    {`Total Cost: ${sale.total_cost?.amount} ${sale.total_cost?.currency} — `}
+                    {`Total Revenue: ${sale.total_revenue?.amount} ${sale.total_revenue?.currency} — `}
+                    {`Total Profit: ${sale.total_profit?.amount} ${sale.total_profit?.currency}`}
                   </div>
                 </div>
                 <div className="flex gap-2">
                   {sale.items.map((item) => (
-                    <Badge key={item.id} variant="secondary">
+                    <Badge key={item.item_id} variant="secondary">
                       {item.name}
                     </Badge>
                   ))}
@@ -236,7 +237,7 @@ const SalesPage = () => {
                 </TableHeader>
                 <TableBody>
                   {sale.items.map((item) => (
-                    <TableRow className="" key={item.id}>
+                    <TableRow className="" key={item.item_id}>
                       <TableCell>{item.name}</TableCell>
                       <TableCell>
                         <PriceInput
@@ -248,7 +249,9 @@ const SalesPage = () => {
                               data: {
                                 ...sale,
                                 items: sale.items.map((i) =>
-                                  i.id === item.id ? { ...i, cost: val } : i,
+                                  i.item_id === item.item_id
+                                    ? { ...i, cost: val }
+                                    : i,
                                 ),
                               },
                             })
