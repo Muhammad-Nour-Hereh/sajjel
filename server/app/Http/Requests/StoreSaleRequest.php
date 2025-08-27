@@ -26,17 +26,18 @@ class StoreSaleRequest extends BaseFormRequest
         ];
     }
 
-    protected function passedValidation()
+    protected function prepareForValidation()
     {
         $this->merge([
             'sold_at' => $this->input('sold_at', now()),
         ]);
     }
 
+
     public function validatedWithCasts(): array
     {
         $validated = $this->validated();
-        $validated->items = $this->castMoneyItemsFields($validated->items, ['cost', 'price']);
+        $validated['items'] = $this->castMoneyItemsFields($validated['items'], ['cost', 'price']);
         return $validated;
     }
 }

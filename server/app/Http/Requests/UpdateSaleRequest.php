@@ -15,6 +15,7 @@ class UpdateSaleRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
+            'sold_at' => 'sometimes|date',
             'items' => 'sometimes|array|min:1',
             'items.*.item_id' => 'required_with:items|exists:items,id',
             'items.*.quantity' => 'required_with:items|integer|min:1',
@@ -28,7 +29,7 @@ class UpdateSaleRequest extends BaseFormRequest
     public function validatedWithCasts(): array
     {
         $validated = $this->validated();
-        $validated->items = $this->castMoneyItemsFields($validated->items, ['cost', 'price']);
+        $validated['items'] = $this->castMoneyItemsFields($validated['items'], ['cost', 'price']);
         return $validated;
     }
 }
