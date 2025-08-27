@@ -22,7 +22,7 @@ class SaleController extends Controller
 
     public function index(DateRangeRequest $request)
     {
-        $query = Sale::with('items')->latest();
+        $query = Sale::with('saleItems.item')->latest();
 
         if ($request->filled('start_date')) {
             $query->where('created_at', '>=', $request->start_date);
@@ -38,7 +38,8 @@ class SaleController extends Controller
 
     public function show($id)
     {
-        $sale = Sale::with('items')->find($id);
+        $sale = Sale::with('saleItems.item')->find($id);
+
         if (!$sale) {
             return $this->notFoundResponse();
         }
@@ -51,7 +52,6 @@ class SaleController extends Controller
         $data = $request->validatedWithCasts();
 
         return DB::transaction(function () use ($data) {
-
             // calc totals
             $sale = Sale::create([
                 'sold_at' => $data['sold_at'],
@@ -59,16 +59,17 @@ class SaleController extends Controller
                 'total_revenue' => Money::Zero(),
             ]);
 
-            $this->saleService->attachItems($sale, $data['items']);
+            $this->saleService->updateAttachedSaleItems($sale, $data['saleItems']);
             $this->saleService->updateSaleTotals($sale);
 
-            return $this->createdResponse(new SaleResource($sale->load('items')));
+            return $this->createdResponse(new SaleResource($sale->load('saleItems.item')));
         });
     }
 
     public function update(UpdateSaleRequest $request, $id)
     {
         $sale = Sale::find($id);
+
         if (!$sale) {
             return $this->notFoundResponse();
         }
@@ -77,17 +78,18 @@ class SaleController extends Controller
 
         return DB::transaction(function () use ($sale, $data) {
             if (isset($data['items'])) {
-                $this->saleService->attachItems($sale, $data['items']);
+                $this->saleService->updateAttachedSaleItems($sale, $data['items']);
                 $this->saleService->updateSaleTotals($sale);
             }
 
-            return $this->successResponse(new SaleResource($sale->load('items')));
+            return $this->successResponse(new SaleResource($sale->load('saleItems.item')));
         });
     }
 
     public function destroy($id)
     {
         $sale = Sale::find($id);
+
         if (!$sale) {
             return $this->notFoundResponse();
         }

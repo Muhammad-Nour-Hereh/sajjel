@@ -10,14 +10,15 @@ class SaleItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'model' => $this->model,
-            'note' => $this->note,
-            'quantity' => data_get($this, 'pivot.quantity', 1),
-            'cost' => data_get($this, 'pivot.cost', $this->cost),
-            'price' => data_get($this, 'pivot.price', $this->price),
-            'revenue' => data_get($this, 'pivot.revenue'),
-            'profit' => data_get($this, 'pivot.profit'),
+            'item_id' => $this->item_id,
+            'name' => $this->item?->name,
+            'model' => $this->item?->model,
+            'note' => $this->item?->note,
+            'quantity' => $this->quantity,
+            'cost' => $this->cost,
+            'price' => $this->price,
+            'revenue' => $this->revenue,
+            'profit' => $this->profit,
         ];
     }
 }

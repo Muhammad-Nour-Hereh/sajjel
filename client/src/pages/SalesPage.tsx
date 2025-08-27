@@ -194,7 +194,7 @@ const SalesPage = () => {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  {sale.items.map((item) => (
+                  {sale.saleItems.map((item) => (
                     <Badge key={item.item_id} variant="secondary">
                       {item.name}
                     </Badge>
@@ -236,20 +236,20 @@ const SalesPage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sale.items.map((item) => (
-                    <TableRow className="" key={item.item_id}>
-                      <TableCell>{item.name}</TableCell>
+                  {sale.saleItems.map((saleItem) => (
+                    <TableRow className="" key={saleItem.id}>
+                      <TableCell>{saleItem.name}</TableCell>
                       <TableCell>
                         <PriceInput
-                          amount={item.cost?.amount || 0}
-                          currency={item.cost?.currency || 'USD'}
+                          amount={saleItem.cost?.amount || 0}
+                          currency={saleItem.cost?.currency || 'USD'}
                           onChange={(val) =>
                             updateSale({
                               id: sale.id,
                               data: {
                                 ...sale,
-                                items: sale.items.map((i) =>
-                                  i.item_id === item.item_id
+                                saleItems: sale.saleItems.map((i) =>
+                                  i.item_id === saleItem.item_id
                                     ? { ...i, cost: val }
                                     : i,
                                 ),
@@ -260,8 +260,8 @@ const SalesPage = () => {
                       </TableCell>
                       <TableCell>
                         <PriceInput
-                          amount={item.price?.amount || 0}
-                          currency={item.price?.currency || ' '}
+                          amount={saleItem.price?.amount || 0}
+                          currency={saleItem.price?.currency || ' '}
                           onChange={function (): void {
                             throw new Error('Function not implemented.')
                           }}
@@ -270,9 +270,10 @@ const SalesPage = () => {
                       <TableCell>1</TableCell>
                       <TableCell>
                         {(
-                          (item.price?.amount ?? 0) - (item.cost?.amount ?? 0)
+                          (saleItem.price?.amount ?? 0) -
+                          (saleItem.cost?.amount ?? 0)
                         ).toFixed(2)}{' '}
-                        {item.price?.currency}
+                        {saleItem.price?.currency}
                       </TableCell>
                       <TableCell>
                         <TextInput

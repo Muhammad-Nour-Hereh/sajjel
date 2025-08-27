@@ -1,10 +1,11 @@
 <?php
-
 namespace App\Models;
 
 use App\Casts\AsMoney;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Sale extends Model
@@ -52,16 +53,35 @@ class Sale extends Model
         return $this->sold_at?->toTimeString();
     }
 
-    public function items()
+    public function saleItems(): HasMany
     {
-        return $this->belongsToMany(Item::class, 'sale_item')
-            ->using(SaleItem::class)
+        return $this->hasMany(SaleItem::class);
+    }
+
+    public function items(): BelongsToMany
+    {
+        return $this->belongsToMany(Item::class, 'sale_items')
             ->withPivot([
+                'id',
                 'cost_amount',
                 'cost_currency',
                 'price_amount',
                 'price_currency',
                 'quantity',
-            ]);
+                'created_at',
+                'updated_at'
+            ])
+            ->withTimestamps()
+            ->wherePivotNotNull('item_id');
+    }
+
+    public function registeredSaleItems(): HasMany
+    {
+        return $this->saleItems()->whereNotNull('item_id');
+    }
+
+    public function unregisteredSaleItems(): HasMany
+    {
+        return $this->saleItems()->whereNull('item_id');
     }
 }

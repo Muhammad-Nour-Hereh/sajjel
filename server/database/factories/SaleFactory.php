@@ -50,12 +50,11 @@ class SaleFactory extends Factory
                     continue;
                 }
 
-                // Attach the item to the sale with pivot data
-                $sale->items()->attach($item->id, [
-                    'cost_amount' => $item->cost->amount,
-                    'cost_currency' => $item->cost->currency->value,
-                    'price_amount' => $item->price->amount,
-                    'price_currency' => $item->price->currency->value,
+                // Create SaleItem instead of attaching pivot
+                $sale->saleItems()->create([
+                    'item_id' => $item->id,
+                    'cost' => $item->cost,
+                    'price' => $item->price,
                     'quantity' => $quantity,
                 ]);
 
@@ -65,6 +64,26 @@ class SaleFactory extends Factory
 
                 $itemTotalCost = Money::usd($itemCostUSD->amount * $quantity);
                 $itemTotalRevenue = Money::usd($itemPriceUSD->amount * $quantity);
+
+                $totalCostUSD = $totalCostUSD->add($itemTotalCost);
+                $totalRevenueUSD = $totalRevenueUSD->add($itemTotalRevenue);
+            }
+
+            // Optionally add some unregistered items (items without item_id)
+            if (rand(1, 3) === 1) { // 33% chance
+                $unregisteredQuantity = rand(1, 2);
+                $unregisteredCost = Money::usd(rand(50, 200));
+                $unregisteredPrice = Money::usd(rand(100, 300));
+
+                $sale->saleItems()->create([
+                    'item_id' => null, // Unregistered item
+                    'cost' => $unregisteredCost,
+                    'price' => $unregisteredPrice,
+                    'quantity' => $unregisteredQuantity,
+                ]);
+
+                $itemTotalCost = Money::usd($unregisteredCost->amount * $unregisteredQuantity);
+                $itemTotalRevenue = Money::usd($unregisteredPrice->amount * $unregisteredQuantity);
 
                 $totalCostUSD = $totalCostUSD->add($itemTotalCost);
                 $totalRevenueUSD = $totalRevenueUSD->add($itemTotalRevenue);
@@ -96,11 +115,11 @@ class SaleFactory extends Factory
             foreach ($items as $item) {
                 $quantity = rand(1, 2);
 
-                $sale->items()->attach($item->id, [
-                    'cost_amount' => $item->cost->amount,
-                    'cost_currency' => $item->cost->currency->value,
-                    'price_amount' => $item->price->amount,
-                    'price_currency' => $item->price->currency->value,
+                // Create SaleItem instead of attaching pivot
+                $sale->saleItems()->create([
+                    'item_id' => $item->id,
+                    'cost' => $item->cost,
+                    'price' => $item->price,
                     'quantity' => $quantity,
                 ]);
 
@@ -109,6 +128,42 @@ class SaleFactory extends Factory
 
                 $itemTotalCost = Money::usd($itemCostUSD->amount * $quantity);
                 $itemTotalRevenue = Money::usd($itemPriceUSD->amount * $quantity);
+
+                $totalCostUSD = $totalCostUSD->add($itemTotalCost);
+                $totalRevenueUSD = $totalRevenueUSD->add($itemTotalRevenue);
+            }
+
+            $sale->update([
+                'total_cost' => $totalCostUSD,
+                'total_revenue' => $totalRevenueUSD,
+            ]);
+        });
+    }
+
+    /**
+     * Create a sale with only unregistered items
+     */
+    public function unregisteredItemsOnly(): static
+    {
+        return $this->afterCreating(function (Sale $sale) {
+            $totalCostUSD = Money::Zero();
+            $totalRevenueUSD = Money::Zero();
+
+            // Create 2-4 unregistered items
+            for ($i = 0; $i < rand(2, 4); $i++) {
+                $quantity = rand(1, 3);
+                $cost = Money::usd(rand(20, 150));
+                $price = Money::usd(rand(50, 250));
+
+                $sale->saleItems()->create([
+                    'item_id' => null,
+                    'cost' => $cost,
+                    'price' => $price,
+                    'quantity' => $quantity,
+                ]);
+
+                $itemTotalCost = Money::usd($cost->amount * $quantity);
+                $itemTotalRevenue = Money::usd($price->amount * $quantity);
 
                 $totalCostUSD = $totalCostUSD->add($itemTotalCost);
                 $totalRevenueUSD = $totalRevenueUSD->add($itemTotalRevenue);

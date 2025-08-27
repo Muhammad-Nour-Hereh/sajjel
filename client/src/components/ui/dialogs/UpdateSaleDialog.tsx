@@ -39,7 +39,7 @@ const UpdateSaleDialog = ({
       const p: Record<number, number> = {}
       const n: Record<number, string> = {}
 
-      sale.items.forEach((item) => {
+      sale.saleItems.forEach((item) => {
         q[item.item_id] = item.quantity
         p[item.item_id] = item.price?.amount ?? 0
         n[item.item_id] = item.note ?? ''
@@ -55,7 +55,7 @@ const UpdateSaleDialog = ({
   const handleSave = () => {
     if (!sale) return
     const updatedData = {
-      items: sale.items.map((item) => ({
+      items: sale.saleItems.map((item) => ({
         item_id: item.item_id,
         quantity: quantities[item.item_id] || 1,
         price: {
@@ -81,7 +81,7 @@ const UpdateSaleDialog = ({
 
         {sale && (
           <SaleDetailsForm
-            selectedItems={sale.items}
+            selectedItems={sale.saleItems}
             quantities={quantities}
             prices={prices}
             notes={notes}

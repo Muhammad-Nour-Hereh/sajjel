@@ -16,20 +16,20 @@ class UpdateSaleRequest extends BaseFormRequest
     {
         return [
             'sold_at' => 'sometimes|date',
-            'items' => 'sometimes|array|min:1',
-            'items.*.item_id' => 'required_with:items|exists:items,id',
-            'items.*.quantity' => 'required_with:items|integer|min:1',
-            'items.*.cost.amount' => 'nullable|numeric|min:0',
-            'items.*.cost.currency' => 'nullable|in:USD,LBP',
-            'items.*.price.amount' => 'required_with:items|numeric|min:0',
-            'items.*.price.currency' => 'required_with:items|in:USD,LBP',
+            'saleItems' => 'sometimes|array|min:1',
+            'saleItems.*.item_id' => 'nullable|exists:sale_items,id',
+            'saleItems.*.quantity' => 'required_with:saleItems|integer|min:1',
+            'saleItems.*.cost.amount' => 'nullable|numeric|min:0',
+            'saleItems.*.cost.currency' => 'nullable|in:USD,LBP',
+            'saleItems.*.price.amount' => 'required_with:saleItems|numeric|min:0',
+            'saleItems.*.price.currency' => 'required_with:saleItems|in:USD,LBP',
         ];
     }
 
     public function validatedWithCasts(): array
     {
         $validated = $this->validated();
-        $validated['items'] = $this->castMoneyItemsFields($validated['items'], ['cost', 'price']);
+        $validated['saleItems'] = $this->castMoneyItemsFields($validated['saleItems'], ['cost', 'price']);
         return $validated;
     }
 }

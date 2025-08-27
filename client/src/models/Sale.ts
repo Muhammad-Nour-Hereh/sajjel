@@ -8,5 +8,5 @@ export interface Sale {
   total_profit?: Money
   total_revenue?: Money
   total_cost?: Money
-  items: SaleItem[]
+  saleItems: SaleItem[]
 }

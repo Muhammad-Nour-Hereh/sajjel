@@ -1,40 +1,39 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Sale;
 use App\ValueObjects\Money;
-use App\ValueObjects\Currency;
 
 class SaleService
 {
-    public function attachItems(Sale $sale, array $items): void
+    public function updateAttachedSaleItems(Sale $sale, array $items): void
     {
-        $syncData = [];
+        // Delete existing sale items for this sale
+        $sale->saleItems()->delete();
+
+        // Create new sale items
         foreach ($items as $item) {
-            $syncData[$item['item_id']] = [
+            $sale->saleItems()->create([
+                'item_id' => $item['item_id'] ?? null, // Can be null for unregistered items
                 'quantity' => $item['quantity'],
                 'cost' => $item['cost'],
                 'price' => $item['price'],
-            ];
+            ]);
         }
-        $sale->items()->sync($syncData);
     }
 
     public function updateSaleTotals(Sale $sale): void
     {
-        // Pull pivot models instead of plain items
-        $saleItems = $sale->items()->get();
+        $saleItems = $sale->saleItems;
 
         $totalCost = Money::zero();
         $totalRevenue = Money::zero();
 
-        foreach ($saleItems as $item) {
-            $pivot = $item->pivot; // SaleItem pivot
-
-            if ($pivot->cost && $pivot->price) {
-                // Use pivot casts directly
-                $itemCost = $pivot->cost->toUSD()->multiply($pivot->quantity);
-                $itemRevenue = $pivot->price->toUSD()->multiply($pivot->quantity);
+        foreach ($saleItems as $saleItem) {
+            if ($saleItem->cost && $saleItem->price) {
+                $itemCost = $saleItem->cost->toUSD()->multiply($saleItem->quantity);
+                $itemRevenue = $saleItem->price->toUSD()->multiply($saleItem->quantity);
 
                 $totalCost = $totalCost->add($itemCost);
                 $totalRevenue = $totalRevenue->add($itemRevenue);
