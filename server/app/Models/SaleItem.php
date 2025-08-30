@@ -11,18 +11,16 @@ class SaleItem extends Model
 {
     use SoftDeletes;
 
-    // Changed from false to true since it's now a full entity
     public $timestamps = true;
-
-    // Updated table name to follow Laravel conventions (plural)
     protected $table = 'sale_items';
 
     protected $fillable = [
         'sale_id',
-        'item_id', // This will now be nullable
+        'item_id',
         'cost',
         'price',
         'quantity',
+        'sort_order',
     ];
 
     protected $hidden = [
@@ -35,11 +33,12 @@ class SaleItem extends Model
     protected $casts = [
         'cost' => AsMoney::class,
         'price' => AsMoney::class,
+        'sort_order' => 'integer',
     ];
 
     protected $appends = ['revenue', 'profit'];
 
-    // Relationships - now proper belongsTo instead of pivot relationships
+    // Relationships
     public function sale(): BelongsTo
     {
         return $this->belongsTo(Sale::class);
@@ -50,7 +49,7 @@ class SaleItem extends Model
         return $this->belongsTo(Item::class);
     }
 
-    // Keep your existing computed attributes
+    // Computed attributes
     public function getRevenueAttribute(): Money
     {
         return $this->price->multiply($this->quantity);
@@ -63,7 +62,7 @@ class SaleItem extends Model
         );
     }
 
-    // Add some useful scopes for the nullable item_id
+    // Scopes
     public function scopeWithItem($query)
     {
         return $query->whereNotNull('item_id');
@@ -74,9 +73,27 @@ class SaleItem extends Model
         return $query->whereNull('item_id');
     }
 
-    // Helper method to check if this sale item has a registered item
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('sort_order');
+    }
+
+    // Helper methods
     public function hasRegisteredItem(): bool
     {
         return !is_null($this->item_id);
+    }
+
+    // Boot method to auto-assign sort_order
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($saleItem) {
+            if (is_null($saleItem->sort_order)) {
+                $maxOrder = static::where('sale_id', $saleItem->sale_id)->max('sort_order') ?? 0;
+                $saleItem->sort_order = $maxOrder + 1;
+            }
+        });
     }
 }
