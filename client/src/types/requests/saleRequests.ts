@@ -1,4 +1,4 @@
-import { Money } from '@/value objects/Money'
+import { Money } from '@/types/value-objects/Money'
 
 export interface StoreSaleRequest {
   sold_at?: string

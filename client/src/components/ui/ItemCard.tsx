@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './card'
 import EditImage from './EditImage'
 import { TextInput } from './TextInput'
 import { PriceInput } from './PriceInput'
-import { Item } from '@/models/Item'
+import { Item } from '@/types/models/Item'
 
 interface props {
   item: Item

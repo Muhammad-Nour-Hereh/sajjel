@@ -27,7 +27,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TextInput } from '@/components/ui/TextInput'
-import useSalesPage from '@/hooks/useSalesPage'
+import useSalesPage from '@/features/sales/hooks/useSalesPage'
 import {
   ArrowLeftCircle,
   ArrowRightCircle,

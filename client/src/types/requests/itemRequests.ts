@@ -1,7 +1,7 @@
-import { Money } from '@/value objects/Money'
+import { Money } from '@/types/value-objects/Money'
 
 // Item Requests
-export interface StoreItemRequest {
+export interface StoreItemRequest extends FormData {
   name: string
   model?: string
   cost?: Money

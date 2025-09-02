@@ -1,4 +1,4 @@
-import { Money } from '../value objects/Money'
+import { Money } from '../value-objects/Money'
 import { SaleItem } from './SaleItem'
 
 export interface Sale {

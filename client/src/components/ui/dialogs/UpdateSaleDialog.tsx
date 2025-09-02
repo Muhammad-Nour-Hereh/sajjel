@@ -5,7 +5,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useState, useEffect } from 'react'
-import { Sale } from '@/models/Sale'
+import { Sale } from '@/types/models/Sale'
 import { SaleDetailsForm } from '../forms/SaleDetailsForm'
 
 interface UpdateSaleDialogProps {

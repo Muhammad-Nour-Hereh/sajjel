@@ -1,4 +1,4 @@
-import { Sale } from '@/models/Sale'
+import { Sale } from '@/types/models/Sale'
 import { remote } from '@/remotes/remotes'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'

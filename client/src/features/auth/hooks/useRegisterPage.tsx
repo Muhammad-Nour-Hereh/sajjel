@@ -5,9 +5,9 @@ import {
   validateEmail,
   validateName,
   validatePassword,
-} from '../utils/validators'
-import { remote } from '../remotes/remotes'
-import { UserRoutes } from '../routes/UserRoutes'
+} from '../../../utils/validators'
+import { remote } from '../../../remotes/remotes'
+import { UserRoutes } from '../../../routes/UserRoutes'
 import { GuestRoutes } from '@/routes/GuestRoutes'
 
 type FieldErrors = Record<string, string>
@@ -38,7 +38,7 @@ const useRegisterPage = () => {
     if (!validateForm()) return
 
     try {
-      const res = await remote.auth.register(name, email, password)
+      const res = await remote.auth.register({ name, email, password })
       if (!res.success) {
         setErrors({ general: res.message || 'something went wrong' })
         return

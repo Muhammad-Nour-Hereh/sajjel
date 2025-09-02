@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
-import { Item } from '@/models/Item'
+import { Item } from '@/types/models/Item'
 import { PriceInput } from '../PriceInput'
-import { Currency } from '@/value objects/Money'
+import { Currency } from '@/types/value-objects/Money'
 
 interface SaleDetailsFormProps {
   selectedItems: Item[]

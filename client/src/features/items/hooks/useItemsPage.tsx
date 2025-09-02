@@ -1,7 +1,8 @@
 import { remote } from '@/remotes/remotes'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { Item } from '@/models/Item'
+import { Item } from '@/types/models/Item'
+import { StoreItemRequest } from '@/types/requests/itemRequests'
 
 const useItemsPage = () => {
   const [search, setSearch] = useState('')
@@ -17,7 +18,7 @@ const useItemsPage = () => {
   })
 
   const createItem = useMutation({
-    mutationFn: (data: FormData) => remote.items.store(data),
+    mutationFn: (data: StoreItemRequest) => remote.items.store(data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['items'] }),
   })
 
@@ -28,7 +29,7 @@ const useItemsPage = () => {
   })
 
   const updateThumbnail = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: FormData }) =>
+    mutationFn: ({ id, data }: { id: number; data: StoreItemRequest }) =>
       remote.items.updateThumbnail(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['items'] }),
   })

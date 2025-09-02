@@ -1,4 +1,4 @@
-import { Currency } from '@/value objects/Currency'
+import { Currency } from '@/types/value-objects/Currency'
 import { useEffect, useRef, useState } from 'react'
 
 interface props {

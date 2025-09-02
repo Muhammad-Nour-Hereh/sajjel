@@ -1,7 +1,4 @@
 import axios, { AxiosResponse } from 'axios'
-import { baseURL } from './axios_defaults'
-
-axios.defaults.baseURL = baseURL
 
 export enum HttpMethod {
   POST = 'POST',
@@ -35,6 +32,9 @@ export const request = async <T = any>({
   optimistic,
   rollback,
 }: RequestParams): Promise<ResponseData<T>> => {
+  const baseURL = import.meta.env.VITE_API_BASE_URL
+  axios.defaults.baseURL = baseURL
+
   const isFormData = body instanceof FormData
 
   const headers: { [key: string]: string } = {}

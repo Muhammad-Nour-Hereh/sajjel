@@ -12,12 +12,12 @@ import { Plus, X } from 'lucide-react'
 import SearchBar from '@/components/ui/Searchbar'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { remote } from '@/remotes/remotes'
-import { Item } from '@/models/Item'
+import { Item } from '@/types/models/Item'
 import ItemCard from '../ItemCard'
-import { SaleRequest } from '@/requests/saleRequests'
+import { SaleRequest } from '@/types/requests/saleRequests'
 import { PriceInput } from '../PriceInput'
-import { Money } from '@/value objects/Money'
-import { Currency } from '@/value objects/Currency'
+import { Money } from '@/types/value-objects/Money'
+import { Currency } from '@/types/value-objects/Currency'
 
 interface SaleItemData {
   id: string // temporary ID for tracking

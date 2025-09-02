@@ -1,12 +1,12 @@
-import { Item } from '@/models/Item'
+import { Item } from '@/types/models/Item'
 import { request, HttpMethod } from './request'
-import { Sale } from '@/models/Sale'
-import { LoginRequest, RegisterRequest } from '@/requests/authRequests'
+import { Sale } from '@/types/models/Sale'
+import { LoginRequest, RegisterRequest } from '@/types/requests/authRequests'
 import {
   StoreItemRequest,
   UpdateItemRequest,
   UpdateItemThumbnailRequest,
-} from '@/requests/itemRequests'
+} from '@/types/requests/itemRequests'
 import {
   PatchSaleItemRequest,
   PatchSaleRequest,
@@ -15,7 +15,8 @@ import {
   StoreSaleRequest,
   UpdateSaleItemRequest,
   UpdateSaleRequest,
-} from '@/requests/saleRequests'
+} from '@/types/requests/saleRequests'
+import { api } from './api'
 
 export const remote = {
   // Auth APIs:
@@ -23,28 +24,28 @@ export const remote = {
     register: (data: RegisterRequest) =>
       request<string>({
         method: HttpMethod.POST,
-        route: '/auth/register',
+        route: api.auth.register,
         body: data,
       }),
 
     login: (data: LoginRequest) =>
       request<string>({
         method: HttpMethod.POST,
-        route: '/auth/login',
+        route: api.auth.login,
         body: data,
       }),
 
     me: () =>
       request<string>({
         method: HttpMethod.GET,
-        route: '/auth/me',
+        route: api.auth.me,
         auth: true,
       }),
 
     logout: () =>
       request({
         method: HttpMethod.POST,
-        route: '/auth/logout',
+        route: api.auth.logout,
         auth: true,
       }),
   },
@@ -54,14 +55,14 @@ export const remote = {
     fetchAll: (): Promise<Item[]> =>
       request<Item[]>({
         method: HttpMethod.GET,
-        route: '/items',
+        route: api.items.index,
         auth: true,
       }).then((res) => res.data!),
 
     store: (data: StoreItemRequest) =>
       request<Item>({
         method: HttpMethod.POST,
-        route: '/items',
+        route: api.items.store,
         body: data,
         auth: true,
       }),
@@ -69,14 +70,14 @@ export const remote = {
     show: (id: number): Promise<Item> =>
       request<Item>({
         method: HttpMethod.GET,
-        route: `/items/${id}`,
+        route: api.items.show(id),
         auth: true,
       }).then((res) => res.data!),
 
     update: (id: number, data: UpdateItemRequest) =>
       request<Item>({
         method: HttpMethod.PUT,
-        route: `/items/${id}`,
+        route: api.items.update(id),
         body: data,
         auth: true,
       }),
@@ -84,7 +85,7 @@ export const remote = {
     updateThumbnail: (id: number, data: UpdateItemThumbnailRequest) =>
       request<{ thumbnail: string }>({
         method: HttpMethod.PATCH,
-        route: `/items/${id}/update-thumbnail`,
+        route: api.items.updateThumbnail(id),
         body: data,
         auth: true,
       }),
@@ -92,24 +93,30 @@ export const remote = {
     destroy: (id: number) =>
       request<void>({
         method: HttpMethod.DELETE,
-        route: `/items/${id}`,
+        route: api.items.destroy(id),
         auth: true,
       }),
   },
 
   // Sales APIs:
   sales: {
-    fetchAll: (start?: string, end?: string): Promise<Sale[]> =>
-      request<Sale[]>({
+    fetchAll: (start?: string, end?: string): Promise<Sale[]> => {
+      const params = new URLSearchParams()
+      if (start) params.append('start_date', start)
+      if (end) params.append('end_date', end)
+      const queryString = params.toString()
+
+      return request<Sale[]>({
         method: HttpMethod.GET,
-        route: `/sales?start_date=${start}&end_date=${end}`,
+        route: `${api.sales.index}${queryString ? `?${queryString}` : ''}`,
         auth: true,
-      }).then((res) => res.data!),
+      }).then((res) => res.data!)
+    },
 
     store: (data: StoreSaleRequest) =>
       request<Sale>({
         method: HttpMethod.POST,
-        route: '/sales',
+        route: api.sales.store,
         body: data,
         auth: true,
       }),
@@ -117,14 +124,14 @@ export const remote = {
     show: (id: number): Promise<Sale> =>
       request<Sale>({
         method: HttpMethod.GET,
-        route: `/sales/${id}`,
+        route: api.sales.show(id),
         auth: true,
       }).then((res) => res.data!),
 
     update: (id: number, data: UpdateSaleRequest) =>
       request<Sale>({
         method: HttpMethod.PUT,
-        route: `/sales/${id}`,
+        route: api.sales.update(id),
         body: data,
         auth: true,
       }),
@@ -132,7 +139,7 @@ export const remote = {
     patch: (id: number, data: PatchSaleRequest) =>
       request<Sale>({
         method: HttpMethod.PATCH,
-        route: `/sales/${id}`,
+        route: api.sales.patch(id),
         body: data,
         auth: true,
       }),
@@ -140,7 +147,7 @@ export const remote = {
     destroy: (id: number) =>
       request<void>({
         method: HttpMethod.DELETE,
-        route: `/sales/${id}`,
+        route: api.sales.destroy(id),
         auth: true,
       }),
   },
@@ -150,7 +157,7 @@ export const remote = {
     store: (saleId: number, data: StoreSaleItemRequest) =>
       request<any>({
         method: HttpMethod.POST,
-        route: `/sales/${saleId}/items`,
+        route: api.saleItems.store(saleId),
         body: data,
         auth: true,
       }),
@@ -158,7 +165,7 @@ export const remote = {
     update: (saleId: number, itemId: number, data: UpdateSaleItemRequest) =>
       request<any>({
         method: HttpMethod.PUT,
-        route: `/sales/${saleId}/items/${itemId}`,
+        route: api.saleItems.update(saleId, itemId),
         body: data,
         auth: true,
       }),
@@ -166,7 +173,7 @@ export const remote = {
     patch: (saleId: number, itemId: number, data: PatchSaleItemRequest) =>
       request<any>({
         method: HttpMethod.PATCH,
-        route: `/sales/${saleId}/items/${itemId}`,
+        route: api.saleItems.patch(saleId, itemId),
         body: data,
         auth: true,
       }),
@@ -174,7 +181,7 @@ export const remote = {
     reorder: (saleId: number, data: ReorderSaleItemRequest) =>
       request<any>({
         method: HttpMethod.PATCH,
-        route: `/sales/${saleId}/reorder-items`,
+        route: api.saleItems.reorder(saleId),
         body: data,
         auth: true,
       }),
@@ -182,7 +189,7 @@ export const remote = {
     destroy: (saleId: number, itemId: number) =>
       request<void>({
         method: HttpMethod.DELETE,
-        route: `/sales/${saleId}/items/${itemId}`,
+        route: api.saleItems.destroy(saleId, itemId),
         auth: true,
       }),
   },

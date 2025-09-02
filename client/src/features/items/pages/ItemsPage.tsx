@@ -1,4 +1,4 @@
-import useItemsPage from '@/hooks/useItemsPage'
+import useItemsPage from '@/features/items/hooks/useItemsPage'
 import SearchBar from '@/components/ui/Searchbar'
 import ItemCard from '@/components/ui/ItemCard'
 import CreateItemDialog from '@/components/ui/dialogs/CreateItemDialog'
