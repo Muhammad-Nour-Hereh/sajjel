@@ -7,7 +7,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import ConfirmationDialog from '@/components/ui/dialogs/ConfirmationDialog'
-import CreateSaleDialog from '@/components/ui/dialogs/CreateSaleDialog'
+import CreateSaleDialog from '@/features/sales/components/CreateSaleDialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { PriceInput } from '@/components/ui/PriceInput'

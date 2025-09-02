@@ -13,11 +13,11 @@ import SearchBar from '@/components/ui/Searchbar'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { remote } from '@/remotes/remotes'
 import { Item } from '@/types/models/Item'
-import ItemCard from '../ItemCard'
-import { SaleRequest } from '@/types/requests/saleRequests'
-import { PriceInput } from '../PriceInput'
+import { PriceInput } from '../../../components/ui/PriceInput'
 import { Money } from '@/types/value-objects/Money'
 import { Currency } from '@/types/value-objects/Currency'
+import { StoreSaleRequest } from '@/types/requests/saleRequests'
+import ItemCard from '@/features/items/components/ItemCard'
 
 interface SaleItemData {
   id: string // temporary ID for tracking
@@ -44,7 +44,7 @@ const CreateSaleDialog = () => {
   })
 
   const createSale = useMutation({
-    mutationFn: (data: SaleRequest) => remote.sales.store(data),
+    mutationFn: (data: StoreSaleRequest) => remote.sales.store(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sales'] })
       resetAndClose()
@@ -112,7 +112,7 @@ const CreateSaleDialog = () => {
 
     if (validItems.length === 0) return
 
-    const saleData: SaleRequest = {
+    const saleData: StoreSaleRequest = {
       saleItems: validItems.map((item) => ({
         item_id: item.item_id,
         name: item.name,

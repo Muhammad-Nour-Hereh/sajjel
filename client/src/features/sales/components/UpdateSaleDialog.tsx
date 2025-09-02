@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/dialog'
 import { useState, useEffect } from 'react'
 import { Sale } from '@/types/models/Sale'
-import { SaleDetailsForm } from '../forms/SaleDetailsForm'
+import { SaleDetailsForm } from './SaleDetailsForm'
 
 interface UpdateSaleDialogProps {
   sale: Sale
@@ -26,7 +26,7 @@ const UpdateSaleDialog = ({
   const [quantities, setQuantities] = useState<Record<number, number>>({})
   const [prices, setPrices] = useState<Record<number, number>>({})
   const [notes, setNotes] = useState<Record<number, string>>({})
-  const [totals, setTotals] = useState({
+  const [totals] = useState({
     totalItems: 0,
     totalSale: 0,
     netProfit: 0,
