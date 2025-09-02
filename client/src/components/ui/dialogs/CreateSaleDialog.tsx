@@ -14,7 +14,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { remote } from '@/remotes/remotes'
 import { Item } from '@/models/Item'
 import ItemCard from '../ItemCard'
-import { SaleDTO } from '@/dto models/SaleDTO'
+import { SaleRequest } from '@/requests/saleRequests'
 import { PriceInput } from '../PriceInput'
 import { Money } from '@/value objects/Money'
 import { Currency } from '@/value objects/Currency'
@@ -44,7 +44,7 @@ const CreateSaleDialog = () => {
   })
 
   const createSale = useMutation({
-    mutationFn: (data: SaleDTO) => remote.sales.store(data),
+    mutationFn: (data: SaleRequest) => remote.sales.store(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sales'] })
       resetAndClose()
@@ -112,7 +112,7 @@ const CreateSaleDialog = () => {
 
     if (validItems.length === 0) return
 
-    const saleData: SaleDTO = {
+    const saleData: SaleRequest = {
       saleItems: validItems.map((item) => ({
         item_id: item.item_id,
         name: item.name,

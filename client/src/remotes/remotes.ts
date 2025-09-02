@@ -1,23 +1,37 @@
 import { Item } from '@/models/Item'
 import { request, HttpMethod } from './request'
 import { Sale } from '@/models/Sale'
-import { SaleDTO } from '@/dto models/SaleDTO'
+import { LoginRequest, RegisterRequest } from '@/requests/authRequests'
+import {
+  StoreItemRequest,
+  UpdateItemRequest,
+  UpdateItemThumbnailRequest,
+} from '@/requests/itemRequests'
+import {
+  PatchSaleItemRequest,
+  PatchSaleRequest,
+  ReorderSaleItemRequest,
+  StoreSaleItemRequest,
+  StoreSaleRequest,
+  UpdateSaleItemRequest,
+  UpdateSaleRequest,
+} from '@/requests/saleRequests'
 
 export const remote = {
   // Auth APIs:
   auth: {
-    register: (name: string, email: string, password: string) =>
+    register: (data: RegisterRequest) =>
       request<string>({
         method: HttpMethod.POST,
         route: '/auth/register',
-        body: { name, email, password },
+        body: data,
       }),
 
-    login: (email: string, password: string) =>
+    login: (data: LoginRequest) =>
       request<string>({
         method: HttpMethod.POST,
         route: '/auth/login',
-        body: { email, password },
+        body: data,
       }),
 
     me: () =>
@@ -34,6 +48,7 @@ export const remote = {
         auth: true,
       }),
   },
+
   // Item APIs:
   items: {
     fetchAll: (): Promise<Item[]> =>
@@ -43,7 +58,7 @@ export const remote = {
         auth: true,
       }).then((res) => res.data!),
 
-    store: (data: FormData) =>
+    store: (data: StoreItemRequest) =>
       request<Item>({
         method: HttpMethod.POST,
         route: '/items',
@@ -58,7 +73,7 @@ export const remote = {
         auth: true,
       }).then((res) => res.data!),
 
-    update: (id: number, data: Item) =>
+    update: (id: number, data: UpdateItemRequest) =>
       request<Item>({
         method: HttpMethod.PUT,
         route: `/items/${id}`,
@@ -66,14 +81,13 @@ export const remote = {
         auth: true,
       }),
 
-    updateThumbnail: (id: number, data: FormData) => {
-      return request<{ thumbnail: string }>({
+    updateThumbnail: (id: number, data: UpdateItemThumbnailRequest) =>
+      request<{ thumbnail: string }>({
         method: HttpMethod.PATCH,
         route: `/items/${id}/update-thumbnail`,
         body: data,
         auth: true,
-      })
-    },
+      }),
 
     destroy: (id: number) =>
       request<void>({
@@ -82,6 +96,7 @@ export const remote = {
         auth: true,
       }),
   },
+
   // Sales APIs:
   sales: {
     fetchAll: (start?: string, end?: string): Promise<Sale[]> =>
@@ -91,7 +106,7 @@ export const remote = {
         auth: true,
       }).then((res) => res.data!),
 
-    store: (data: SaleDTO) =>
+    store: (data: StoreSaleRequest) =>
       request<Sale>({
         method: HttpMethod.POST,
         route: '/sales',
@@ -106,9 +121,17 @@ export const remote = {
         auth: true,
       }).then((res) => res.data!),
 
-    update: (id: number, data: Partial<Sale>) =>
+    update: (id: number, data: UpdateSaleRequest) =>
       request<Sale>({
         method: HttpMethod.PUT,
+        route: `/sales/${id}`,
+        body: data,
+        auth: true,
+      }),
+
+    patch: (id: number, data: PatchSaleRequest) =>
+      request<Sale>({
+        method: HttpMethod.PATCH,
         route: `/sales/${id}`,
         body: data,
         auth: true,
@@ -118,6 +141,48 @@ export const remote = {
       request<void>({
         method: HttpMethod.DELETE,
         route: `/sales/${id}`,
+        auth: true,
+      }),
+  },
+
+  // Sale Items APIs:
+  saleItems: {
+    store: (saleId: number, data: StoreSaleItemRequest) =>
+      request<any>({
+        method: HttpMethod.POST,
+        route: `/sales/${saleId}/items`,
+        body: data,
+        auth: true,
+      }),
+
+    update: (saleId: number, itemId: number, data: UpdateSaleItemRequest) =>
+      request<any>({
+        method: HttpMethod.PUT,
+        route: `/sales/${saleId}/items/${itemId}`,
+        body: data,
+        auth: true,
+      }),
+
+    patch: (saleId: number, itemId: number, data: PatchSaleItemRequest) =>
+      request<any>({
+        method: HttpMethod.PATCH,
+        route: `/sales/${saleId}/items/${itemId}`,
+        body: data,
+        auth: true,
+      }),
+
+    reorder: (saleId: number, data: ReorderSaleItemRequest) =>
+      request<any>({
+        method: HttpMethod.PATCH,
+        route: `/sales/${saleId}/reorder-items`,
+        body: data,
+        auth: true,
+      }),
+
+    destroy: (saleId: number, itemId: number) =>
+      request<void>({
+        method: HttpMethod.DELETE,
+        route: `/sales/${saleId}/items/${itemId}`,
         auth: true,
       }),
   },
