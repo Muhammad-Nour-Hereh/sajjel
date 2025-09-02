@@ -38,18 +38,18 @@ Route::group(["prefix" => "v1"], function () {
             Route::post('/', [SaleController::class, 'store']);
             Route::get('/{sale}', [SaleController::class, 'show']);
             Route::put('/{sale}', [SaleController::class, 'update']);
-            Route::patch('/{sale}', [SaleController::class, 'patch']); // For partial updates
+            Route::patch('/{sale}', [SaleController::class, 'patch']);
             Route::delete('/{sale}', [SaleController::class, 'destroy']);
 
-            // Nested sale items routes
+            // sale items routes
             Route::prefix('{sale}/items')->group(function () {
-                Route::get('/', [SaleItemController::class, 'index']);        // Get all items for a sale
-                Route::post('/', [SaleItemController::class, 'store']);       // Add item to sale
-                Route::get('/{saleItem}', [SaleItemController::class, 'show']); // Show specific sale item
-                Route::put('/{saleItem}', [SaleItemController::class, 'update']); // Update sale item
-                Route::patch('/{saleItem}', [SaleItemController::class, 'patch']); // Partial update
-                Route::delete('/{saleItem}', [SaleItemController::class, 'destroy']); // Remove from sale
-                Route::patch('/reorder', [SaleItemController::class, 'reorder']); // Batch reorder items
+                Route::get('/', [SaleItemController::class, 'index']);
+                Route::post('/', [SaleItemController::class, 'store']);
+                Route::get('/{saleItem}', [SaleItemController::class, 'show']);
+                Route::put('/{saleItem}', [SaleItemController::class, 'update']);
+                Route::patch('/{saleItem}', [SaleItemController::class, 'patch']);
+                Route::delete('/{saleItem}', [SaleItemController::class, 'destroy']);
+                Route::patch('/reorder', [SaleItemController::class, 'reorder']);
             });
         });
     });

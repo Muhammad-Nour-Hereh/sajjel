@@ -31,34 +31,20 @@ class ItemController extends Controller
         return $this->createdResponse(new ItemResource($item));
     }
 
-    public function show($id)
+    public function show(Item $item)
     {
-        $item = Item::find($id);
-        if (!$item)
-            return $this->notFoundResponse();
-
         return $this->successResponse(new ItemResource($item));
     }
 
-    public function update(UpdateItemRequest $request, $id)
+    public function update(Item $item, UpdateItemRequest $request)
     {
-        $item = Item::find($id);
-        if (!$item) {
-            return $this->notFoundResponse();
-        }
-
         $data = $request->validatedWithCasts();
         $item->update($data);
         return $this->successResponse(new ItemResource($item));
     }
 
-    public function updateThumbnail(UpdateItemThumbnailRequest $request, $id)
+    public function updateThumbnail(Item $item, UpdateItemThumbnailRequest $request)
     {
-        $item = Item::find($id);
-        if (!$item) {
-            return $this->notFoundResponse();
-        }
-
         $file = $request->file('thumbnail');
         $path = $this->thumbnailService->replace($item->thumbnail, $file);
         $item->thumbnail = $path;
@@ -67,12 +53,8 @@ class ItemController extends Controller
         return $this->successResponse(['thumbnail' => $item->thumbnail]);
     }
 
-    public function destroy($id)
+    public function destroy(Item $item)
     {
-        $item = Item::find($id);
-        if (!$item)
-            return $this->notFoundResponse();
-
         $item->delete();
         return $this->noContentResponse();
     }

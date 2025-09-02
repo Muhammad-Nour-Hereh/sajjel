@@ -40,9 +40,11 @@ class SaleController extends Controller
 
     public function show($id)
     {
-        $sale = Sale::with(['saleItems.item' => function($query) {
-            $query->ordered(); // Apply ordering if you add this scope
-        }])->find($id);
+        $sale = Sale::with([
+            'saleItems.item' => function ($query) {
+                $query->ordered(); // Apply ordering if you add this scope
+            }
+        ])->find($id);
 
         if (!$sale) {
             return $this->notFoundResponse();
@@ -69,13 +71,8 @@ class SaleController extends Controller
         });
     }
 
-    public function update(UpdateSaleRequest $request, $id)
+    public function update(UpdateSaleRequest $request, Sale $sale)
     {
-        $sale = Sale::find($id);
-        if (!$sale) {
-            return $this->notFoundResponse();
-        }
-
         $data = $request->validatedWithCasts();
 
         return DB::transaction(function () use ($sale, $data) {
@@ -95,29 +92,16 @@ class SaleController extends Controller
         });
     }
 
-    /**
-     * Partially update a sale (for basic fields only, not items)
-     */
-    public function patch(PatchSaleRequest $request, $id)
+    public function patch(PatchSaleRequest $request, Sale $sale)
     {
-        $sale = Sale::find($id);
-        if (!$sale) {
-            return $this->notFoundResponse();
-        }
-
         $data = $request->validatedWithCasts();
         $sale->update($data);
 
         return $this->successResponse(new SaleResource($sale->load('saleItems.item')));
     }
 
-    public function destroy($id)
+    public function destroy(Sale $sale)
     {
-        $sale = Sale::find($id);
-        if (!$sale) {
-            return $this->notFoundResponse();
-        }
-
         $sale->delete();
 
         return $this->noContentResponse();

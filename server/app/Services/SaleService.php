@@ -23,6 +23,9 @@ class SaleService
                 'sort_order' => $item['sort_order'] ?? $index + 1, // Auto-assign order if not provided
             ]);
         }
+
+        // update sale totals after changing attachments
+        $this->updateSaleTotals($sale);
     }
 
     public function updateSaleTotals(Sale $sale): void
