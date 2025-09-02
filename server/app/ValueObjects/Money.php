@@ -1,7 +1,5 @@
 <?php
-
 namespace App\ValueObjects;
-
 use App\ValueObjects\Currency;
 
 class Money
@@ -13,7 +11,7 @@ class Money
 
     public function __construct(float $amount, Currency $currency)
     {
-        $this->amount = $amount;
+        $this->amount = round($amount, 2);
         $this->currency = $currency;
     }
 
@@ -31,7 +29,7 @@ class Money
     {
         return new self($amount, Currency::LBP);
     }
-    
+
     public static function zero(): self
     {
         return new self(0, Currency::USD);
@@ -55,12 +53,12 @@ class Money
         return new self($this->amount * self::USD_LBP_RATE, Currency::LBP);
     }
 
-
     /** Add two Money objects, converting currencies if necessary */
     public function add(Money $other): self
     {
-        $base = $this->toUSD(); // use USD as standard
+        $base = $this->toUSD();
         $otherUSD = $other->toUSD();
+
         return new self($base->amount + $otherUSD->amount, Currency::USD);
     }
 
@@ -69,6 +67,7 @@ class Money
     {
         $base = $this->toUSD();
         $otherUSD = $other->toUSD();
+
         return new self($base->amount - $otherUSD->amount, Currency::USD);
     }
 
