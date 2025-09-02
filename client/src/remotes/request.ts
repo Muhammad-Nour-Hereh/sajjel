@@ -3,7 +3,7 @@ import { baseURL } from './axios_defaults'
 
 axios.defaults.baseURL = baseURL
 
-export enum RequestMethods {
+export enum HttpMethod {
   POST = 'POST',
   GET = 'GET',
   PUT = 'PUT',
@@ -12,7 +12,7 @@ export enum RequestMethods {
 }
 
 interface RequestParams {
-  method: keyof typeof RequestMethods
+  method: keyof typeof HttpMethod
   route: string
   body?: any
   auth?: boolean

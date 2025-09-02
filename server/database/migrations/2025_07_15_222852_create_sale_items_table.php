@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->decimal('price_amount', 15, 2);
             $table->enum('price_currency', ['USD', 'LBP']);
             $table->unsignedInteger('quantity')->default(1);
-            $table->unsignedInteger('sort_order')->default(0)->after('quantity');
+            $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
