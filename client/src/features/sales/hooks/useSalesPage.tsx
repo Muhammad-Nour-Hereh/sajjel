@@ -1,5 +1,6 @@
-import { Sale } from '@/types/models/Sale'
 import { remote } from '@/remotes/remotes'
+import { PatchSaleRequest, UpdateSaleRequest } from '@/types/requests/saleRequests'
+import { Money } from '@/types/value-objects/Money'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
@@ -41,18 +42,76 @@ const useSalesPage = () => {
     queryFn: () => remote.sales.fetchAll(startDate, endDate),
   })
 
-  // Update sale
-  const updateSale = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Sale }) =>
+  // Update sale (full update)
+  const updateSaleMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: UpdateSaleRequest }) =>
       remote.sales.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sales'] }),
   })
 
+  // Patch sale (partial update)
+  const patchSaleMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: PatchSaleRequest }) =>
+      remote.sales.patch(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sales'] }),
+  })
+
   // Delete sale
-  const deleteSale = useMutation({
+  const deleteSaleMutation = useMutation({
     mutationFn: (id: number) => remote.sales.destroy(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sales'] }),
   })
+
+  // Helper functions to update sale items
+  const updateSaleItemCost = (saleId: number, itemId: number, cost: Money) => {
+    const sale = sales.find((s) => s.id === saleId)
+    if (!sale) return
+
+    const updatedSaleItems = sale.saleItems.map((item) =>
+      item.id === itemId ? { ...item, cost } : item,
+    )
+
+    const updateData: UpdateSaleRequest = {
+      saleItems: updatedSaleItems.map((item) => ({
+        item_id: item.item_id,
+        quantity: item.quantity,
+        cost: item.cost,
+        price: item.price,
+      })),
+    }
+
+    updateSaleMutation.mutate({ id: saleId, data: updateData })
+  }
+
+  const updateSaleItemPrice = (
+    saleId: number,
+    itemId: number,
+    price: Money,
+  ) => {
+    const sale = sales.find((s) => s.id === saleId)
+    if (!sale) return
+
+    const updatedSaleItems = sale.saleItems.map((item) =>
+      item.id === itemId ? { ...item, price } : item,
+    )
+
+    const updateData: UpdateSaleRequest = {
+      saleItems: updatedSaleItems.map((item) => ({
+        item_id: item.item_id,
+        quantity: item.quantity,
+        cost: item.cost,
+        price: item.price,
+      })),
+    }
+
+    updateSaleMutation.mutate({ id: saleId, data: updateData })
+  }
+
+  const updateSaleItemNote = (saleId: number, itemId: number, note: string) => {
+    // If your SaleItem model has a note field, you can implement this
+    // For now, this might need to be handled differently depending on your backend
+    console.log('Update note not implemented yet:', { saleId, itemId, note })
+  }
 
   const handleDateFilterChange = (filter: DateFilter) => {
     const today = new Date()
@@ -156,6 +215,7 @@ const useSalesPage = () => {
     handleDateFilterChange('day')
     console.log(date, startDate, endDate)
   }, [date])
+
   return {
     sales,
     search,
@@ -168,15 +228,17 @@ const useSalesPage = () => {
     handleDateFilterChange,
     handleCustomDateChange,
 
-    // for sale delete confimation dialog
-    deleteSale: deleteSale.mutate,
+    // for sale delete confirmation dialog
+    deleteSale: deleteSaleMutation.mutate,
     confirmOpen,
     setConfirmOpen,
     saleToDelete,
     setSaleToDelete,
 
-    // for updating sale
-    updateSale: updateSale.mutate,
+    // for updating sale items
+    updateSaleItemCost,
+    updateSaleItemPrice,
+    updateSaleItemNote,
 
     // for date
     date,

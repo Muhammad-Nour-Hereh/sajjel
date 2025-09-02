@@ -8,19 +8,19 @@ use App\ValueObjects\Money;
 
 class SaleService
 {
-    public function updateAttachedSaleItems(Sale $sale, array $items): void
+    public function updateAttachedSaleItems(Sale $sale, array $saleItems): void
     {
         // Delete existing sale items for this sale
         $sale->saleItems()->delete();
 
         // Create new sale items with proper ordering
-        foreach ($items as $index => $item) {
+        foreach ($saleItems as $index => $saleItem) {
             $sale->saleItems()->create([
-                'item_id' => $item['item_id'] ?? null,
-                'quantity' => $item['quantity'],
-                'cost' => $item['cost'],
-                'price' => $item['price'],
-                'sort_order' => $item['sort_order'] ?? $index + 1, // Auto-assign order if not provided
+                'item_id' => $saleItem['item_id'] ?? null,
+                'quantity' => $saleItem['quantity'],
+                'cost' => $saleItem['cost'],
+                'price' => $saleItem['price'],
+                'sort_order' => $saleItem['sort_order'] ?? $index + 1, // Auto-assign order if not provided
             ]);
         }
 

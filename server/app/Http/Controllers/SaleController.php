@@ -77,15 +77,14 @@ class SaleController extends Controller
 
         return DB::transaction(function () use ($sale, $data) {
             // Update sale basic fields if provided
-            $saleData = collect($data)->except('items')->toArray();
+            $saleData = collect($data)->except('saleItems')->toArray(); // Change 'items' to 'saleItems'
             if (!empty($saleData)) {
                 $sale->update($saleData);
             }
 
-            // Update items if provided
-            if (isset($data['items'])) {
-                $this->saleService->updateAttachedSaleItems($sale, $data['items']);
-                $this->saleService->updateSaleTotals($sale);
+            // Update saleItems if provided
+            if (isset($data['saleItems'])) { // Change 'items' to 'saleItems'
+                $this->saleService->updateAttachedSaleItems($sale, $data['saleItems']);
             }
 
             return $this->successResponse(new SaleResource($sale->load('saleItems.item')));

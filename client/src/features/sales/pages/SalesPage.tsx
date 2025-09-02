@@ -38,13 +38,13 @@ import {
 
 const dateFilterOptions = [
   { value: 'today', label: 'Today' },
-  { value: 'yesterday', label: 'yesterday' },
+  { value: 'yesterday', label: 'Yesterday' },
   { value: 'week', label: 'This Week' },
   { value: 'month', label: 'This Month' },
   { value: 'quarter', label: 'This Quarter' },
   { value: 'year', label: 'This Year' },
   { value: 'all', label: 'All Time' },
-  { value: 'day', label: 'day' },
+  { value: 'day', label: 'Day' },
   { value: 'range', label: 'Custom Range' },
 ]
 
@@ -57,15 +57,17 @@ const SalesPage = () => {
     handleDateFilterChange,
     handleCustomDateChange,
 
-    // for sale delete confimation dialog
+    // for sale delete confirmation dialog
     deleteSale,
     confirmOpen,
     setConfirmOpen,
     saleToDelete,
     setSaleToDelete,
 
-    // for updating sale
-    updateSale,
+    // for updating sale items
+    updateSaleItemCost,
+    updateSaleItemPrice,
+    updateSaleItemNote,
 
     // for date
     date,
@@ -76,7 +78,8 @@ const SalesPage = () => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Sales</h1>
-      {/* date of the day */}
+
+      {/* Date of the day */}
       <div className="bg-gray-50 p-4 rounded-lg mb-6 space-y-4">
         <div className="flex justify-between">
           <div className="flex gap-2 items-center">
@@ -108,6 +111,7 @@ const SalesPage = () => {
           </div>
         </div>
       </div>
+
       {/* Date Filter Controls */}
       <div className="bg-gray-50 p-4 rounded-lg mb-6 space-y-4">
         <div className="flex items-center gap-2 mb-3">
@@ -116,7 +120,7 @@ const SalesPage = () => {
         </div>
 
         <div className="flex flex-wrap items-end gap-4">
-          <div className="flex-1 min-w-[200px] ">
+          <div className="flex-1 min-w-[200px]">
             <Label className="pb-1" htmlFor="date-filter">
               Date Range
             </Label>
@@ -173,7 +177,7 @@ const SalesPage = () => {
         </div>
       </div>
 
-      {/* sales list  */}
+      {/* Sales list */}
       <Accordion type="single" collapsible className="w-full space-y-2">
         {sales.map((sale) => (
           <AccordionItem
@@ -183,7 +187,6 @@ const SalesPage = () => {
             <AccordionTrigger className="px-4 py-3 flex justify-between items-center w-full">
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-col text-left">
-                  {/* <span className="font-semibold">Sale #{sale.id}</span> */}
                   <span className="font-semibold">
                     {sale.date} - {sale.time}
                   </span>
@@ -233,6 +236,7 @@ const SalesPage = () => {
                     <TableHead>Quantity</TableHead>
                     <TableHead>Profit</TableHead>
                     <TableHead>Note</TableHead>
+                    <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -244,30 +248,20 @@ const SalesPage = () => {
                           amount={saleItem.cost?.amount || 0}
                           currency={saleItem.cost?.currency || 'USD'}
                           onChange={(val) =>
-                            updateSale({
-                              id: sale.id,
-                              data: {
-                                ...sale,
-                                saleItems: sale.saleItems.map((i) =>
-                                  i.item_id === saleItem.item_id
-                                    ? { ...i, cost: val }
-                                    : i,
-                                ),
-                              },
-                            })
+                            updateSaleItemCost(sale.id, saleItem.id, val)
                           }
                         />
                       </TableCell>
                       <TableCell>
                         <PriceInput
                           amount={saleItem.price?.amount || 0}
-                          currency={saleItem.price?.currency || ' '}
-                          onChange={function (): void {
-                            throw new Error('Function not implemented.')
-                          }}
+                          currency={saleItem.price?.currency || 'USD'}
+                          onChange={(val) =>
+                            updateSaleItemPrice(sale.id, saleItem.id, val)
+                          }
                         />
                       </TableCell>
-                      <TableCell>1</TableCell>
+                      <TableCell>{saleItem.quantity}</TableCell>
                       <TableCell>
                         {(
                           (saleItem.price?.amount ?? 0) -
@@ -277,16 +271,18 @@ const SalesPage = () => {
                       </TableCell>
                       <TableCell>
                         <TextInput
-                          value={'note'}
-                          onChange={function (): void {
-                            throw new Error('Function not implemented.')
-                          }}
+                          value={saleItem.note || ''}
+                          onChange={(val) =>
+                            updateSaleItemNote(sale.id, saleItem.id, val)
+                          }
                         />
                       </TableCell>
                       <TableCell className="flex justify-end mr-6">
                         <div
                           onClick={(e) => {
                             e.stopPropagation()
+                            // This should delete the sale item, not the entire sale
+                            // You may need to add a deleteSaleItem function
                             setSaleToDelete(sale.id)
                             setConfirmOpen(true)
                           }}
@@ -299,7 +295,7 @@ const SalesPage = () => {
                               setConfirmOpen(true)
                             }
                           }}
-                          aria-label="Delete sale"
+                          aria-label="Delete sale item"
                           className="text-red-500 hover:text-red-700 active:text-red-900 transition-colors duration-150 cursor-pointer">
                           <Trash2 />
                         </div>
@@ -312,15 +308,20 @@ const SalesPage = () => {
           </AccordionItem>
         ))}
       </Accordion>
-      {/* dialogs  */}
+
+      {/* Dialogs */}
       <CreateSaleDialog />
       <ConfirmationDialog
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
-        onConfirm={function (): void {
-          deleteSale(saleToDelete!)
+        onConfirm={() => {
+          if (saleToDelete) {
+            deleteSale(saleToDelete)
+            setSaleToDelete(null)
+            setConfirmOpen(false)
+          }
         }}
-        onCancel={function (): void {
+        onCancel={() => {
           setSaleToDelete(null)
           setConfirmOpen(false)
         }}
