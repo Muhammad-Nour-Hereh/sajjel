@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 import { remote } from '@/remotes/remotes'
 import LoadingPage from '@/pages/LoadingPage'
 
-const UserRoutes = () => {
+const UserLayout = () => {
   const [loading, setLoading] = useState(true)
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
 
@@ -28,4 +28,4 @@ const UserRoutes = () => {
   return isAuthorized ? <Outlet /> : <Navigate to="/login" />
 }
 
-export default UserRoutes
+export default UserLayout

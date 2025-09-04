@@ -1,4 +1,4 @@
-export const UserRoutes = {
+const UserRoutes = {
   ROOT: '/',
   HOME: '/home',
   ITEMS: '/items',
@@ -11,3 +11,5 @@ export const UserRoutes = {
   // dev only
   COMPONENTS: '/components',
 } as const
+
+export default UserRoutes

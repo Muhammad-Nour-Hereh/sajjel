@@ -1,17 +1,20 @@
 import { Route, Routes } from 'react-router-dom'
-import { UserRoutes } from './routes/UserRoutes'
+// layouts
+import GuestLayout from './layouts/GuestLayout'
 import UserLayout from './layouts/UserLayout'
+import DevLayout from './layouts/DevLayout'
+// routes
+import GuestRoutes from './routes/GuestRoutes'
+import UserRoutes from './routes/UserRoutes'
+import DevRoutes from './routes/DevRoutes'
+// pages
 import RegisterPage from './features/auth/pages/RegisterPage'
 import LoginPage from './features/auth/pages/LoginPage'
-import GuestLayout from './layouts/GuestLayout'
 import ForgetPasswordPage from './features/auth/pages/ForgetPasswordPage'
-import { GuestRoutes } from './routes/GuestRoutes'
 import ItemsPage from './features/items/pages/ItemsPage'
 import RootPage from './pages/RootPage'
 import SalesPage from './features/sales/pages/SalesPage'
 import HomePage from './features/home/pages/HomePage'
-import DevLayout from './layouts/DevLayout'
-import { DevRoutes } from './routes/DevRoutes'
 import ComponentsPage from './pages/ComponentsPage'
 
 const AppRoutes = () => {
