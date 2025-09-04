@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom'
-import { GuestRoutes } from '@/routes/GuestRoutes'
-import { UserRoutes } from '@/routes/UserRoutes'
+
 import useMainPage from '../hooks/useMainPage'
 import { remote } from '@/remotes/remotes'
+import UserRoutes from '@/routes/UserRoutes'
+import GuestRoutes from '@/routes/GuestRoutes'
 
 const HomePage = () => {
   const { title } = useMainPage()

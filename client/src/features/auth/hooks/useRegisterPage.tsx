@@ -7,8 +7,9 @@ import {
   validatePassword,
 } from '../../../utils/validators'
 import { remote } from '../../../remotes/remotes'
-import { UserRoutes } from '../../../routes/UserRoutes'
-import { GuestRoutes } from '@/routes/GuestRoutes'
+import UserRoutes from '@/routes/UserRoutes'
+import GuestRoutes from '@/routes/GuestRoutes'
+
 
 type FieldErrors = Record<string, string>
 
