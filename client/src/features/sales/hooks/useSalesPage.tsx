@@ -1,5 +1,8 @@
 import { remote } from '@/remotes/remotes'
-import { PatchSaleRequest, UpdateSaleRequest } from '@/types/requests/saleRequests'
+import {
+  PatchSaleRequest,
+  UpdateSaleRequest,
+} from '@/types/requests/saleRequests'
 import { Money } from '@/types/value-objects/Money'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -28,9 +31,10 @@ const useSalesPage = () => {
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [saleToDelete, setSaleToDelete] = useState<number | null>(null)
 
-  useEffect(() => {
-    handleDateFilterChange('today')
-  }, [])
+  // query totals
+  const [queryTotalCost, setQueryTotalCost] = useState(0)
+  const [queryTotalRevenue, setQueryTotalRevenue] = useState(0)
+  const [queryTotalProfit, setQueryTotalProfit] = useState(0)
 
   // Fetch all sales
   const {
@@ -212,6 +216,20 @@ const useSalesPage = () => {
   }
 
   useEffect(() => {
+    handleDateFilterChange('today')
+  }, [])
+
+  useEffect(() => {
+    const tc = sales.reduce((total, v) => total + (v.total_cost?.amount || 0), 0);
+    const tr = sales.reduce((total, v) => total + (v.total_revenue?.amount || 0), 0); 
+    const tp = sales.reduce((total, v) => total + (v.total_profit?.amount || 0), 0);  
+
+    setQueryTotalCost(tc)
+    setQueryTotalRevenue(tr)
+    setQueryTotalProfit(tp)
+  }, [sales])
+
+  useEffect(() => {
     handleDateFilterChange('day')
     console.log(date, startDate, endDate)
   }, [date])
@@ -244,6 +262,11 @@ const useSalesPage = () => {
     date,
     setDate,
     changeDate,
+
+    // query totals states
+    queryTotalCost,
+    queryTotalRevenue,
+    queryTotalProfit,
   }
 }
 

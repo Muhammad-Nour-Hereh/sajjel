@@ -73,6 +73,11 @@ const SalesPage = () => {
     date,
     setDate,
     changeDate,
+
+    // query totals states
+    queryTotalCost,
+    queryTotalRevenue,
+    queryTotalProfit,
   } = useSalesPage()
 
   return (
@@ -326,6 +331,15 @@ const SalesPage = () => {
           setConfirmOpen(false)
         }}
       />
+      <hr className="m-4" />
+      <span>total cost: </span>
+      <span>{queryTotalCost}</span>
+      <br />
+      <span>total Revenue: </span>
+      <span>{queryTotalRevenue}</span>
+      <br />
+      <span>total profit: </span>
+      <span>{queryTotalProfit}</span>
     </div>
   )
 }
