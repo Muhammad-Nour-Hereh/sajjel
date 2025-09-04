@@ -1,5 +1,9 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
+
+#root {
+  min-height: 100vh;
+}
 
 @custom-variant dark (&:is(.dark *));
 

@@ -1,11 +1,23 @@
+import { InlineTextInput } from '@/components/common/InlineTextInput'
+import InlineNum from '@/components/inline/InlineNum'
+import { useState } from 'react'
+
 const ComponentsPage = () => {
-  return <div>
+  const [numberValue, setNumberValue] = useState(42)
+  const [value, setValue] = useState('abc')
+  return (
+    <div>
+      <p>{numberValue}</p>
+      <InlineNum
+        value={numberValue}
+        setValue={setNumberValue}
+        onChange={(val) => console.log(val)}
+      />
 
-
-
-
-    
-  </div>
+      {/* <InlineTextInput value={value} onChange={setValue} /> */}
+      <input type="text" value={'a'}/>
+    </div>
+  )
 }
 
 export default ComponentsPage
