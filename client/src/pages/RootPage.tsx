@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { UserRoutes } from '@/routes/UserRoutes'
+import UserRoutes from '@/routes/UserRoutes'
 
 const RootPage = () => {
   const navigate = useNavigate()
