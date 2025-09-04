@@ -10,6 +10,9 @@ import ItemsPage from './features/items/pages/ItemsPage'
 import RootPage from './pages/RootPage'
 import SalesPage from './features/sales/pages/SalesPage'
 import HomePage from './features/home/pages/HomePage'
+import DevLayout from './layouts/DevLayout'
+import { DevRoutes } from './routes/DevRoutes'
+import ComponentsPage from './pages/ComponentsPage'
 
 const AppRoutes = () => {
   return (
@@ -27,6 +30,9 @@ const AppRoutes = () => {
         <Route path={UserRoutes.HOME} element={<HomePage />} />
         <Route path={UserRoutes.ITEMS} element={<ItemsPage />} />
         <Route path={UserRoutes.SALES} element={<SalesPage />} />
+      </Route>
+      <Route element={<DevLayout />}>
+        <Route path={DevRoutes.COMPONENTS} element={<ComponentsPage />}></Route>
       </Route>
     </Routes>
   )
