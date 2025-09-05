@@ -17,6 +17,7 @@ export interface UpdateSaleRequest {
     quantity: number
     cost: Money
     price: Money
+    note?: string
   }[]
 }
 

@@ -35,6 +35,7 @@ import {
   Filter,
   Trash2,
 } from 'lucide-react'
+import QuantityInput from '@/components/ui/QuantityInput'
 
 const dateFilterOptions = [
   { value: 'today', label: 'Today' },
@@ -68,6 +69,7 @@ const SalesPage = () => {
     updateSaleItemCost,
     updateSaleItemPrice,
     updateSaleItemNote,
+    updateSaleItemQuantity,
 
     // for date
     date,
@@ -236,8 +238,9 @@ const SalesPage = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Item</TableHead>
-                    <TableHead>Buy Price each</TableHead>
-                    <TableHead>Sell Price total</TableHead>
+                    <TableHead>Cost</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead>Revenue</TableHead>
                     <TableHead>Quantity</TableHead>
                     <TableHead>Profit</TableHead>
                     <TableHead>Note</TableHead>
@@ -266,7 +269,24 @@ const SalesPage = () => {
                           }
                         />
                       </TableCell>
-                      <TableCell>{saleItem.quantity}</TableCell>
+                      <TableCell>
+                        <PriceInput
+                          amount={saleItem.revenue?.amount || 0}
+                          currency={saleItem.revenue?.currency || 'USD'}
+                          editable={false}
+                          onChange={(val) =>
+                            updateSaleItemPrice(sale.id, saleItem.id, val)
+                          }
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <QuantityInput
+                          quantity={saleItem.quantity}
+                          onChange={function (val: number): void {
+                            updateSaleItemQuantity(sale.id, saleItem.id, val)
+                          }}
+                        />
+                      </TableCell>
                       <TableCell>
                         {(
                           (saleItem.price?.amount ?? 0) -

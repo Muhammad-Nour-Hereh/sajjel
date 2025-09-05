@@ -111,10 +111,49 @@ const useSalesPage = () => {
     updateSaleMutation.mutate({ id: saleId, data: updateData })
   }
 
+  const updateSaleItemQuantity = (
+    saleId: number,
+    itemId: number,
+    quantity: number,
+  ) => {
+    const sale = sales.find((s) => s.id === saleId)
+    if (!sale) return
+
+    const updatedSaleItems = sale.saleItems.map((item) =>
+      item.id === itemId ? { ...item, quantity } : item,
+    )
+
+    const updateData: UpdateSaleRequest = {
+      saleItems: updatedSaleItems.map((item) => ({
+        item_id: item.item_id,
+        quantity: item.quantity,
+        cost: item.cost,
+        price: item.price,
+      })),
+    }
+
+    updateSaleMutation.mutate({ id: saleId, data: updateData })
+  }
+
   const updateSaleItemNote = (saleId: number, itemId: number, note: string) => {
-    // If your SaleItem model has a note field, you can implement this
-    // For now, this might need to be handled differently depending on your backend
-    console.log('Update note not implemented yet:', { saleId, itemId, note })
+    const sale = sales.find((s) => s.id === saleId)
+    if (!sale) return
+
+    const updatedSaleItems = sale.saleItems.map((item) =>
+      item.id === itemId ? { ...item, note } : item,
+    )
+
+    const updateData: UpdateSaleRequest = {
+      saleItems: updatedSaleItems.map((item) => ({
+        item_id: item.item_id,
+        quantity: item.quantity,
+        cost: item.cost,
+        price: item.price,
+        note: item.note,
+      })),
+    }
+
+    updateSaleMutation.mutate({ id: saleId, data: updateData })
   }
 
   const handleDateFilterChange = (filter: DateFilter) => {
@@ -220,9 +259,18 @@ const useSalesPage = () => {
   }, [])
 
   useEffect(() => {
-    const tc = sales.reduce((total, v) => total + (v.total_cost?.amount || 0), 0);
-    const tr = sales.reduce((total, v) => total + (v.total_revenue?.amount || 0), 0); 
-    const tp = sales.reduce((total, v) => total + (v.total_profit?.amount || 0), 0);  
+    const tc = sales.reduce(
+      (total, v) => total + (v.total_cost?.amount || 0),
+      0,
+    )
+    const tr = sales.reduce(
+      (total, v) => total + (v.total_revenue?.amount || 0),
+      0,
+    )
+    const tp = sales.reduce(
+      (total, v) => total + (v.total_profit?.amount || 0),
+      0,
+    )
 
     setQueryTotalCost(tc)
     setQueryTotalRevenue(tr)
@@ -256,6 +304,7 @@ const useSalesPage = () => {
     // for updating sale items
     updateSaleItemCost,
     updateSaleItemPrice,
+    updateSaleItemQuantity,
     updateSaleItemNote,
 
     // for date
