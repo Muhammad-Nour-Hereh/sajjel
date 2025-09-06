@@ -11,6 +11,11 @@ class BaseFormRequest extends FormRequest
 {
     use ResponseTrait;
 
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     public function failedValidation(Validator $validator)
     {
         $errors = $validator->errors()->toArray();

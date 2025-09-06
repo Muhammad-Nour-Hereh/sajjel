@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\SaleItem;
+
+use App\Http\Requests\BaseFormRequest;
 
 class ReorderSaleItemRequest extends BaseFormRequest
 {
-    public function authorize(): bool
-    {
-        return true; // Assuming you handle auth via middleware
-    }
-
     public function rules(): array
     {
         return [

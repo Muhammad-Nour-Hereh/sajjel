@@ -296,7 +296,7 @@ const SalesPage = () => {
                       </TableCell>
                       <TableCell>
                         <TextInput
-                          value={saleItem.note || ''}
+                          value={saleItem.note || ' '}
                           onChange={(val) =>
                             updateSaleItemNote(sale.id, saleItem.id, val)
                           }

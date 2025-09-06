@@ -1,21 +1,20 @@
 <?php
-namespace App\Http\Requests;
 
+namespace App\Http\Requests\Item;
+
+use App\Http\Requests\BaseFormRequest;
 use App\Traits\MoneyCastingTrait;
 
-class StoreItemRequest extends BaseFormRequest
+class PatchItemRequest extends BaseFormRequest
 {
     use MoneyCastingTrait;
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'model' => 'nullable|string|max:255',
+            'note' => 'nullable|string|max:1000',
 
             'cost' => 'nullable|array',
             'cost.amount' => 'required_with:cost|numeric|min:0',
@@ -24,9 +23,6 @@ class StoreItemRequest extends BaseFormRequest
             'price' => 'nullable|array',
             'price.amount' => 'required_with:price|numeric|min:0',
             'price.currency' => 'required_with:price|in:USD,LBP',
-
-            'thumbnail' => 'nullable|image|max:2048',
-            'note' => 'nullable|string|max:1000',
         ];
     }
 

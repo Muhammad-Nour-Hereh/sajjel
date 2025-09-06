@@ -1,23 +1,19 @@
 <?php
-namespace App\Http\Requests;
+namespace App\Http\Requests\Sale;
 
+use App\Http\Requests\BaseFormRequest;
 use App\Traits\MoneyCastingTrait;
 
 class StoreSaleRequest extends BaseFormRequest
 {
     use MoneyCastingTrait;
 
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     public function rules(): array
     {
         return [
             'sold_at' => 'sometimes|date',
             'saleItems' => 'required|array|min:1',
-            'saleItems.*.item_id' => 'nullable|exists:sale_items,id',
+            'saleItems.*.item_id' => 'nullable|exists:items,id',
             'saleItems.*.quantity' => 'required|integer|min:1',
             'saleItems.*.cost.amount' => 'nullable|numeric|min:0',
             'saleItems.*.cost.currency' => 'nullable|in:USD,LBP',

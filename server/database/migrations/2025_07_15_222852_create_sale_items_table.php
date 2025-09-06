@@ -12,10 +12,12 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('sale_id')->constrained('sales');
             $table->foreignId('item_id')->nullable()->constrained('items');
+            $table->string('name');
             $table->decimal('cost_amount', 15, 2);
             $table->enum('cost_currency', ['USD', 'LBP']);
             $table->decimal('price_amount', 15, 2);
             $table->enum('price_currency', ['USD', 'LBP']);
+            $table->string('note')->nullable();
             $table->unsignedInteger('quantity')->default(1);
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
-class RegisterRequest extends BaseFormRequest {
-    public function authorize() {
-        return true;
-    }
+use App\Http\Requests\BaseFormRequest;
 
-    public function rules() {
+class RegisterRequest extends BaseFormRequest
+{
+    public function rules()
+    {
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',

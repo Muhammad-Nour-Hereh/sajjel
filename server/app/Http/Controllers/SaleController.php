@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DateRangeRequest;
-use App\Http\Requests\PatchSaleRequest;
-use App\Http\Requests\StoreSaleRequest;
-use App\Http\Requests\UpdateSaleRequest;
+use App\Http\Requests\Sale\DateRangeRequest;
+use App\Http\Requests\Sale\PatchSaleRequest;
+use App\Http\Requests\Sale\StoreSaleRequest;
+use App\Http\Requests\Sale\UpdateSaleRequest;
 use App\Http\Resources\SaleResource;
 use App\Models\Sale;
 use App\Services\SaleService;

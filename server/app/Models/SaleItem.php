@@ -17,8 +17,10 @@ class SaleItem extends Model
     protected $fillable = [
         'sale_id',
         'item_id',
+        'name',
         'cost',
         'price',
+        'note',
         'quantity',
         'sort_order',
     ];
@@ -34,6 +36,7 @@ class SaleItem extends Model
         'cost' => AsMoney::class,
         'price' => AsMoney::class,
         'sort_order' => 'integer',
+        'quantity' => 'integer'
     ];
 
     protected $appends = ['revenue', 'profit'];
