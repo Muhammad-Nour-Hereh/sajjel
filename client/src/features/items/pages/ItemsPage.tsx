@@ -2,16 +2,11 @@ import useItemsPage from '@/features/items/hooks/useItemsPage'
 import SearchBar from '@/components/ui/Searchbar'
 import ItemCard from '../components/ItemCard'
 import CreateItemDialog from '@/features/items/components/CreateItemDialog'
+import useItemQueries from '@/remotes/tanstack/useItemQueries'
 
 const ItemsPage = () => {
-  const {
-    search,
-    setSearch,
-    filteredItems,
-    createItem,
-    updateItem,
-    updateThumbnail,
-  } = useItemsPage()
+  const { search, setSearch, filteredItems } = useItemsPage()
+  const { createItem, updateItem, updateThumbnail } = useItemQueries()
 
   return (
     <div className="p-4">

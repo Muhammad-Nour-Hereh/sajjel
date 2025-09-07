@@ -1,4 +1,5 @@
 import { Money } from '@/types/value-objects/Money'
+import { UpdateSaleItemRequest } from './saleItemRequests'
 
 export interface StoreSaleRequest {
   sold_at?: string
@@ -12,44 +13,9 @@ export interface StoreSaleRequest {
 
 export interface UpdateSaleRequest {
   sold_at?: string
-  saleItems?: {
-    item_id?: number | null
-    quantity: number
-    cost: Money
-    price: Money
-    note?: string
-  }[]
+  saleItems?: UpdateSaleItemRequest
 }
 
 export interface PatchSaleRequest {
   sold_at?: string
-}
-
-// Sale Item Requests
-export interface StoreSaleItemRequest {
-  item_id?: number | null
-  cost: Money
-  price: Money
-  quantity: number
-  sort_order?: number
-}
-
-export interface UpdateSaleItemRequest {
-  item_id?: number | null
-  cost: Money
-  price: Money
-  quantity: number
-  sort_order?: number
-}
-
-export interface PatchSaleItemRequest {
-  item_id?: number | null
-  cost?: Money
-  price?: Money
-  quantity?: number
-  sort_order?: number
-}
-
-export interface ReorderSaleItemRequest {
-  item_ids: number[]
 }

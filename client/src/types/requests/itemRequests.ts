@@ -6,11 +6,19 @@ export interface StoreItemRequest extends FormData {
   model?: string
   cost?: Money
   price?: Money
-  thumbnail?: File
   note?: string
+  thumbnail?: File
 }
 
 export interface UpdateItemRequest {
+  name: string
+  model?: string
+  cost?: Money
+  price?: Money
+  note?: string
+}
+
+export interface PatchItemRequest {
   name?: string
   model?: string
   note?: string
