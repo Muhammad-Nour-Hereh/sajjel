@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Item;
+namespace App\Http\Requests;
 
 use App\Http\Requests\BaseFormRequest;
 
-class UpdateItemThumbnailRequest extends BaseFormRequest
+class UpdateThumbnailRequest extends BaseFormRequest
 {
     public function rules(): array
     {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateItemThumbnailRequest;
+use App\Http\Requests\UpdateThumbnailRequest;
 use App\Services\ThumbnailService;
-use App\Http\Requests\StoreItemRequest;
-use App\Http\Requests\UpdateItemRequest;
+use App\Http\Requests\Item\StoreItemRequest;
+use App\Http\Requests\Item\UpdateItemRequest;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 
@@ -43,7 +43,7 @@ class ItemController extends Controller
         return $this->successResponse(new ItemResource($item));
     }
 
-    public function updateThumbnail(Item $item, UpdateItemThumbnailRequest $request)
+    public function updateThumbnail(Item $item, UpdateThumbnailRequest $request)
     {
         $file = $request->file('thumbnail');
         $path = $this->thumbnailService->replace($item->thumbnail, $file);
