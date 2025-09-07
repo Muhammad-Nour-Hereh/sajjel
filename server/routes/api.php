@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SaleItemController;
@@ -52,5 +53,25 @@ Route::group(["prefix" => "v1"], function () {
                 Route::patch('/reorder', [SaleItemController::class, 'reorder']);
             });
         });
+
+        // category
+        Route::prefix('category')->group(function () {
+            Route::get('/', [CategoryController::class, 'index']);
+            Route::post('/', [CategoryController::class, 'store']);
+            Route::get('/{category}', [CategoryController::class, 'show']);
+            // Route::put('/{category}', [CategoryController::class, 'update']);
+            Route::patch('/{category}', [CategoryController::class, 'patch']);
+            Route::patch('/{category}/update-thumbnail', action: [CategoryController::class, 'updateThumbnail']);
+            Route::delete('/{category}', [CategoryController::class, 'destroy']);
+
+            // for to add/remove item to a category
+            Route::post('/{category}/add-item/{item}', [CategoryController::class, 'addItem']);
+            Route::post('/{category}/remove-item/{item}', [CategoryController::class, 'removeItem']);
+
+            // for to add/remove category to a category
+            Route::post('/{parent}/add-subcategory/{child}', [CategoryController::class, 'addSubcategory']);
+            Route::post('/{parent}/remove-subcategory/{child}', [CategoryController::class, 'removeSubcategory']);
+        });
+
     });
 });

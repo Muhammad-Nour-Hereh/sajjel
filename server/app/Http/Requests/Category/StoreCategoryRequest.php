@@ -9,9 +9,9 @@ class StoreCategoryRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'thumbnail' => ['nullable', 'string'],
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'thumbnail' => 'nullable|image|max:2048',
         ];
     }
 }
