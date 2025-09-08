@@ -3,6 +3,7 @@ const UserRoutes = {
   HOME: '/home',
   ITEMS: '/items',
   SALES: '/sales',
+  CATEGORIES: '/categories',
   SETTINGS: '/settings',
   PROFILE: '/profile',
   HELP: '/help',

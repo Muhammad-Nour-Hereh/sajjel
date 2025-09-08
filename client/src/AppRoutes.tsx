@@ -16,6 +16,7 @@ import RootPage from './pages/RootPage'
 import SalesPage from './features/sales/pages/SalesPage'
 import HomePage from './features/home/pages/HomePage'
 import ComponentsPage from './pages/ComponentsPage'
+import CategoriesPage from './features/category/pages/CategoriesPage'
 
 const AppRoutes = () => {
   return (
@@ -33,6 +34,7 @@ const AppRoutes = () => {
         <Route path={UserRoutes.HOME} element={<HomePage />} />
         <Route path={UserRoutes.ITEMS} element={<ItemsPage />} />
         <Route path={UserRoutes.SALES} element={<SalesPage />} />
+        <Route path={UserRoutes.CATEGORIES} element={<CategoriesPage />} />
       </Route>
       <Route element={<DevLayout />}>
         <Route path={DevRoutes.COMPONENTS} element={<ComponentsPage />}></Route>
