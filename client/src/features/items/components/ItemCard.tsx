@@ -21,7 +21,7 @@ const ItemCard = ({
     <Card key={item.id} className="overflow-hidden hover:shadow-md transition">
       {item.thumbnail && (
         <EditImage
-          src={'http://localhost:8000/storage/' + item.thumbnail}
+          src={`${import.meta.env.VITE_STORAGE_BASE_URL}/${item.thumbnail}`}
           alt={item.name}
           editable={editable}
           onChange={async (file: File) => {

@@ -6,7 +6,7 @@ import useItemQueries from '@/http/tanstack/useItemQueries'
 
 const ItemsPage = () => {
   const { search, setSearch, filteredItems } = useItemsPage()
-  const { createItem, updateItem, updateThumbnail } = useItemQueries()
+  const { updateItem, updateThumbnail } = useItemQueries()
 
   return (
     <div className="p-4">
@@ -23,7 +23,7 @@ const ItemsPage = () => {
         ))}
       </div>
 
-      <CreateItemDialog createItem={createItem} />
+      <CreateItemDialog />
     </div>
   )
 }

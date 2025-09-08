@@ -9,18 +9,17 @@ import {
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { useRef, useState } from 'react'
+import useItemQueries from '@/http/tanstack/useItemQueries'
+import { StoreItemRequest } from '@/types/requests/itemRequests'
 
-interface Props {
-  createItem: Function
-}
-
-const CreateItemDialog = ({ createItem }: Props) => {
+const CreateItemDialog = () => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [open, setOpen] = useState(false)
+  const { createItem } = useItemQueries()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(e.currentTarget) as StoreItemRequest
     createItem(formData)
     setOpen(false)
   }
