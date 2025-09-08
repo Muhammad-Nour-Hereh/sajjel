@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { remote } from '@/remotes/remotes'
+import { remote } from '@/http/remotes'
 import {
   StoreCategoryRequest,
   PatchCategoryRequest,

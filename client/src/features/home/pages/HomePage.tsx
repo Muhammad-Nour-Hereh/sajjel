@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import useMainPage from '../hooks/useMainPage'
-import { remote } from '@/remotes/remotes'
+import { remote } from '@/http/remotes'
 import UserRoutes from '@/routes/UserRoutes'
 import GuestRoutes from '@/routes/GuestRoutes'
 

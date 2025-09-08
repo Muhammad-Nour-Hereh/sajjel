@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import useItemQueries from '@/remotes/tanstack/useItemQueries'
+import useItemQueries from '@/http/tanstack/useItemQueries'
 
 const useItemsPage = () => {
   const [search, setSearch] = useState('')

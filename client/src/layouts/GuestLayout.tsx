@@ -1,4 +1,4 @@
-import { remote } from '@/remotes/remotes'
+import { remote } from '@/http/remotes'
 import { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 

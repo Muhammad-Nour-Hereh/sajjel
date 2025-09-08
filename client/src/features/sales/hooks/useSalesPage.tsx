@@ -1,4 +1,4 @@
-import { remote } from '@/remotes/remotes'
+import { remote } from '@/http/remotes'
 import {
   PatchSaleRequest,
   UpdateSaleRequest,

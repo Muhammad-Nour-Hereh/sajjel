@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { validateEmail, validatePassword } from '../../../utils/validators'
-import { remote } from '../../../remotes/remotes'
+import { remote } from '../../../http/remotes'
 import UserRoutes from '@/routes/UserRoutes'
 import GuestRoutes from '@/routes/GuestRoutes'
-
 
 type FieldErrors = Record<string, string>
 
