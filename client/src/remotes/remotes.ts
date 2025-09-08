@@ -19,6 +19,11 @@ import {
   StoreSaleItemRequest,
   UpdateSaleItemRequest,
 } from '@/types/requests/saleItemRequests'
+import { Category } from '@/types/models/Category'
+import {
+  PatchCategoryRequest,
+  StoreCategoryRequest,
+} from '@/types/requests/categoryRequests'
 
 export const remote = {
   // Auth APIs:
@@ -192,6 +197,80 @@ export const remote = {
       request<void>({
         method: HttpMethod.DELETE,
         route: api.saleItems.destroy(saleId, itemId),
+        auth: true,
+      }),
+  },
+  category: {
+    index: () =>
+      request<Category[]>({
+        method: HttpMethod.GET,
+        route: api.category.index,
+        auth: true,
+      }),
+
+    store: (data: StoreCategoryRequest) =>
+      request<Category>({
+        method: HttpMethod.POST,
+        route: api.category.store,
+        body: data,
+        auth: true,
+      }),
+
+    show: (id: number) =>
+      request<Category>({
+        method: HttpMethod.GET,
+        route: api.category.show(id),
+        auth: true,
+      }),
+
+    patch: (id: number, data: PatchCategoryRequest) =>
+      request<Category>({
+        method: HttpMethod.PATCH,
+        route: api.category.patch(id),
+        body: data,
+        auth: true,
+      }),
+
+    updateThumbnail: (id: number, data: FormData) =>
+      request<Category>({
+        method: HttpMethod.PATCH,
+        route: api.category.updateThumbnail(id),
+        body: data,
+        auth: true,
+      }),
+
+    destroy: (id: number) =>
+      request<void>({
+        method: HttpMethod.DELETE,
+        route: api.category.destroy(id),
+        auth: true,
+      }),
+
+    addItem: (categoryId: number, itemId: number) =>
+      request<void>({
+        method: HttpMethod.POST,
+        route: api.category.addItem(categoryId, itemId),
+        auth: true,
+      }),
+
+    removeItem: (categoryId: number, itemId: number) =>
+      request<void>({
+        method: HttpMethod.POST,
+        route: api.category.removeItem(categoryId, itemId),
+        auth: true,
+      }),
+
+    addSubcategory: (parentId: number, childId: number) =>
+      request<void>({
+        method: HttpMethod.POST,
+        route: api.category.addSubcategory(parentId, childId),
+        auth: true,
+      }),
+
+    removeSubcategory: (parentId: number, childId: number) =>
+      request<void>({
+        method: HttpMethod.POST,
+        route: api.category.removeSubcategory(parentId, childId),
         auth: true,
       }),
   },
