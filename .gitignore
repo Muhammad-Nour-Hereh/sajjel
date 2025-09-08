@@ -1,0 +1,5 @@
+client/src/components/abstact/Editable.tsx
+client/src/components/common/inlineEditor.tsx
+client/src/components/common/InlineTextInput.tsx
+client/src/components/common/useInlineEditor.tsx
+client/src/components/inline/InlineNum.tsx
