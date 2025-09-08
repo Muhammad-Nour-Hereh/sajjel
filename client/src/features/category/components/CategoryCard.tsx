@@ -21,7 +21,7 @@ const CategoryCard = ({
     <Card className="overflow-hidden hover:shadow-md transition">
       {category.thumbnail && (
         <EditImage
-          src={`${import.meta.env.STORAGE_BASE_URL}/${category.thumbnail}`}
+          src={`${import.meta.env.VITE_STORAGE_BASE_URL}/${category.thumbnail}`}
           alt={category.name}
           editable={editable}
           onChange={async (file: File) => {

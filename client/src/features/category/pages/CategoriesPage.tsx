@@ -2,6 +2,7 @@ import SearchBar from '@/components/ui/Searchbar'
 import useCategoriesPage from '../hooks/useCategoriesPage'
 import CategoryCard from '../components/CategoryCard'
 import useCategoryQueries from '@/http/tanstack/useCategoryQueries'
+import CreateCategoryDialog from '../components/CreateCategoryDialog'
 
 const CategoriesPage = () => {
   const { search, setSearch, filteredcategories } = useCategoriesPage()
@@ -21,7 +22,7 @@ const CategoriesPage = () => {
         ))}
       </div>
 
-      {/* <CreateItemDialog createItem={createItem} /> */}
+      <CreateCategoryDialog />
     </div>
   )
 }
