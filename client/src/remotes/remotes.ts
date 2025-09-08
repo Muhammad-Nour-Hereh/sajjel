@@ -8,15 +8,17 @@ import {
   UpdateItemThumbnailRequest,
 } from '@/types/requests/itemRequests'
 import {
-  PatchSaleItemRequest,
   PatchSaleRequest,
-  ReorderSaleItemRequest,
-  StoreSaleItemRequest,
   StoreSaleRequest,
-  UpdateSaleItemRequest,
   UpdateSaleRequest,
 } from '@/types/requests/saleRequests'
 import { api } from './api'
+import {
+  PatchSaleItemRequest,
+  ReorderSaleItemRequest,
+  StoreSaleItemRequest,
+  UpdateSaleItemRequest,
+} from '@/types/requests/saleItemRequests'
 
 export const remote = {
   // Auth APIs:
