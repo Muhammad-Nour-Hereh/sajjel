@@ -206,7 +206,7 @@ export const remote = {
         method: HttpMethod.GET,
         route: api.category.index,
         auth: true,
-      }),
+      }).then((res) => res.data!),
 
     store: (data: StoreCategoryRequest) =>
       request<Category>({

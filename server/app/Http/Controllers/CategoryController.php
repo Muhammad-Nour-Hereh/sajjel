@@ -9,7 +9,7 @@ use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Models\Item;
 use App\Services\ThumbnailService;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
