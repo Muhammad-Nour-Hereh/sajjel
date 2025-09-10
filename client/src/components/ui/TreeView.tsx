@@ -10,7 +10,7 @@ import {
 import { cn } from '@/lib/utils'
 
 export interface TreeNode {
-  id: number
+  id: string
   name: string
   type: 'category' | 'item'
   children?: TreeNode[]

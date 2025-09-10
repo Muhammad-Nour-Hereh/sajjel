@@ -1,5 +1,5 @@
 import InlineNum from '@/components/inline/InlineNum'
-import { TreeNode, TreeView } from '@/components/ui/TreeView'
+import TreeView, { TreeNode } from '@/components/ui/TreeView'
 import { useState } from 'react'
 
 // Sample data structure

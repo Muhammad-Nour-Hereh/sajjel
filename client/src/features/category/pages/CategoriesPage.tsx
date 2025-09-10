@@ -3,6 +3,7 @@ import useCategoriesPage from '../hooks/useCategoriesPage'
 import CategoryCard from '../components/CategoryCard'
 import useCategoryQueries from '@/http/tanstack/useCategoryQueries'
 import CreateCategoryDialog from '../components/CreateCategoryDialog'
+import CategoriesTreeViewPage from './CategoriesTreeViewPage'
 
 const CategoriesPage = () => {
   const { search, setSearch, filteredcategories } = useCategoriesPage()
@@ -23,6 +24,8 @@ const CategoriesPage = () => {
       </div>
 
       <CreateCategoryDialog />
+      <hr className='m-10'/>
+      <CategoriesTreeViewPage />
     </div>
   )
 }
