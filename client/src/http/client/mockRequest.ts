@@ -5,6 +5,5 @@ export const mockRequest = async <T = any>({
   route,
   body,
 }: RequestParams): Promise<ResponseData<T>> => {
-
   return { error: true, message: `No mock implemented for ${method} ${route}` }
 }
