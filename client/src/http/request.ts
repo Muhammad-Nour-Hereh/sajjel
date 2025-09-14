@@ -8,7 +8,7 @@ export enum HttpMethod {
   DELETE = 'DELETE',
 }
 
-interface RequestParams {
+export interface RequestParams {
   method: keyof typeof HttpMethod
   route: string
   body?: any
