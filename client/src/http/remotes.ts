@@ -1,5 +1,5 @@
 import { Item } from '@/types/models/Item'
-import { request, HttpMethod } from './client/request'
+import { request, HttpMethod } from './request'
 import { Sale } from '@/types/models/Sale'
 import { LoginRequest, RegisterRequest } from '@/types/requests/authRequests'
 import {
