@@ -12,7 +12,7 @@ interface User {
 }
 
 let users: User[] = [
-  { id: 1, name: 'admin', email: 'admin@admin.com', password: '121212' },
+  { id: 1, name: 'admin', email: 'admin2@admin.com', password: '121212' },
 ]
 let currentId = 2
 
