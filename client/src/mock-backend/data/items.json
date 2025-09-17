@@ -1,137 +1,92 @@
 [
   {
     "id": 1,
-    "name": "iPhone 13",
-    "model": "A2633",
-    "thumbnail": "mock://items/1/1690000000000",
-    "note": "Blue, 128GB",
-    "cost": { "amount": 500, "currency": "USD" },
-    "price": { "amount": 650, "currency": "USD" }
+    "name": "iPhone 15 Pro",
+    "model": "A3101",
+    "note": "Latest iPhone with titanium build",
+    "cost": {
+      "amount": 75000,
+      "currency": "LBP"
+    },
+    "price": {
+      "amount": 85000,
+      "currency": "LBP"
+    },
+    "thumbnail": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&h=400&fit=crop"
   },
   {
     "id": 2,
-    "name": "Samsung Galaxy S22",
-    "model": "SM-S901B",
-    "thumbnail": "mock://items/2/1690000001000",
-    "note": "Phantom Black",
-    "cost": { "amount": 450, "currency": "USD" },
-    "price": { "amount": 580, "currency": "USD" }
+    "name": "Samsung Galaxy S24",
+    "model": "SM-S921B",
+    "note": "Flagship Android phone with AI features",
+    "cost": {
+      "amount": 70000,
+      "currency": "LBP"
+    },
+    "price": {
+      "amount": 80000,
+      "currency": "LBP"
+    },
+    "thumbnail": "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop"
   },
   {
     "id": 3,
-    "name": "Lenovo ThinkPad E14",
-    "model": "20RA",
-    "thumbnail": "mock://items/3/1690000002000",
-    "note": "i5/16GB/512GB",
-    "cost": { "amount": 800, "currency": "USD" },
-    "price": { "amount": 980, "currency": "USD" }
+    "name": "MacBook Air M3",
+    "model": "MBA13-M3-256",
+    "note": "13-inch laptop with Apple M3 chip",
+    "cost": {
+      "amount": 120000,
+      "currency": "LBP"
+    },
+    "price": {
+      "amount": 135000,
+      "currency": "LBP"
+    },
+    "thumbnail": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop"
   },
   {
     "id": 4,
-    "name": "Logitech MX Master 3",
-    "model": "910-005694",
-    "thumbnail": "mock://items/4/1690000003000",
-    "note": "Graphite",
-    "cost": { "amount": 65, "currency": "USD" },
-    "price": { "amount": 95, "currency": "USD" }
+    "name": "Nike Air Max 90",
+    "model": "CN8490-100",
+    "note": "Classic white sneakers",
+    "cost": {
+      "amount": 8500,
+      "currency": "LBP"
+    },
+    "price": {
+      "amount": 12000,
+      "currency": "LBP"
+    },
+    "thumbnail": "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop"
   },
   {
     "id": 5,
-    "name": "Apple AirPods Pro",
-    "model": "MWP22AM/A",
-    "thumbnail": "mock://items/5/1690000004000",
-    "note": "2nd Gen",
-    "cost": { "amount": 180, "currency": "USD" },
-    "price": { "amount": 249, "currency": "USD" }
+    "name": "Clean Code",
+    "model": "978-0132350884",
+    "note": "A handbook of agile software craftsmanship by Robert C. Martin",
+    "cost": {
+      "amount": 2500,
+      "currency": "LBP"
+    },
+    "price": {
+      "amount": 3500,
+      "currency": "LBP"
+    },
+    "thumbnail": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=400&fit=crop"
   },
   {
     "id": 6,
-    "name": "ADATA 1TB NVMe SSD",
-    "model": "SX8200 Pro",
-    "thumbnail": "mock://items/6/1690000005000",
-    "note": "PCIe 3.0",
-    "cost": { "amount": 58, "currency": "USD" },
-    "price": { "amount": 79, "currency": "USD" }
-  },
-  {
-    "id": 7,
-    "name": "Dell 24\" Monitor",
-    "model": "P2419H",
-    "thumbnail": "mock://items/7/1690000006000",
-    "note": "1080p IPS",
-    "cost": { "amount": 120, "currency": "USD" },
-    "price": { "amount": 165, "currency": "USD" }
-  },
-  {
-    "id": 8,
-    "name": "Canon PIXMA Printer",
-    "model": "G3411",
-    "thumbnail": "mock://items/8/1690000007000",
-    "note": "Ink Tank",
-    "cost": { "amount": 120, "currency": "USD" },
-    "price": { "amount": 155, "currency": "USD" }
-  },
-  {
-    "id": 9,
-    "name": "Seagate 2TB HDD",
-    "model": "ST2000DM008",
-    "thumbnail": "mock://items/9/1690000008000",
-    "note": "Barracuda",
-    "cost": { "amount": 38, "currency": "USD" },
-    "price": { "amount": 55, "currency": "USD" }
-  },
-  {
-    "id": 10,
-    "name": "Kingston 16GB DDR4",
-    "model": "KVR26N19S8/16",
-    "thumbnail": "mock://items/10/1690000009000",
-    "note": "2666MHz",
-    "cost": { "amount": 27, "currency": "USD" },
-    "price": { "amount": 39, "currency": "USD" }
-  },
-  {
-    "id": 11,
-    "name": "Wireless Keyboard",
-    "model": "MK270",
-    "thumbnail": "mock://items/11/1690000010000",
-    "note": "Logitech Combo",
-    "cost": { "amount": 16, "currency": "USD" },
-    "price": { "amount": 25, "currency": "USD" }
-  },
-  {
-    "id": 12,
-    "name": "TP-Link Archer C6",
-    "model": "AC1200",
-    "thumbnail": "mock://items/12/1690000011000",
-    "note": "Gigabit Router",
-    "cost": { "amount": 28, "currency": "USD" },
-    "price": { "amount": 42, "currency": "USD" }
-  },
-  {
-    "id": 13,
-    "name": "USB-C Hub 6-in-1",
-    "model": "HB060",
-    "thumbnail": "mock://items/13/1690000012000",
-    "note": "HDMI, 2xUSB3, SD",
-    "cost": { "amount": 14, "currency": "USD" },
-    "price": { "amount": 22, "currency": "USD" }
-  },
-  {
-    "id": 14,
-    "name": "Generic Phone Charger",
-    "model": "QC3.0-18W",
-    "thumbnail": "mock://items/14/1690000013000",
-    "note": "Quick Charge 3.0",
-    "cost": { "amount": 4, "currency": "USD" },
-    "price": { "amount": 8, "currency": "USD" }
-  },
-  {
-    "id": 15,
-    "name": "Office Chair",
-    "model": "Ergo-200",
-    "thumbnail": "mock://items/15/1690000014000",
-    "note": "Mesh Back",
-    "cost": { "amount": 35, "currency": "USD" },
-    "price": { "amount": 55, "currency": "USD" }
+    "name": "The Pragmatic Programmer",
+    "model": "978-0135957059",
+    "note": "20th Anniversary Edition",
+    "cost": {
+      "amount": 2800,
+      "currency": "LBP"
+    },
+    "price": {
+      "amount": 4000,
+      "currency": "LBP"
+    },
+    "thumbnail": "https://images.unsplash.com/photo-1589998059171-988d887df646?w=400&h=400&fit=crop"
   }
 ]

@@ -1,7 +1,6 @@
 // src/mock-backend/handlers/itemsHandler.ts
 import { http } from 'msw'
 import { api } from '@/http/api'
-
 import type { Item } from '@/types/models/Item'
 
 // seed from JSON (adjust the path if your setup differs)

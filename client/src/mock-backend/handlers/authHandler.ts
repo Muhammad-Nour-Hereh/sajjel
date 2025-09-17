@@ -11,9 +11,8 @@ interface User {
   password: string
 }
 
-let users: User[] = [
-  { id: 1, name: 'admin', email: 'admin2@admin.com', password: '121212' },
-]
+import usersSeed from '../data/users.json'
+let users: User[] = (usersSeed as User[]) ?? []
 let currentId = 2
 
 // --- helpers (keep mock outputs consistent with backend) ---

@@ -1,4 +1,70 @@
 [
-  { "id": 1, "name": "Item A", "price": 10 },
-  { "id": 2, "name": "Item B", "price": 20 }
+  {
+    "id": 1,
+    "name": "Electronics",
+    "description": "Electronic devices and accessories",
+    "thumbnail": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=300&fit=crop",
+    "children": [
+      {
+        "id": 4,
+        "name": "Mobile Phones",
+        "description": "Smartphones and basic phones",
+        "thumbnail": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop",
+        "children": [],
+        "items": [],
+        "children_count": 0,
+        "items_count": 2,
+        "level": 1
+      },
+      {
+        "id": 5,
+        "name": "Laptops",
+        "description": "Portable computers and accessories",
+        "thumbnail": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop",
+        "children": [],
+        "items": [],
+        "children_count": 0,
+        "items_count": 1,
+        "level": 1
+      }
+    ],
+    "items": [],
+    "children_count": 2,
+    "items_count": 0,
+    "level": 0
+  },
+  {
+    "id": 2,
+    "name": "Clothing",
+    "description": "Apparel and fashion items",
+    "thumbnail": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=300&fit=crop",
+    "children": [
+      {
+        "id": 6,
+        "name": "Men's Clothing",
+        "description": "Clothing for men",
+        "thumbnail": "https://images.unsplash.com/photo-1516826957135-700dedea698c?w=400&h=300&fit=crop",
+        "children": [],
+        "items": [],
+        "children_count": 0,
+        "items_count": 1,
+        "level": 1
+      }
+    ],
+    "items": [],
+    "children_count": 1,
+    "items_count": 0,
+    "level": 0
+  },
+  {
+    "id": 3,
+    "name": "Books",
+    "description": "Physical and digital books",
+    "thumbnail": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop",
+    "children": [],
+    "items": [],
+    "children_count": 0,
+    "items_count": 2,
+    "level": 0
+  }
 ]

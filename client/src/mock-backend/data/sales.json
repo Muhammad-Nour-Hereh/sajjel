@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "date": "2024-09-15",
+    "time": "14:30:00",
+    "total_cost": {
+      "amount": 75000,
+      "currency": "LBP"
+    },
+    "total_revenue": {
+      "amount": 85000,
+      "currency": "LBP"
+    },
+    "total_profit": {
+      "amount": 10000,
+      "currency": "LBP"
+    },
+    "saleItems": [
+      {
+        "id": 1,
+        "item_id": 1,
+        "name": "iPhone 15 Pro",
+        "model": "A3101",
+        "note": "Customer wanted space black color",
+        "quantity": 1,
+        "cost": {
+          "amount": 75000,
+          "currency": "LBP"
+        },
+        "price": {
+          "amount": 85000,
+          "currency": "LBP"
+        },
+        "revenue": {
+          "amount": 85000,
+          "currency": "LBP"
+        },
+        "profit": {
+          "amount": 10000,
+          "currency": "LBP"
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "date": "2024-09-16",
+    "time": "10:15:00",
+    "total_cost": {
+      "amount": 190000,
+      "currency": "LBP"
+    },
+    "total_revenue": {
+      "amount": 215000,
+      "currency": "LBP"
+    },
+    "total_profit": {
+      "amount": 25000,
+      "currency": "LBP"
+    },
+    "saleItems": [
+      {
+        "id": 2,
+        "item_id": 2,
+        "name": "Samsung Galaxy S24",
+        "model": "SM-S921B",
+        "note": "Unlocked version",
+        "quantity": 1,
+        "cost": {
+          "amount": 70000,
+          "currency": "LBP"
+        },
+        "price": {
+          "amount": 80000,
+          "currency": "LBP"
+        },
+        "revenue": {
+          "amount": 80000,
+          "currency": "LBP"
+        },
+        "profit": {
+          "amount": 10000,
+          "currency": "LBP"
+        }
+      },
+      {
+        "id": 3,
+        "item_id": 3,
+        "name": "MacBook Air M3",
+        "model": "MBA13-M3-256",
+        "note": "With AppleCare+",
+        "quantity": 1,
+        "cost": {
+          "amount": 120000,
+          "currency": "LBP"
+        },
+        "price": {
+          "amount": 135000,
+          "currency": "LBP"
+        },
+        "revenue": {
+          "amount": 135000,
+          "currency": "LBP"
+        },
+        "profit": {
+          "amount": 15000,
+          "currency": "LBP"
+        }
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "date": "2024-09-17",
+    "time": "16:45:00",
+    "total_cost": {
+      "amount": 17000,
+      "currency": "LBP"
+    },
+    "total_revenue": {
+      "amount": 22500,
+      "currency": "LBP"
+    },
+    "total_profit": {
+      "amount": 5500,
+      "currency": "LBP"
+    },
+    "saleItems": [
+      {
+        "id": 4,
+        "item_id": 4,
+        "name": "Nike Air Max 90",
+        "model": "CN8490-100",
+        "note": "Size 42 EU",
+        "quantity": 1,
+        "cost": {
+          "amount": 8500,
+          "currency": "LBP"
+        },
+        "price": {
+          "amount": 12000,
+          "currency": "LBP"
+        },
+        "revenue": {
+          "amount": 12000,
+          "currency": "LBP"
+        },
+        "profit": {
+          "amount": 3500,
+          "currency": "LBP"
+        }
+      },
+      {
+        "id": 5,
+        "item_id": 5,
+        "name": "Clean Code",
+        "model": "978-0132350884",
+        "note": "Programming book for student",
+        "quantity": 3,
+        "cost": {
+          "amount": 2500,
+          "currency": "LBP"
+        },
+        "price": {
+          "amount": 3500,
+          "currency": "LBP"
+        },
+        "revenue": {
+          "amount": 10500,
+          "currency": "LBP"
+        },
+        "profit": {
+          "amount": 3000,
+          "currency": "LBP"
+        }
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "date": "2024-09-17",
+    "time": "09:20:00",
+    "total_cost": {
+      "amount": 5600,
+      "currency": "LBP"
+    },
+    "total_revenue": {
+      "amount": 8000,
+      "currency": "LBP"
+    },
+    "total_profit": {
+      "amount": 2400,
+      "currency": "LBP"
+    },
+    "saleItems": [
+      {
+        "id": 6,
+        "item_id": 6,
+        "name": "The Pragmatic Programmer",
+        "model": "978-0135957059",
+        "note": "20th Anniversary Edition",
+        "quantity": 2,
+        "cost": {
+          "amount": 2800,
+          "currency": "LBP"
+        },
+        "price": {
+          "amount": 4000,
+          "currency": "LBP"
+        },
+        "revenue": {
+          "amount": 8000,
+          "currency": "LBP"
+        },
+        "profit": {
+          "amount": 2400,
+          "currency": "LBP"
+        }
+      }
+    ]
+  }
+]
