@@ -22,10 +22,6 @@ const parseMaybeJSON = <T = unknown>(
   }
 }
 
-// Helper to convert API paths to MSW route patterns
-const mockUrl = (pathWithId: string) =>
-  url(pathWithId.replace(/\/\d+/g, '/:id'))
-
 // Use real Unsplash images instead of mock URLs
 const getProductImage = (id: number) => {
   const images = [
@@ -73,7 +69,7 @@ export const itemsHandlers = [
   }),
 
   // GET /items/:id
-  http.get(mockUrl(api.items.show(0)), async ({ params }) => {
+  http.get(url(api.items.show), async ({ params }) => {
     const id = Number(params.id)
     const item = items.find((i) => i.id === id)
     if (!item) return fail('Item not found', 404)
@@ -81,7 +77,7 @@ export const itemsHandlers = [
   }),
 
   // PUT /items/:id (JSON)
-  http.put(mockUrl(api.items.update(0)), async ({ request, params }) => {
+  http.put(url(api.items.update), async ({ request, params }) => {
     const id = Number(params.id)
     const idx = items.findIndex((i) => i.id === id)
     if (idx === -1) return fail('Item not found', 404)
@@ -92,26 +88,23 @@ export const itemsHandlers = [
   }),
 
   // POST /items/:id/update-thumbnail (FormData; wrapper sends PATCH as POST)
-  http.post(
-    mockUrl(api.items.updateThumbnail(0)),
-    async ({ request, params }) => {
-      const id = Number(params.id)
-      const idx = items.findIndex((i) => i.id === id)
-      if (idx === -1) return fail('Item not found', 404)
+  http.post(url(api.items.updateThumbnail), async ({ request, params }) => {
+    const id = Number(params.id)
+    const idx = items.findIndex((i) => i.id === id)
+    if (idx === -1) return fail('Item not found', 404)
 
-      const form = await request.formData()
-      const file = form.get('thumbnail')
-      const hasFile = file instanceof File && file.size > 0
+    const form = await request.formData()
+    const file = form.get('thumbnail')
+    const hasFile = file instanceof File && file.size > 0
 
-      const newThumb = hasFile ? getProductImage(id) : undefined
-      items[idx] = { ...items[idx], thumbnail: newThumb }
+    const newThumb = hasFile ? getProductImage(id) : undefined
+    items[idx] = { ...items[idx], thumbnail: newThumb }
 
-      return ok<{ thumbnail: string }>({ thumbnail: newThumb ?? '' })
-    },
-  ),
+    return ok<{ thumbnail: string }>({ thumbnail: newThumb ?? '' })
+  }),
 
   // DELETE /items/:id
-  http.delete(mockUrl(api.items.destroy(0)), async ({ params }) => {
+  http.delete(url(api.items.destroy), async ({ params }) => {
     const id = Number(params.id)
     const idx = items.findIndex((i) => i.id === id)
     if (idx === -1) return fail('Item not found', 404)

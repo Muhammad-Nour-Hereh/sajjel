@@ -113,7 +113,7 @@ export const salesHandlers = [
   }),
 
   // GET /sales/:id
-  http.get(url(api.sales.show(0)).replace('/0', '/:id'), async ({ params }) => {
+  http.get(url(api.sales.show), async ({ params }) => {
     const id = Number(params.id)
     const sale = sales.find((s) => s.id === id)
     if (!sale) return fail('Sale not found', 404)
@@ -121,63 +121,54 @@ export const salesHandlers = [
   }),
 
   // PUT /sales/:id
-  http.put(
-    url(api.sales.update(0)).replace('/0', '/:id'),
-    async ({ request, params }) => {
-      const id = Number(params.id)
-      const idx = sales.findIndex((s) => s.id === id)
-      if (idx === -1) return fail('Sale not found', 404)
+  http.put(url(api.sales.update), async ({ request, params }) => {
+    const id = Number(params.id)
+    const idx = sales.findIndex((s) => s.id === id)
+    if (idx === -1) return fail('Sale not found', 404)
 
-      const body = (await request.json()) as UpdateSaleRequest
+    const body = (await request.json()) as UpdateSaleRequest
 
-      // Update date/time if provided
-      if (body.sold_at) {
-        const date = body.sold_at.split('T')[0]
-        const time = body.sold_at.split('T')[1]?.split('.')[0] || '00:00:00'
-        sales[idx].date = date
-        sales[idx].time = time
-      }
+    // Update date/time if provided
+    if (body.sold_at) {
+      const date = body.sold_at.split('T')[0]
+      const time = body.sold_at.split('T')[1]?.split('.')[0] || '00:00:00'
+      sales[idx].date = date
+      sales[idx].time = time
+    }
 
-      // Note: In real backend, you'd handle saleItems updates here
-      // For mock, we keep it simple and just update date/time
+    // Note: In real backend, you'd handle saleItems updates here
+    // For mock, we keep it simple and just update date/time
 
-      return ok<Sale>(sales[idx])
-    },
-  ),
+    return ok<Sale>(sales[idx])
+  }),
 
   // PATCH /sales/:id
-  http.patch(
-    url(api.sales.patch(0)).replace('/0', '/:id'),
-    async ({ request, params }) => {
-      const id = Number(params.id)
-      const idx = sales.findIndex((s) => s.id === id)
-      if (idx === -1) return fail('Sale not found', 404)
+  http.patch(url(api.sales.patch), async ({ request, params }) => {
+    const id = Number(params.id)
+    const idx = sales.findIndex((s) => s.id === id)
+    if (idx === -1) return fail('Sale not found', 404)
 
-      const updates = (await request.json()) as PatchSaleRequest
+    const updates = (await request.json()) as PatchSaleRequest
 
-      if (updates.sold_at) {
-        const date = updates.sold_at.split('T')[0]
-        const time = updates.sold_at.split('T')[1]?.split('.')[0] || '00:00:00'
-        sales[idx].date = date
-        sales[idx].time = time
-      }
+    if (updates.sold_at) {
+      const date = updates.sold_at.split('T')[0]
+      const time = updates.sold_at.split('T')[1]?.split('.')[0] || '00:00:00'
+      sales[idx].date = date
+      sales[idx].time = time
+    }
 
-      return ok<Sale>(sales[idx])
-    },
-  ),
+    return ok<Sale>(sales[idx])
+  }),
 
   // DELETE /sales/:id
-  http.delete(
-    url(api.sales.destroy(0)).replace('/0', '/:id'),
-    async ({ params }) => {
-      const id = Number(params.id)
-      const idx = sales.findIndex((s) => s.id === id)
-      if (idx === -1) return fail('Sale not found', 404)
+  http.delete(url(api.sales.destroy), async ({ params }) => {
+    const id = Number(params.id)
+    const idx = sales.findIndex((s) => s.id === id)
+    if (idx === -1) return fail('Sale not found', 404)
 
-      sales.splice(idx, 1)
-      return noContent()
-    },
-  ),
+    sales.splice(idx, 1)
+    return noContent()
+  }),
 ]
 
 export default salesHandlers

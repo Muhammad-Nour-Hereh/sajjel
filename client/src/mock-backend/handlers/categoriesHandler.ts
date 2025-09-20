@@ -46,68 +46,53 @@ export const categoriesHandlers = [
   }),
 
   // GET /category/:id
-  http.get(
-    url(api.category.show(0)).replace('/0', '/:id'),
-    async ({ params }) => {
-      const id = Number(params.id)
-      const category = categories.find((c) => c.id === id)
-      if (!category) return fail('Category not found', 404)
-      return ok<Category>(category)
-    },
-  ),
+  http.get(url(api.category.show), async ({ params }) => {
+    const id = Number(params.id)
+    const category = categories.find((c) => c.id === id)
+    if (!category) return fail('Category not found', 404)
+    return ok<Category>(category)
+  }),
 
   // PATCH /category/:id
-  http.patch(
-    url(api.category.patch(0)).replace('/0', '/:id'),
-    async ({ request, params }) => {
-      const id = Number(params.id)
-      const idx = categories.findIndex((c) => c.id === id)
-      if (idx === -1) return fail('Category not found', 404)
+  http.patch(url(api.category.patch), async ({ request, params }) => {
+    const id = Number(params.id)
+    const idx = categories.findIndex((c) => c.id === id)
+    if (idx === -1) return fail('Category not found', 404)
 
-      const updates = (await request.json()) as PatchCategoryRequest
-      categories[idx] = { ...categories[idx], ...updates }
-      return ok<Category>(categories[idx])
-    },
-  ),
+    const updates = (await request.json()) as PatchCategoryRequest
+    categories[idx] = { ...categories[idx], ...updates }
+    return ok<Category>(categories[idx])
+  }),
 
   // POST /category/:id/update-thumbnail
-  http.post(
-    url(api.category.updateThumbnail(0)).replace('/0', '/:id'),
-    async ({ request, params }) => {
-      const id = Number(params.id)
-      const idx = categories.findIndex((c) => c.id === id)
-      if (idx === -1) return fail('Category not found', 404)
+  http.post(url(api.category.updateThumbnail), async ({ request, params }) => {
+    const id = Number(params.id)
+    const idx = categories.findIndex((c) => c.id === id)
+    if (idx === -1) return fail('Category not found', 404)
 
-      const form = await request.formData()
-      const file = form.get('thumbnail')
-      const hasFile = file instanceof File && file.size > 0
+    const form = await request.formData()
+    const file = form.get('thumbnail')
+    const hasFile = file instanceof File && file.size > 0
 
-      const newThumb = hasFile ? mockThumbUrl(id) : undefined
-      categories[idx] = { ...categories[idx], thumbnail: newThumb }
+    const newThumb = hasFile ? mockThumbUrl(id) : undefined
+    categories[idx] = { ...categories[idx], thumbnail: newThumb }
 
-      return ok<{ thumbnail: string }>({ thumbnail: newThumb ?? '' })
-    },
-  ),
+    return ok<{ thumbnail: string }>({ thumbnail: newThumb ?? '' })
+  }),
 
   // DELETE /category/:id
-  http.delete(
-    url(api.category.destroy(0)).replace('/0', '/:id'),
-    async ({ params }) => {
-      const id = Number(params.id)
-      const idx = categories.findIndex((c) => c.id === id)
-      if (idx === -1) return fail('Category not found', 404)
+  http.delete(url(api.category.destroy), async ({ params }) => {
+    const id = Number(params.id)
+    const idx = categories.findIndex((c) => c.id === id)
+    if (idx === -1) return fail('Category not found', 404)
 
-      categories.splice(idx, 1)
-      return noContent()
-    },
-  ),
+    categories.splice(idx, 1)
+    return noContent()
+  }),
 
   // POST /category/:categoryId/add-item/:itemId
   http.post(
-    url(api.category.addItem(0, 0)).replace(
-      '/0/add-item/0',
-      '/:categoryId/add-item/:itemId',
-    ),
+    url(api.category.addItem, 'categorId', 'ItemId'),
     async ({ params }) => {
       const categoryId = Number(params.categoryId)
       const itemId = Number(params.itemId)
@@ -130,10 +115,7 @@ export const categoriesHandlers = [
 
   // POST /category/:categoryId/remove-item/:itemId
   http.post(
-    url(api.category.removeItem(0, 0)).replace(
-      '/0/remove-item/0',
-      '/:categoryId/remove-item/:itemId',
-    ),
+    url(api.category.addItem, 'categorId', 'ItemId'),
     async ({ params }) => {
       const categoryId = Number(params.categoryId)
       const itemId = Number(params.itemId)
@@ -152,10 +134,7 @@ export const categoriesHandlers = [
 
   // POST /category/:parentId/add-subcategory/:childId
   http.post(
-    url(api.category.addSubcategory(0, 0)).replace(
-      '/0/add-subcategory/0',
-      '/:parentId/add-subcategory/:childId',
-    ),
+    url(api.category.addItem, 'parentId', 'childId'),
     async ({ params }) => {
       const parentId = Number(params.parentId)
       const childId = Number(params.childId)
@@ -180,10 +159,7 @@ export const categoriesHandlers = [
 
   // POST /category/:parentId/remove-subcategory/:childId
   http.post(
-    url(api.category.removeSubcategory(0, 0)).replace(
-      '/0/remove-subcategory/0',
-      '/:parentId/remove-subcategory/:childId',
-    ),
+    url(api.category.addItem, 'parentId', 'childId'),
     async ({ params }) => {
       const parentId = Number(params.parentId)
       const childId = Number(params.childId)
