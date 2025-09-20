@@ -26,9 +26,9 @@ const unauthorized = () =>
     { status: 401 },
   )
 
-const forbidden = () =>
+const forbidden = (message: string = 'Forbidden') =>
   HttpResponse.json<ResponseData>(
-    { success: 'false', message: 'Forbidden', data: null },
+    { success: 'false', message, data: null },
     { status: 403 },
   )
 

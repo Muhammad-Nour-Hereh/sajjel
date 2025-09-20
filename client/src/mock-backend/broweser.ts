@@ -4,6 +4,8 @@ import { forbidden } from './utils/responses'
 import { http } from 'msw'
 
 // You can optionally add a global catch-all here AFTER your handlers:
-const catchAll = http.all('*', () => forbidden())
+const catchAll = http.all('*', ({ request }) => {
+  return forbidden(`unregistered route: ${request.url}`)
+})
 
 export const worker = setupWorker(...handlers, catchAll)
