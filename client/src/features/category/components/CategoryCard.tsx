@@ -3,6 +3,7 @@ import EditImage from '@/components/ui/EditImage'
 import { TextInput } from '@/components/ui/TextInput'
 import { Category } from '@/types/models/Category'
 import { PatchCategoryRequest } from '@/types/requests/categoryRequests'
+import { getImageUrl } from '@/utils/imageUrl.ts'
 
 interface Props {
   category: Category
@@ -21,7 +22,7 @@ const CategoryCard = ({
     <Card className="overflow-hidden hover:shadow-md transition">
       {category.thumbnail && (
         <EditImage
-          src={`${import.meta.env.VITE_STORAGE_BASE_URL}/${category.thumbnail}`}
+          src={getImageUrl(category.thumbnail)} 
           alt={category.name}
           editable={editable}
           onChange={async (file: File) => {

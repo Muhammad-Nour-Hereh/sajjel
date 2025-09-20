@@ -3,6 +3,7 @@ import EditImage from '@/components/ui/EditImage'
 import { PriceInput } from '@/components/ui/PriceInput'
 import { TextInput } from '@/components/ui/TextInput'
 import { Item } from '@/types/models/Item'
+import { getImageUrl } from '@/utils/imageUrl.ts'
 
 interface props {
   item: Item
@@ -21,7 +22,7 @@ const ItemCard = ({
     <Card key={item.id} className="overflow-hidden hover:shadow-md transition">
       {item.thumbnail && (
         <EditImage
-          src={`${import.meta.env.VITE_STORAGE_BASE_URL}/${item.thumbnail}`}
+          src={getImageUrl(item.thumbnail)}
           alt={item.name}
           editable={editable}
           onChange={async (file: File) => {
