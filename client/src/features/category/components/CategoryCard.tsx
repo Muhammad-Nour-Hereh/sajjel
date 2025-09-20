@@ -3,7 +3,7 @@ import EditImage from '@/components/ui/EditImage'
 import { TextInput } from '@/components/ui/TextInput'
 import { Category } from '@/types/models/Category'
 import { PatchCategoryRequest } from '@/types/requests/categoryRequests'
-import { getImageUrl } from '@/utils/imageUrl.ts'
+import { getImageUrl } from '@/utils/imageUrl'
 
 interface Props {
   category: Category

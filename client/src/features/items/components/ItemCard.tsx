@@ -3,7 +3,7 @@ import EditImage from '@/components/ui/EditImage'
 import { PriceInput } from '@/components/ui/PriceInput'
 import { TextInput } from '@/components/ui/TextInput'
 import { Item } from '@/types/models/Item'
-import { getImageUrl } from '@/utils/imageUrl.ts'
+import { getImageUrl } from '@/utils/imageUrl'
 
 interface props {
   item: Item
