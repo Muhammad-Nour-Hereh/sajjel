@@ -2,7 +2,7 @@ import { http } from 'msw'
 import { api } from '@/http/api'
 import { LoginRequest, RegisterRequest } from '@/types/requests/authRequests'
 import { fail, noContent, ok } from '../utils/responses'
-import { url } from '../utils/utils'
+import { Id, url } from '../utils/utils'
 
 interface User {
   id: number
@@ -13,7 +13,7 @@ interface User {
 
 import usersSeed from '../data/users.json'
 let users: User[] = (usersSeed as User[]) ?? []
-let currentId = 2
+const curId = new Id(users)
 
 // --- helpers (keep mock outputs consistent with backend) ---
 const makeToken = (userId: number) => `mock-token-${userId}`
@@ -35,7 +35,7 @@ const authHandlers = [
       return fail('email already registered.', 409)
     }
 
-    const user: User = { id: currentId++, name, email, password }
+    const user: User = { id: curId.nextId(), name, email, password }
     users.push(user)
 
     const token = makeToken(user.id)

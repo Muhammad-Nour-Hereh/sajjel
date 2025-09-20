@@ -5,12 +5,10 @@ import type { Item } from '@/types/models/Item'
 // seed from JSON (adjust the path if your setup differs)
 import itemsSeed from '../data/items.json'
 import { fail, noContent, ok } from '../utils/responses'
-import { url } from '../utils/utils'
+import { Id, url } from '../utils/utils'
 
 let items: Item[] = (itemsSeed as Item[]) ?? []
-
-const nextId = () =>
-  items.length ? Math.max(...items.map((i) => i.id)) + 1 : 1
+const curId = new Id(items)
 
 const parseMaybeJSON = <T = unknown>(
   val: FormDataEntryValue | null,
@@ -52,7 +50,7 @@ export const itemsHandlers = [
     const form = await request.formData()
     const name = (form.get('name') as string) || ''
 
-    const id = nextId()
+    const id = curId.nextId()
     const model = (form.get('model') as string) || undefined
     const note = (form.get('note') as string) || undefined
     const cost = parseMaybeJSON<Item['cost']>(form.get('cost'))
