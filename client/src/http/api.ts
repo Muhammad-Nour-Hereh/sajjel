@@ -5,6 +5,21 @@ export const api = {
     me: '/auth/me',
     logout: '/auth/logout',
   },
+  user: {
+    // index: '/users',
+    // show: (id: number) => `/users/${id}`,
+    // update: (id: number) => `/users/${id}`,
+    // destroy: (id: number) => `/users/${id}`,
+    // // Change password endpoint
+    // changePassword: (id: number) => `/users/${id}/change-password`,
+
+    userPrivileges: {
+      // Get privileges for a specific user
+      show: (userId: number) => `/users/${userId}/privileges`,
+      // Update privileges for a specific user
+      update: (userId: number) => `/users/${userId}/privileges`,
+    },
+  },
   items: {
     index: '/items',
     store: '/items',

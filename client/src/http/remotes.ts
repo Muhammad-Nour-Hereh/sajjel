@@ -24,6 +24,8 @@ import {
   PatchCategoryRequest,
   StoreCategoryRequest,
 } from '@/types/requests/categoryRequests'
+import UserPrivileges from '@/types/models/UserPrivileges'
+import { UpdateUserPrivilegesRequest } from '@/types/requests/UserPrivilegesRequest'
 
 export const remote = {
   // Auth APIs:
@@ -55,6 +57,27 @@ export const remote = {
         route: api.auth.logout,
         auth: true,
       }),
+  },
+
+  // user apis
+  user: {
+    // user privileges apis
+    privileges: {
+      show: (userId: number): Promise<UserPrivileges> =>
+        request<UserPrivileges>({
+          method: HttpMethod.GET,
+          route: api.user.userPrivileges.show(userId),
+          auth: true,
+        }).then((res) => res.data!),
+
+      update: (userId: number, data: UpdateUserPrivilegesRequest) =>
+        request<UserPrivileges>({
+          method: HttpMethod.PUT,
+          route: api.user.userPrivileges.update(userId),
+          body: data,
+          auth: true,
+        }),
+    },
   },
 
   // Item APIs:
