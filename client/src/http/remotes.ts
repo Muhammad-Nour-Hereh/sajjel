@@ -26,6 +26,7 @@ import {
 } from '@/types/requests/categoryRequests'
 import UserPrivileges from '@/types/models/UserPrivileges'
 import { UpdateUserPrivilegesRequest } from '@/types/requests/UserPrivilegesRequest'
+import User from '@/types/models/User'
 
 export const remote = {
   // Auth APIs:
@@ -61,6 +62,20 @@ export const remote = {
 
   // user apis
   user: {
+    index: () =>
+      request<User[]>({
+        method: HttpMethod.GET,
+        route: api.user.index,
+        auth: true,
+      }).then((res) => res.data!),
+
+    show: (id: number) =>
+      request<User>({
+        method: HttpMethod.GET,
+        route: api.user.show(id),
+        auth: true,
+      }),
+
     // user privileges apis
     privileges: {
       show: (userId: number): Promise<UserPrivileges> =>

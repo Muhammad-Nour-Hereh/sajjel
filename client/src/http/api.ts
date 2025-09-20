@@ -6,8 +6,8 @@ export const api = {
     logout: '/auth/logout',
   },
   user: {
-    // index: '/users',
-    // show: (id: number) => `/users/${id}`,
+    index: '/users',
+    show: (id: number) => `/users/${id}`,
     // update: (id: number) => `/users/${id}`,
     // destroy: (id: number) => `/users/${id}`,
     // // Change password endpoint
