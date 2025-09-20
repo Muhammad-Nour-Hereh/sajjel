@@ -1,0 +1,17 @@
+[
+  {
+    "user_id": 1,
+    "cost": 0,
+    "inventory": 1
+  },
+  {
+    "user_id": 2,
+    "cost": 2,
+    "inventory": 2
+  },
+  {
+    "user_id": 3,
+    "cost": 1,
+    "inventory": 0
+  }
+]
