@@ -17,6 +17,8 @@ import SalesPage from './features/sales/pages/SalesPage'
 import HomePage from './features/home/pages/HomePage'
 import ComponentsPage from './pages/ComponentsPage'
 import CategoriesPage from './features/category/pages/CategoriesPage'
+import AdminLayout from './layouts/AdminLayout'
+import AdminRoutes from './routes/AdminRoutes'
 
 const AppRoutes = () => {
   return (
@@ -35,6 +37,9 @@ const AppRoutes = () => {
         <Route path={UserRoutes.ITEMS} element={<ItemsPage />} />
         <Route path={UserRoutes.SALES} element={<SalesPage />} />
         <Route path={UserRoutes.CATEGORIES} element={<CategoriesPage />} />
+      </Route>
+      <Route element={<AdminLayout />}>
+        <Route path={AdminRoutes.USERS_MANAGMENT} element={null} />
       </Route>
       <Route element={<DevLayout />}>
         <Route path={DevRoutes.COMPONENTS} element={<ComponentsPage />}></Route>
