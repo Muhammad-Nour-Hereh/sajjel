@@ -44,7 +44,7 @@ const HomePage = () => {
           Logout
         </li>
       </ul>
-      <hr />
+      <hr className="my-4" />
       <li
         onClick={() => {
           navigate(AdminRoutes.USERS_MANAGMENT)
