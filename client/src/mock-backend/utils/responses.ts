@@ -32,9 +32,9 @@ const forbidden = (message: string = 'Forbidden') =>
     { status: 403 },
   )
 
-const notFound = () =>
+const notFound = (message: string = 'not found') =>
   HttpResponse.json<ResponseData>(
-    { success: 'false', message: 'not found', data: null },
+    { success: 'false', message, data: null },
     { status: 404 },
   )
 
