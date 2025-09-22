@@ -18,6 +18,8 @@ const ItemCard = ({
   updateItem,
   updateThumbnail,
 }: props) => {
+  const privilege = 1
+
   return (
     <Card key={item.id} className="overflow-hidden hover:shadow-md transition">
       {item.thumbnail && (
@@ -54,17 +56,19 @@ const ItemCard = ({
           }
           editable={editable}
         />
-        <PriceInput
-          amount={item.cost?.amount || 0}
-          currency={item.cost?.currency || 'USD'}
-          editable={editable}
-          onChange={({ amount, currency }) =>
-            updateItem({
-              id: item.id,
-              data: { ...item, cost: { amount, currency } },
-            })
-          }
-        />
+        {privilege >= 2 && (
+          <PriceInput
+            amount={item.cost?.amount || 0}
+            currency={item.cost?.currency || 'USD'}
+            editable={editable}
+            onChange={({ amount, currency }) =>
+              updateItem({
+                id: item.id,
+                data: { ...item, cost: { amount, currency } },
+              })
+            }
+          />
+        )}
         <PriceInput
           amount={item.price?.amount || 0}
           currency={item.price?.currency || 'USD'}

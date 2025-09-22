@@ -5,7 +5,7 @@ import LoadingPage from '@/pages/LoadingPage'
 
 const UserLayout = () => {
   const [loading, setLoading] = useState(true)
-  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -16,7 +16,7 @@ const UserLayout = () => {
         localStorage.removeItem('access_token')
       }
 
-      setIsAuthorized(success)
+      setIsAuthenticated(success)
       setLoading(false)
     }
 
@@ -25,7 +25,7 @@ const UserLayout = () => {
 
   if (loading) return <LoadingPage />
 
-  return isAuthorized ? <Outlet /> : <Navigate to="/login" />
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
 }
 
 export default UserLayout

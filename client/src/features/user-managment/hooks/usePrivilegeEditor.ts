@@ -1,6 +1,6 @@
 import useUserPrivilegesQueries from '@/http/tanstack/useUserPrivilegesQueries'
 import User from '@/types/models/User'
-import PrivilegeLevel from '@/types/value-objects/PrivilegeLevel'
+import PrivilegeLevel from '@/types/value-objects/Privileges'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 

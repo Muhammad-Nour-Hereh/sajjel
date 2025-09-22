@@ -1,9 +1,7 @@
-import PrivilegeLevel from '../value-objects/PrivilegeLevel'
+import Privileges from '../value-objects/Privileges'
 
-interface UserPrivileges {
+interface UserPrivileges extends Privileges {
   user_id: number
-  cost: PrivilegeLevel
-  inventory: PrivilegeLevel
 }
 
 export default UserPrivileges

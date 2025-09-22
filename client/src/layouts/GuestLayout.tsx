@@ -4,7 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 const GuestLayout = () => {
   const [loading, setLoading] = useState(true)
-  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -15,7 +15,7 @@ const GuestLayout = () => {
         localStorage.removeItem('access_token')
       }
 
-      setIsAuthorized(success)
+      setIsAuthenticated(success)
       setLoading(false)
     }
 
@@ -24,7 +24,7 @@ const GuestLayout = () => {
 
   if (loading) return <div>Loading...</div>
 
-  return isAuthorized ? <Navigate to="/home" /> : <Outlet />
+  return isAuthenticated ? <Navigate to="/home" /> : <Outlet />
 }
 
 export default GuestLayout
