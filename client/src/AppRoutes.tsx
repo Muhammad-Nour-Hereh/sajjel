@@ -19,6 +19,7 @@ import ComponentsPage from './pages/ComponentsPage'
 import CategoriesPage from './features/category/pages/CategoriesPage'
 import AdminLayout from './layouts/AdminLayout'
 import AdminRoutes from './routes/AdminRoutes'
+import UsersManagementPage from './features/user-managment/pages/UsersManagementPage'
 
 const AppRoutes = () => {
   return (
@@ -39,7 +40,10 @@ const AppRoutes = () => {
         <Route path={UserRoutes.CATEGORIES} element={<CategoriesPage />} />
       </Route>
       <Route element={<AdminLayout />}>
-        <Route path={AdminRoutes.USERS_MANAGMENT} element={null} />
+        <Route
+          path={AdminRoutes.USERS_MANAGMENT}
+          element={<UsersManagementPage />}
+        />
       </Route>
       <Route element={<DevLayout />}>
         <Route path={DevRoutes.COMPONENTS} element={<ComponentsPage />}></Route>
