@@ -2,6 +2,7 @@ import useUserPrivilegesQueries from '@/http/tanstack/useUserPrivilegesQueries'
 import User from '@/types/models/User'
 import PrivilegeLevel from '@/types/value-objects/PrivilegeLevel'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 interface Props {
   user: User | null
@@ -25,8 +26,16 @@ export const usePrivilegeEditor = ({ user }: Props) => {
     }
   }, [userPrivileges])
 
-  const handleSave = () => {
-    updatePrivileges(privilegeForm)
+  const handleSave = async () => {
+    await updatePrivileges(privilegeForm)
+      .then(() => {
+        toast('Success', {
+          description: 'User updated successfully',
+        })
+      })
+      .catch(() => {
+        toast('Error', { description: 'Failed to update user' })
+      })
   }
 
   const updatePrivilege = (

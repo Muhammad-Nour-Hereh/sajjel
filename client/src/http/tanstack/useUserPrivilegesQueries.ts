@@ -15,7 +15,7 @@ const useUserPrivilegesQueries = (userId: number) => {
     enabled: !!userId, // Only run query if userId is provided
   })
 
-  const updatePrivileges = useMutation({
+  const updatePrivileges =  useMutation({
     mutationFn: (data: UpdateUserPrivilegesRequest) =>
       remote.user.privileges.update(userId, data),
     onSuccess: () => {
@@ -30,7 +30,7 @@ const useUserPrivilegesQueries = (userId: number) => {
     userPrivileges,
     isLoading,
     isError,
-    updatePrivileges: updatePrivileges.mutate,
+    updatePrivileges: updatePrivileges.mutateAsync,
     isUpdating: updatePrivileges.isPending,
   }
 }
