@@ -1,7 +1,7 @@
 import { setupWorker } from 'msw/browser'
 import { handlers } from '.'
 import { forbidden } from './utils/responses'
-import { http } from 'msw'
+import { delay, http } from 'msw'
 
 // Add back the catch-all but make it API-specific
 const catchAll = http.all(
@@ -11,7 +11,12 @@ const catchAll = http.all(
   },
 )
 
-const worker = setupWorker(...handlers, catchAll)
+const GLOBAL_DELAY = 500
+const globalDelay = http.all('*', async () => {
+  await delay(GLOBAL_DELAY)
+})
+
+const worker = setupWorker(globalDelay, ...handlers, catchAll)
 
 export async function enableMocking() {
   if (import.meta.env.VITE_USE_MOCK !== 'true') return
