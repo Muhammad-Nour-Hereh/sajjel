@@ -48,7 +48,7 @@ export function PrivilegeEditor({ user }: Props) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {[...Array(2)].map((_, i) => (
+            {[...Array(privilegeCategories.length)].map((_, i) => (
               <div
                 key={i}
                 className="flex items-center justify-between p-4 border rounded-lg">

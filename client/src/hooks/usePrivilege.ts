@@ -34,8 +34,21 @@ const usePrivileges = () => {
       inventoryPrivilege: new PrivilegeWrapper(
         privileges?.inventory ?? PrivilegeLevel.NONE,
       ),
+      itemPrivilege: new PrivilegeWrapper(
+        privileges?.item ?? PrivilegeLevel.NONE,
+      ),
+      categoryPrivilege: new PrivilegeWrapper(
+        privileges?.category ?? PrivilegeLevel.NONE,
+      ),
     }),
-    [privileges?.cost, privileges?.price, privileges?.inventory],
+    // dependencies array
+    [
+      privileges?.cost,
+      privileges?.price,
+      privileges?.inventory,
+      privileges?.item,
+      privileges?.category,
+    ],
   )
 }
 
