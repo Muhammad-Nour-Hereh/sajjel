@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import EditImage from '@/components/ui/EditImage'
 import { PriceInput } from '@/components/ui/PriceInput'
 import { TextInput } from '@/components/ui/TextInput'
+import usePrivileges from '@/hooks/usePrivilege'
 import { Item } from '@/types/models/Item'
 import { getImageUrl } from '@/utils/imageUrl'
 
@@ -18,7 +19,7 @@ const ItemCard = ({
   updateItem,
   updateThumbnail,
 }: props) => {
-  const privilege = 1
+  const { costPrivilege, pricePrivilege } = usePrivileges()
 
   return (
     <Card key={item.id} className="overflow-hidden hover:shadow-md transition">
@@ -56,11 +57,12 @@ const ItemCard = ({
           }
           editable={editable}
         />
-        {privilege >= 2 && (
+        {costPrivilege.canRead() && (
           <PriceInput
+            label="cost:"
             amount={item.cost?.amount || 0}
             currency={item.cost?.currency || 'USD'}
-            editable={editable}
+            editable={costPrivilege.canWrite()}
             onChange={({ amount, currency }) =>
               updateItem({
                 id: item.id,
@@ -69,17 +71,21 @@ const ItemCard = ({
             }
           />
         )}
-        <PriceInput
-          amount={item.price?.amount || 0}
-          currency={item.price?.currency || 'USD'}
-          editable={editable}
-          onChange={({ amount, currency }) =>
-            updateItem({
-              id: item.id,
-              data: { ...item, price: { amount, currency } },
-            })
-          }
-        />
+
+        {pricePrivilege.canRead() && (
+          <PriceInput
+            label="price:"
+            amount={item.price?.amount || 0}
+            currency={item.price?.currency || 'USD'}
+            editable={pricePrivilege.canWrite()}
+            onChange={({ amount, currency }) =>
+              updateItem({
+                id: item.id,
+                data: { ...item, price: { amount, currency } },
+              })
+            }
+          />
+        )}
       </CardContent>
     </Card>
   )

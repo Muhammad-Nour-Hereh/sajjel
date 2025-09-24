@@ -2,6 +2,7 @@ import { Currency } from '@/types/value-objects/Currency'
 import { useEffect, useRef, useState } from 'react'
 
 interface props {
+  label?: string
   amount: number
   currency: Currency
   editable?: boolean
@@ -9,6 +10,7 @@ interface props {
 }
 
 export const PriceInput = ({
+  label = '',
   amount,
   currency,
   editable = true,
@@ -68,7 +70,7 @@ export const PriceInput = ({
     </div>
   ) : (
     <p onDoubleClick={() => setEditing(true)} className="cursor-pointer">
-      {amount} {currency}
+      <b>{label}</b> {amount} {currency}
     </p>
   )
 }
