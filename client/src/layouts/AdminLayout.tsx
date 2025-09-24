@@ -16,10 +16,10 @@ const AdminLayout = () => {
   const isAdmin = user?.role === Role.ADMIN
 
   if (isLoading) return <LoadingPage />
-  
+
   if (!isAuthenticated) return <Navigate to="/login" />
-  
-  if (!isAdmin) return <ForbiddenPage />
+
+  if (!isAdmin) return <ForbiddenPage subtitle="Admin access required." />
 
   return <Outlet />
 }

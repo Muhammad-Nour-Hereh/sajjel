@@ -6,6 +6,8 @@ import CreateCategoryDialog from '../components/CreateCategoryDialog'
 import { Button } from '@/components/ui/button'
 import { LayoutGrid, TreePine } from 'lucide-react'
 import TreeView from '@/components/ui/TreeView'
+import ForbiddenPage from '@/pages/ForbiddenPage'
+import usePrivileges from '@/hooks/usePrivilege'
 
 const CategoriesPage = () => {
   const {
@@ -17,6 +19,17 @@ const CategoriesPage = () => {
     treeData,
   } = useCategoriesPage()
   const { patchCategory, updateThumbnail } = useCategoryQueries()
+  const { categoryPrivilege } = usePrivileges()
+
+  // check for perssion to view this page
+  if (!categoryPrivilege.canRead()) {
+    return (
+      <ForbiddenPage
+        title="Access Restricted"
+        message="You don't have permission to view categories."
+      />
+    )
+  }
 
   return (
     <div className="p-4">
@@ -62,7 +75,7 @@ const CategoriesPage = () => {
         </div>
       )}
 
-      <CreateCategoryDialog />
+      {categoryPrivilege.canWrite() && <CreateCategoryDialog />}
     </div>
   )
 }
