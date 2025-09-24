@@ -36,6 +36,7 @@ import {
   Trash2,
 } from 'lucide-react'
 import QuantityInput from '@/components/ui/QuantityInput'
+import usePrivileges from '@/hooks/usePrivilege'
 
 const dateFilterOptions = [
   { value: 'today', label: 'Today' },
@@ -81,6 +82,8 @@ const SalesPage = () => {
     queryTotalRevenue,
     queryTotalProfit,
   } = useSalesPage()
+
+  const { costPrivilege } = usePrivileges()
 
   return (
     <div className="p-6">
@@ -198,9 +201,11 @@ const SalesPage = () => {
                     {sale.date} - {sale.time}
                   </span>
                   <div className="text-sm text-muted-foreground">
-                    {`Total Cost: ${sale.total_cost?.amount} ${sale.total_cost?.currency} — `}
-                    {`Total Revenue: ${sale.total_revenue?.amount} ${sale.total_revenue?.currency} — `}
-                    {`Total Profit: ${sale.total_profit?.amount} ${sale.total_profit?.currency}`}
+                    {costPrivilege.canRead() &&
+                      `Total Cost: ${sale.total_cost?.amount} ${sale.total_cost?.currency} — `}
+                    {`Total Revenue: ${sale.total_revenue?.amount} ${sale.total_revenue?.currency} `}
+                    {costPrivilege.canRead() &&
+                      `— Total Profit: ${sale.total_profit?.amount} ${sale.total_profit?.currency}`}
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -238,11 +243,11 @@ const SalesPage = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Item</TableHead>
-                    <TableHead>Cost</TableHead>
+                    {costPrivilege.canRead() && <TableHead>Cost</TableHead>}
                     <TableHead>Price</TableHead>
                     <TableHead>Revenue</TableHead>
                     <TableHead>Quantity</TableHead>
-                    <TableHead>Profit</TableHead>
+                    {costPrivilege.canRead() && <TableHead>Profit</TableHead>}
                     <TableHead>Note</TableHead>
                     <TableHead></TableHead>
                   </TableRow>
@@ -251,15 +256,17 @@ const SalesPage = () => {
                   {sale.saleItems.map((saleItem) => (
                     <TableRow className="" key={saleItem.id}>
                       <TableCell>{saleItem.name}</TableCell>
-                      <TableCell>
-                        <PriceInput
-                          amount={saleItem.cost?.amount || 0}
-                          currency={saleItem.cost?.currency || 'USD'}
-                          onChange={(val) =>
-                            updateSaleItemCost(sale.id, saleItem.id, val)
-                          }
-                        />
-                      </TableCell>
+                      {costPrivilege.canRead() && (
+                        <TableCell>
+                          <PriceInput
+                            amount={saleItem.cost?.amount || 0}
+                            currency={saleItem.cost?.currency || 'USD'}
+                            onChange={(val) =>
+                              updateSaleItemCost(sale.id, saleItem.id, val)
+                            }
+                          />
+                        </TableCell>
+                      )}
                       <TableCell>
                         <PriceInput
                           amount={saleItem.price?.amount || 0}
@@ -287,13 +294,15 @@ const SalesPage = () => {
                           }}
                         />
                       </TableCell>
-                      <TableCell>
-                        {(
-                          (saleItem.price?.amount ?? 0) -
-                          (saleItem.cost?.amount ?? 0)
-                        ).toFixed(2)}{' '}
-                        {saleItem.price?.currency}
-                      </TableCell>
+                      {costPrivilege.canRead() && (
+                        <TableCell>
+                          {(
+                            (saleItem.price?.amount ?? 0) -
+                            (saleItem.cost?.amount ?? 0)
+                          ).toFixed(2)}{' '}
+                          {saleItem.price?.currency}
+                        </TableCell>
+                      )}
                       <TableCell>
                         <TextInput
                           value={saleItem.note || ' '}
