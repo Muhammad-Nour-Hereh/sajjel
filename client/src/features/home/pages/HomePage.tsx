@@ -5,10 +5,13 @@ import { remote } from '@/http/remotes'
 import UserRoutes from '@/routes/UserRoutes'
 import GuestRoutes from '@/routes/GuestRoutes'
 import AdminRoutes from '@/routes/AdminRoutes'
+import useRole from '@/hooks/useRole'
 
 const HomePage = () => {
   const { title } = useMainPage()
+  const { isAdmin } = useRole()
   const navigate = useNavigate()
+
   return (
     <div className="p-10">
       <h1 className="font-bold text-3xl">{title}</h1>
@@ -44,14 +47,18 @@ const HomePage = () => {
           Logout
         </li>
       </ul>
-      <hr className="my-4" />
-      <li
-        onClick={() => {
-          navigate(AdminRoutes.USERS_MANAGMENT)
-        }}
-        className="block cursor-pointer py-2 text-l font-bold select-none hover:text-gray-700">
-        user management
-      </li>
+      {isAdmin && (
+        <>
+          <hr className="my-4" />
+          <li
+            onClick={() => {
+              navigate(AdminRoutes.USERS_MANAGMENT)
+            }}
+            className="block cursor-pointer py-2 text-l font-bold select-none hover:text-gray-700">
+            user management
+          </li>
+        </>
+      )}
     </div>
   )
 }
