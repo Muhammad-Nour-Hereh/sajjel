@@ -4,20 +4,13 @@
     "name": "Admin User",
     "email": "admin@admin.com",
     "password": "121212",
-    "role": "Admin"
+    "role": "ADMIN"
   },
   {
     "id": 2,
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "password123",
-    "role": "User"
-  },
-  {
-    "id": 3,
-    "name": "Jane Smith",
-    "email": "jane@example.com",
-    "password": "mypassword",
-    "role": "User"
+    "name": "user",
+    "email": "user@user.com",
+    "password": "121212",
+    "role": "USER"
   }
 ]
