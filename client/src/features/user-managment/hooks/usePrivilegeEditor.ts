@@ -1,6 +1,6 @@
 import useUserPrivilegesQueries from '@/http/tanstack/useUserPrivilegesQueries'
 import User from '@/types/models/User'
-import PrivilegeLevel from '@/types/value-objects/Privileges'
+import PrivilegeLevel from '@/types/value-objects/PrivilegeLevel'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -13,6 +13,7 @@ export const usePrivilegeEditor = ({ user }: Props) => {
     useUserPrivilegesQueries(user?.id || 0)
   const [privilegeForm, setPrivilegeForm] = useState({
     cost: PrivilegeLevel.NONE,
+    price: PrivilegeLevel.NONE,
     inventory: PrivilegeLevel.NONE,
   })
 
@@ -21,6 +22,7 @@ export const usePrivilegeEditor = ({ user }: Props) => {
     if (userPrivileges) {
       setPrivilegeForm({
         cost: userPrivileges.cost,
+        price: userPrivileges.price,
         inventory: userPrivileges.inventory,
       })
     }
@@ -39,7 +41,7 @@ export const usePrivilegeEditor = ({ user }: Props) => {
   }
 
   const updatePrivilege = (
-    category: 'cost' | 'inventory',
+    category: 'cost' | 'price' | 'inventory',
     level: PrivilegeLevel,
   ) => {
     setPrivilegeForm((prev) => ({

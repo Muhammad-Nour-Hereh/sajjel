@@ -1,6 +1,3 @@
-import PrivilegeLevel from '../value-objects/Privileges'
+import Privileges from '../value-objects/Privileges'
 
-export interface UpdateUserPrivilegesRequest {
-  cost: PrivilegeLevel
-  inventory: PrivilegeLevel
-}
+export default interface UpdateUserPrivilegesRequest extends Privileges {}

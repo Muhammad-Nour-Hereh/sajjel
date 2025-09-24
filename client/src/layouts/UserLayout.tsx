@@ -1,29 +1,16 @@
-import { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-import { remote } from '@/http/remotes'
 import LoadingPage from '@/pages/LoadingPage'
+import useAuthQueries from '@/http/tanstack/useAuthQueries'
 
 const UserLayout = () => {
-  const [loading, setLoading] = useState(true)
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
+  const { auth, isLoading, isError } = useAuthQueries()
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const res = await remote.auth.me()
-      const success = res.success === 'true'
+  if (isError) {
+    localStorage.removeItem('access_token')
+  }
 
-      if (!success) {
-        localStorage.removeItem('access_token')
-      }
-
-      setIsAuthenticated(success)
-      setLoading(false)
-    }
-
-    checkAuth()
-  }, [])
-
-  if (loading) return <LoadingPage />
+  const isAuthenticated = !!auth?.success
+  if (isLoading) return <LoadingPage />
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
 }

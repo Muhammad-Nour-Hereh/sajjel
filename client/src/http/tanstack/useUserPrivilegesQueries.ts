@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { remote } from '../remotes'
-import { UpdateUserPrivilegesRequest } from '@/types/requests/UserPrivilegesRequest'
+import UpdateUserPrivilegesRequest from '@/types/requests/UserPrivilegesRequest'
 
 const useUserPrivilegesQueries = (userId: number) => {
   const queryClient = useQueryClient()

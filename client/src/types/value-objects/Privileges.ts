@@ -1,6 +1,6 @@
 import PrivilegeLevel from './PrivilegeLevel'
 
-export interface Privileges {
+interface Privileges {
   cost: PrivilegeLevel
   price: PrivilegeLevel
   inventory: PrivilegeLevel

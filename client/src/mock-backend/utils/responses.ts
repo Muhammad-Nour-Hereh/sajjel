@@ -20,9 +20,9 @@ const fail = (message: string, status = 400) =>
     { status },
   )
 
-const unauthorized = () =>
+const unauthorized = (message: string = 'Unauthorized') =>
   HttpResponse.json<ResponseData>(
-    { success: 'false', message: 'Unauthorized', data: null },
+    { success: 'false', message, data: null },
     { status: 401 },
   )
 

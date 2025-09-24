@@ -2,9 +2,10 @@ import { http } from 'msw'
 import { api } from '@/http/api'
 import { fail, notFound, ok } from '../utils/responses'
 import { url } from '../utils/utils'
-import { UpdateUserPrivilegesRequest } from '@/types/requests/UserPrivilegesRequest'
+import UpdateUserPrivilegesRequest from '@/types/requests/UserPrivilegesRequest'
 import userPrivilegesSeed from '../data/userPrivileges.json'
 import UserPrivileges from '@/types/models/UserPrivileges'
+import PrivilegeLevel from '@/types/value-objects/PrivilegeLevel'
 
 let userPrivileges: UserPrivileges[] =
   (userPrivilegesSeed as UserPrivileges[]) ?? []
@@ -24,8 +25,9 @@ const userPrivilegesHandlers = [
         // If no privileges found, return default (all NONE)
         const defaultPrivileges: UserPrivileges = {
           user_id: userId,
-          cost: 0, // PrivilegeLevel.NONE
-          inventory: 0, // PrivilegeLevel.NONE
+          cost: PrivilegeLevel.NONE,
+          price: PrivilegeLevel.NONE,
+          inventory: PrivilegeLevel.NONE,
         }
         return ok<UserPrivileges>(defaultPrivileges)
       }
@@ -70,6 +72,7 @@ const userPrivilegesHandlers = [
         const newPrivileges: UserPrivileges = {
           user_id: userId,
           cost: updateData.cost ?? 0,
+          price: updateData.price ?? 0,
           inventory: updateData.inventory ?? 0,
         }
         userPrivileges.push(newPrivileges)

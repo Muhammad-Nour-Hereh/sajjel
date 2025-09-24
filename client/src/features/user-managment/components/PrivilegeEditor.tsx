@@ -2,8 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Save, Shield, Eye, Edit3, X } from 'lucide-react'
 import User from '@/types/models/User'
-import PrivilegeLevel from '@/types/value-objects/Privileges'
 import { usePrivilegeEditor } from '../hooks/usePrivilegeEditor'
+import PrivilegeLevel from '@/types/value-objects/PrivilegeLevel'
 
 interface Props {
   user: User | null

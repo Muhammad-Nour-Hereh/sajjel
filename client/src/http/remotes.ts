@@ -25,8 +25,9 @@ import {
   StoreCategoryRequest,
 } from '@/types/requests/categoryRequests'
 import UserPrivileges from '@/types/models/UserPrivileges'
-import { UpdateUserPrivilegesRequest } from '@/types/requests/UserPrivilegesRequest'
+import UpdateUserPrivilegesRequest from '@/types/requests/UserPrivilegesRequest'
 import User from '@/types/models/User'
+import Me from '@/types/models/Me'
 
 export const remote = {
   // Auth APIs:
@@ -46,7 +47,7 @@ export const remote = {
       }),
 
     me: () =>
-      request<string>({
+      request<Me>({
         method: HttpMethod.GET,
         route: api.auth.me,
         auth: true,
