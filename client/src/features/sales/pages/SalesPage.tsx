@@ -361,14 +361,22 @@ const SalesPage = () => {
         }}
       />
       <hr className="m-4" />
-      <span>total cost: </span>
-      <span>{queryTotalCost}</span>
-      <br />
+      {costPrivilege.canRead() && (
+        <>
+          <span>total cost: </span>
+          <span>{queryTotalCost}</span>
+          <br />
+        </>
+      )}
       <span>total Revenue: </span>
       <span>{queryTotalRevenue}</span>
-      <br />
-      <span>total profit: </span>
-      <span>{queryTotalProfit}</span>
+      {costPrivilege.canRead() && (
+        <>
+          <br />
+          <span>total profit: </span>
+          <span>{queryTotalProfit}</span>{' '}
+        </>
+      )}
     </div>
   )
 }
