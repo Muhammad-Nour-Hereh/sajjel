@@ -1,31 +1,27 @@
-import { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-import { remote } from '@/http/remotes'
 import LoadingPage from '@/pages/LoadingPage'
+import useAuthQueries from '@/http/tanstack/useAuthQueries'
+import ForbiddenPage from '@/pages/ForbiddenPage'
+import Role from '@/types/value-objects/Role'
 
 const AdminLayout = () => {
-  const [loading, setLoading] = useState(true)
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
+  const { auth, isLoading, isError } = useAuthQueries()
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const res = await remote.auth.me()
-      const success = res.success === 'true'
+  if (isError) {
+    localStorage.removeItem('access_token')
+  }
 
-      if (!success) {
-        localStorage.removeItem('access_token')
-      }
+  const isAuthenticated = !!auth?.success
+  const user = auth?.data
+  const isAdmin = user?.role === Role.ADMIN
 
-      setIsAuthenticated(success)
-      setLoading(false)
-    }
+  if (isLoading) return <LoadingPage />
+  
+  if (!isAuthenticated) return <Navigate to="/login" />
+  
+  if (!isAdmin) return <ForbiddenPage />
 
-    checkAuth()
-  }, [])
-
-  if (loading) return <LoadingPage />
-
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
+  return <Outlet />
 }
 
 export default AdminLayout
