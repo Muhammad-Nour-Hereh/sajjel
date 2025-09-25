@@ -1,8 +1,9 @@
 import usePrivileges from '@/hooks/usePrivilege'
-import useSalesPage from '../hooks/useSalesPage'
+import useSaleResults from '../hooks/useSaleResults'
 
 const SaleResults = () => {
-  const { queryTotalCost, queryTotalRevenue, queryTotalProfit } = useSalesPage()
+  const { queryTotalCost, queryTotalRevenue, queryTotalProfit } =
+    useSaleResults()
   const { costPrivilege } = usePrivileges()
   return (
     <>

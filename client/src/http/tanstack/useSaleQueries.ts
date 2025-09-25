@@ -7,21 +7,24 @@ import {
   PatchSaleRequest,
 } from '@/types/requests/saleRequests'
 
-const useSaleQueries = () => {
+const useSaleQueries = (start?: string, end?: string) => {
   const queryClient = useQueryClient()
 
-  const getSales = (start?: string, end?: string) =>
-    useQuery({
-      queryKey: ['sales', start, end],
-      queryFn: () => remote.sales.fetchAll(start, end),
-    })
+  const {
+    data: sales = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['sales', start, end],
+    queryFn: () => remote.sales.fetchAll(start, end),
+  })
 
-  const getSale = (id: number) =>
-    useQuery({
-      queryKey: ['sales', id],
-      queryFn: () => remote.sales.show(id),
-      enabled: !!id,
-    })
+  // const getSale = (id: number) =>
+  //   useQuery({
+  //     queryKey: ['sales', id],
+  //     queryFn: () => remote.sales.show(id),
+  //     enabled: !!id,
+  //   })
 
   const createSale = useMutation({
     mutationFn: (data: StoreSaleRequest) => remote.sales.store(data),
@@ -46,8 +49,10 @@ const useSaleQueries = () => {
   })
 
   return {
-    getSales,
-    getSale,
+    sales,
+    // getSale,
+    isLoading,
+    isError,
     createSale: createSale.mutate,
     updateSale: updateSale.mutate,
     patchSale: patchSale.mutate,

@@ -1,14 +1,12 @@
 import ConfirmationDialog from '@/components/ui/dialogs/ConfirmationDialog'
-import useSalesPage from '../hooks/useSalesPage'
+import { useSalesPageContext } from '../hooks/useSalesPage'
+import useSaleQueries from '@/http/tanstack/useSaleQueries'
 
 const SaleDeletionConfirmationDialog = () => {
-  const {
-    deleteSale,
-    confirmOpen,
-    setConfirmOpen,
-    saleToDelete,
-    setSaleToDelete,
-  } = useSalesPage()
+  const { confirmOpen, setConfirmOpen, saleToDelete, setSaleToDelete } =
+    useSalesPageContext()
+
+  const { deleteSale } = useSaleQueries()
 
   return (
     <ConfirmationDialog

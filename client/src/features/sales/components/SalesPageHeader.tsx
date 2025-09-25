@@ -1,8 +1,8 @@
 import { ArrowLeftCircle, ArrowRightCircle } from 'lucide-react'
-import useSalesPage from '../hooks/useSalesPage'
+import { useSalesPageContext } from '../hooks/useSalesPage'
 
 const SalesPageHeader = () => {
-  const { date, setDate, changeDate } = useSalesPage()
+  const { date, setDate, changeDate } = useSalesPageContext()
 
   return (
     <div className="bg-gray-50 p-4 rounded-lg mb-6 space-y-4">

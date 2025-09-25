@@ -4,19 +4,22 @@ import SalesList from '../components/SalesList'
 import SalesPageHeader from '../components/SalesPageHeader'
 import SalesFilterControls from '../components/SalesFilterControls'
 import SaleDeletionConfirmationDialog from '../components/SaleDeletionConfirmationDialog'
+import SalesPageProvider from '../hooks/useSalesPage'
 
 const SalesPage = () => {
   return (
-    <div className="p-6">
-      <SalesPageHeader />
-      <SalesFilterControls />
-      <SalesList />
-      <SaleResults />
+    <SalesPageProvider>
+      <div className="p-6">
+        <SalesPageHeader />
+        <SalesFilterControls />
+        <SalesList />
+        <SaleResults />
 
-      {/* Dialogs */}
-      <CreateSaleDialog />
-      <SaleDeletionConfirmationDialog />
-    </div>
+        {/* Dialogs */}
+        <CreateSaleDialog />
+        <SaleDeletionConfirmationDialog />
+      </div>
+    </SalesPageProvider>
   )
 }
 

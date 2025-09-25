@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/select'
 import { Label } from '@radix-ui/react-label'
 import { Filter, Calendar } from 'lucide-react'
-import useSalesPage from '../hooks/useSalesPage'
+import SalesPageProvider, { useSalesPageContext } from '../hooks/useSalesPage'
 import { Button } from '@/components/ui/button'
 
 const dateFilterOptions = [
@@ -30,7 +30,7 @@ const SalesFilterControls = () => {
     customEndDate,
     handleDateFilterChange,
     handleCustomDateChange,
-  } = useSalesPage()
+  } = useSalesPageContext()
   return (
     <div className="bg-gray-50 p-4 rounded-lg mb-6 space-y-4">
       <div className="flex items-center gap-2 mb-3">

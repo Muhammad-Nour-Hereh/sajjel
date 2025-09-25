@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table'
 import { TextInput } from '@/components/ui/TextInput'
 
-import useSalesPage from '../hooks/useSalesPage'
+import SalesPageProvider, { useSalesPageContext } from '../hooks/useSalesPage'
 import usePrivileges from '@/hooks/usePrivilege'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -20,25 +20,21 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Trash2 } from 'lucide-react'
+import useSaleQueries from '@/http/tanstack/useSaleQueries'
+import { Sale } from '@/types/models/Sale'
+import useSaleItemQueries from '@/http/tanstack/useSaleItemQueries'
 
 const SalesList = () => {
-  const {
-    sales,
-    // for sale delete confirmation dialog
-    setConfirmOpen,
-    setSaleToDelete,
+  const { setConfirmOpen, setSaleToDelete } = useSalesPageContext()
 
-    // for updating sale items
-    updateSaleItemCost,
-    updateSaleItemPrice,
-    updateSaleItemNote,
-    updateSaleItemQuantity,
-  } = useSalesPage()
+  const { sales } = useSaleQueries()
+  const { patchSaleItem } = useSaleItemQueries()
 
   const { costPrivilege } = usePrivileges()
+
   return (
     <Accordion type="single" collapsible className="w-full space-y-2">
-      {sales.map((sale) => (
+      {sales.map((sale: Sale) => (
         <AccordionItem
           key={sale.id}
           value={`sale-${sale.id}`}
@@ -111,7 +107,12 @@ const SalesList = () => {
                           amount={saleItem.cost?.amount || 0}
                           currency={saleItem.cost?.currency || 'USD'}
                           onChange={(val) =>
-                            updateSaleItemCost(sale.id, saleItem.id, val)
+                            // updateSaleItemCost(sale.id, saleItem.id, val)
+                            patchSaleItem({
+                              saleId: sale.id,
+                              itemId: saleItem.id,
+                              data: { cost: val },
+                            })
                           }
                         />
                       </TableCell>
@@ -121,7 +122,12 @@ const SalesList = () => {
                         amount={saleItem.price?.amount || 0}
                         currency={saleItem.price?.currency || 'USD'}
                         onChange={(val) =>
-                          updateSaleItemPrice(sale.id, saleItem.id, val)
+                          // updateSaleItemPrice(sale.id, saleItem.id, val)
+                          patchSaleItem({
+                            saleId: sale.id,
+                            itemId: saleItem.id,
+                            data: { price: val },
+                          })
                         }
                       />
                     </TableCell>
@@ -130,16 +136,19 @@ const SalesList = () => {
                         amount={saleItem.revenue?.amount || 0}
                         currency={saleItem.revenue?.currency || 'USD'}
                         editable={false}
-                        onChange={(val) =>
-                          updateSaleItemPrice(sale.id, saleItem.id, val)
-                        }
+                        onChange={() => {}}
                       />
                     </TableCell>
                     <TableCell>
                       <QuantityInput
                         quantity={saleItem.quantity}
                         onChange={function (val: number): void {
-                          updateSaleItemQuantity(sale.id, saleItem.id, val)
+                          // updateSaleItemQuantity(sale.id, saleItem.id, val)
+                          patchSaleItem({
+                            saleId: sale.id,
+                            itemId: saleItem.id,
+                            data: { quantity: val },
+                          })
                         }}
                       />
                     </TableCell>
@@ -156,7 +165,12 @@ const SalesList = () => {
                       <TextInput
                         value={saleItem.note || ' '}
                         onChange={(val) =>
-                          updateSaleItemNote(sale.id, saleItem.id, val)
+                          // updateSaleItemNote(sale.id, saleItem.id, val)
+                          patchSaleItem({
+                            saleId: sale.id,
+                            itemId: saleItem.id,
+                            data: { note: val },
+                          })
                         }
                       />
                     </TableCell>

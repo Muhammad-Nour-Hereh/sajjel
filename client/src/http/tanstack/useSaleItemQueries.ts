@@ -1,18 +1,23 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { remote } from '../remotes'
 import {
-  StoreSaleItemRequest,
-  UpdateSaleItemRequest,
   PatchSaleItemRequest,
   ReorderSaleItemRequest,
-} from '@/types/requests/saleRequests'
+  StoreSaleItemRequest,
+  UpdateSaleItemRequest,
+} from '@/types/requests/saleItemRequests'
 
 const useSaleItemQueries = () => {
   const queryClient = useQueryClient()
 
   const createSaleItem = useMutation({
-    mutationFn: ({ saleId, data }: { saleId: number; data: StoreSaleItemRequest }) =>
-      remote.saleItems.store(saleId, data),
+    mutationFn: ({
+      saleId,
+      data,
+    }: {
+      saleId: number
+      data: StoreSaleItemRequest
+    }) => remote.saleItems.store(saleId, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['sales', variables.saleId] })
       queryClient.invalidateQueries({ queryKey: ['sales'] })
@@ -20,14 +25,14 @@ const useSaleItemQueries = () => {
   })
 
   const updateSaleItem = useMutation({
-    mutationFn: ({ 
-      saleId, 
-      itemId, 
-      data 
-    }: { 
-      saleId: number; 
-      itemId: number; 
-      data: UpdateSaleItemRequest 
+    mutationFn: ({
+      saleId,
+      itemId,
+      data,
+    }: {
+      saleId: number
+      itemId: number
+      data: UpdateSaleItemRequest
     }) => remote.saleItems.update(saleId, itemId, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['sales', variables.saleId] })
@@ -36,14 +41,14 @@ const useSaleItemQueries = () => {
   })
 
   const patchSaleItem = useMutation({
-    mutationFn: ({ 
-      saleId, 
-      itemId, 
-      data 
-    }: { 
-      saleId: number; 
-      itemId: number; 
-      data: PatchSaleItemRequest 
+    mutationFn: ({
+      saleId,
+      itemId,
+      data,
+    }: {
+      saleId: number
+      itemId: number
+      data: PatchSaleItemRequest
     }) => remote.saleItems.patch(saleId, itemId, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['sales', variables.saleId] })
@@ -52,8 +57,13 @@ const useSaleItemQueries = () => {
   })
 
   const reorderSaleItems = useMutation({
-    mutationFn: ({ saleId, data }: { saleId: number; data: ReorderSaleItemRequest }) =>
-      remote.saleItems.reorder(saleId, data),
+    mutationFn: ({
+      saleId,
+      data,
+    }: {
+      saleId: number
+      data: ReorderSaleItemRequest
+    }) => remote.saleItems.reorder(saleId, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['sales', variables.saleId] })
       queryClient.invalidateQueries({ queryKey: ['sales'] })

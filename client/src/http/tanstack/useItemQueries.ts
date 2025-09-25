@@ -35,6 +35,7 @@ const useItemQueries = () => {
     mutationFn: (id: number) => remote.items.destroy(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['items'] }),
   })
+  
   return {
     items,
     isLoading,
