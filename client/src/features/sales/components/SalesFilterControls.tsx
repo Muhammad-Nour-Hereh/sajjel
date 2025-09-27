@@ -8,7 +8,9 @@ import {
 } from '@/components/ui/select'
 import { Label } from '@radix-ui/react-label'
 import { Filter, Calendar } from 'lucide-react'
-import SalesPageProvider, { useSalesPageContext } from '../hooks/useSalesPage'
+import SalesPageProvider, {
+  useSalesPageContext,
+} from '../hooks/useSalesPageContext'
 import { Button } from '@/components/ui/button'
 
 const dateFilterOptions = [

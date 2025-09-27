@@ -13,6 +13,7 @@ import type { Money } from '@/types/value-objects/Money'
 
 // Import sales data to manipulate
 import salesSeed from '../data/sales.json'
+import { partialMatchKey } from '@tanstack/react-query'
 
 let sales = (salesSeed as any[]) ?? []
 
@@ -206,6 +207,7 @@ export const saleItemsHandlers = [
       '/:saleId/items/:itemId',
     ),
     async ({ params }) => {
+      console.log(params)
       const saleId = Number(params.saleId)
       const itemId = Number(params.itemId)
 

@@ -4,7 +4,7 @@ import SalesList from '../components/SalesList'
 import SalesPageHeader from '../components/SalesPageHeader'
 import SalesFilterControls from '../components/SalesFilterControls'
 import SaleDeletionConfirmationDialog from '../components/SaleDeletionConfirmationDialog'
-import SalesPageProvider from '../hooks/useSalesPage'
+import SalesPageProvider from '../hooks/useSalesPageContext'
 
 const SalesPage = () => {
   return (

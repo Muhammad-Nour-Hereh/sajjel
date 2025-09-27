@@ -1,9 +1,31 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+
+interface SalesPageContextType {
+  search: string
+  setSearch: (search: string) => void
+  dateFilter: DateFilter
+  customStartDate: string
+  customEndDate: string
+  handleDateFilterChange: (filter: DateFilter) => void
+  handleCustomDateChange: (startDate: string, endDate: string) => void
+
+  // for sale delete confirmation dialog
+  confirmOpen: boolean
+  setConfirmOpen: (open: boolean) => void
+  saleToDelete: number | null
+  setSaleToDelete: (id: number | null) => void
+  saleItemToDelete: { saleId: number; itemId: number } | null
+  setSaleItemToDelete: (item: { saleId: number; itemId: number } | null) => void
+
+  // for date
+  date: string
+  setDate: (date: string) => void
+  changeDate: (days: number) => void
+}
+
+const SalesPageContext = createContext<SalesPageContextType | undefined>(
+  undefined,
+)
 
 type DateFilter =
   | 'all'
@@ -16,8 +38,6 @@ type DateFilter =
   | 'day'
   | 'range'
 
-const SalesPageContext = createContext({})
-
 const SalesPageProvider = ({ children }: any) => {
   const [search, setSearch] = useState('')
 
@@ -29,7 +49,10 @@ const SalesPageProvider = ({ children }: any) => {
   // for confirmation dialog
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [saleToDelete, setSaleToDelete] = useState<number | null>(null)
-  const [saleItemToDelete, setSaleItemToDelete] = useState<number | null>(null)
+  const [saleItemToDelete, setSaleItemToDelete] = useState<{
+    saleId: number
+    itemId: number
+  } | null>(null)
 
   const handleDateFilterChange = (filter: DateFilter) => {
     const today = new Date()
@@ -137,38 +160,42 @@ const SalesPageProvider = ({ children }: any) => {
     handleDateFilterChange('day')
     console.log(date, startDate, endDate)
   }, [date])
+  const contextValue: SalesPageContextType = {
+    search,
+    setSearch,
+    dateFilter,
+    customStartDate: startDate,
+    customEndDate: endDate,
+    handleDateFilterChange,
+    handleCustomDateChange,
 
+    // for sale delete confirmation dialog
+    confirmOpen,
+    setConfirmOpen,
+    saleToDelete,
+    setSaleToDelete,
+    saleItemToDelete,
+    setSaleItemToDelete,
+
+    // for date
+    date,
+    setDate,
+    changeDate,
+  }
   return (
-    <SalesPageContext.Provider
-      value={{
-        search,
-        setSearch,
-        dateFilter,
-        customStartDate: startDate,
-        customEndDate: endDate,
-        handleDateFilterChange,
-        handleCustomDateChange,
-
-        // for sale delete confirmation dialog
-        confirmOpen,
-        setConfirmOpen,
-        saleToDelete,
-        setSaleToDelete,
-        saleItemToDelete,
-        setSaleItemToDelete,
-
-        // for date
-        date,
-        setDate,
-        changeDate,
-      }}>
+    <SalesPageContext.Provider value={contextValue}>
       {children}
     </SalesPageContext.Provider>
   )
 }
-
-export const useSalesPageContext = () => {
-  return useContext(SalesPageContext)
+export const useSalesPageContext = (): SalesPageContextType => {
+  const context = useContext(SalesPageContext)
+  if (context === undefined) {
+    throw new Error(
+      'useSalesPageContext must be used within a SalesPageProvider',
+    )
+  }
+  return context
 }
 
 export default SalesPageProvider

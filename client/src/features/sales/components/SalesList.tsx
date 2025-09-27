@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table'
 import { TextInput } from '@/components/ui/TextInput'
 
-import SalesPageProvider, { useSalesPageContext } from '../hooks/useSalesPage'
+import { useSalesPageContext } from '../hooks/useSalesPageContext'
 import usePrivileges from '@/hooks/usePrivilege'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -25,7 +25,8 @@ import { Sale } from '@/types/models/Sale'
 import useSaleItemQueries from '@/http/tanstack/useSaleItemQueries'
 
 const SalesList = () => {
-  const { setConfirmOpen, setSaleToDelete } = useSalesPageContext()
+  const { setConfirmOpen, setSaleToDelete, setSaleItemToDelete } =
+    useSalesPageContext()
 
   const { sales } = useSaleQueries()
   const { patchSaleItem } = useSaleItemQueries()
@@ -178,9 +179,10 @@ const SalesList = () => {
                       <div
                         onClick={(e) => {
                           e.stopPropagation()
-                          // This should delete the sale item, not the entire sale
-                          // You may need to add a deleteSaleItem function
-                          setSaleToDelete(sale.id)
+                          setSaleItemToDelete({
+                            saleId: sale.id,
+                            itemId: saleItem.id,
+                          })
                           setConfirmOpen(true)
                         }}
                         role="button"
@@ -188,7 +190,10 @@ const SalesList = () => {
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
                             e.stopPropagation()
-                            setSaleToDelete(sale.id)
+                            setSaleItemToDelete({
+                              saleId: sale.id,
+                              itemId: saleItem.id,
+                            })
                             setConfirmOpen(true)
                           }
                         }}

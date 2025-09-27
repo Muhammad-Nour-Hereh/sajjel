@@ -1,5 +1,5 @@
 import { ArrowLeftCircle, ArrowRightCircle } from 'lucide-react'
-import { useSalesPageContext } from '../hooks/useSalesPage'
+import { useSalesPageContext } from '../hooks/useSalesPageContext'
 
 const SalesPageHeader = () => {
   const { date, setDate, changeDate } = useSalesPageContext()
