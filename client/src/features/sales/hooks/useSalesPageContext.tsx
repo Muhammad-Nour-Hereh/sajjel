@@ -188,6 +188,7 @@ const SalesPageProvider = ({ children }: any) => {
     </SalesPageContext.Provider>
   )
 }
+
 export const useSalesPageContext = (): SalesPageContextType => {
   const context = useContext(SalesPageContext)
   if (context === undefined) {

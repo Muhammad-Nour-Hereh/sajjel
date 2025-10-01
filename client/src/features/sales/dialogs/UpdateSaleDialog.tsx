@@ -6,7 +6,8 @@ import {
 } from '@/components/ui/dialog'
 import { useState, useEffect } from 'react'
 import { Sale } from '@/types/models/Sale'
-import { SaleDetailsForm } from './SaleDetailsForm'
+import { SaleDetailsForm } from '../components/SaleDetailsForm'
+
 
 interface UpdateSaleDialogProps {
   sale: Sale

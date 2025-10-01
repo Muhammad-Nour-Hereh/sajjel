@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Plus, X } from 'lucide-react'
 import SearchBar from '@/components/ui/Searchbar'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { remote } from '@/http/remotes'
 import { Item } from '@/types/models/Item'
 import { PriceInput } from '../../../components/ui/PriceInput'
@@ -18,9 +18,11 @@ import { Money } from '@/types/value-objects/Money'
 import { Currency } from '@/types/value-objects/Currency'
 import { StoreSaleRequest } from '@/types/requests/saleRequests'
 import ItemCard from '@/features/items/components/ItemCard'
+import useCategoryQueries from '@/http/tanstack/useCategoryQueries'
+import useSaleQueries from '@/http/tanstack/useSaleQueries'
 
 interface SaleItemData {
-  id: string // temporary ID for tracking
+  id: string
   item_id: number | null
   name: string
   model: string
@@ -36,20 +38,13 @@ const CreateSaleDialog = () => {
   const [search, setSearch] = useState('')
   const [saleItems, setSaleItems] = useState<SaleItemData[]>([])
 
-  const queryClient = useQueryClient()
-
   const { data: items = [] } = useQuery({
     queryKey: ['items'],
     queryFn: remote.items.fetchAll,
   })
 
-  const createSale = useMutation({
-    mutationFn: (data: StoreSaleRequest) => remote.sales.store(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['sales'] })
-      resetAndClose()
-    },
-  })
+  const { createSale, isLoading } = useSaleQueries()
+  const { categories } = useCategoryQueries()
 
   const resetAndClose = () => {
     setOpen(false)
@@ -124,7 +119,7 @@ const CreateSaleDialog = () => {
       })),
     }
 
-    createSale.mutate(saleData)
+    createSale(saleData)
   }
 
   const totals = useMemo(() => {
@@ -405,8 +400,8 @@ const CreateSaleDialog = () => {
               </Button>
               <Button
                 onClick={handleSaveSale}
-                disabled={createSale.isPending || saleItems.length === 0}>
-                {createSale.isPending ? 'Saving...' : 'Save Sale'}
+                disabled={isLoading || saleItems.length === 0}>
+                {isLoading ? 'Saving...' : 'Save Sale'}
               </Button>
             </div>
           </div>

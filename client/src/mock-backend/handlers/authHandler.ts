@@ -16,6 +16,7 @@ import usersSeed from '../data/users.json'
 import privilegesSeed from '../data/userPrivileges.json'
 import UserPrivileges from '@/types/models/UserPrivileges'
 import Privileges from '@/types/value-objects/Privileges'
+import Role from '@/types/value-objects/Role'
 
 interface User extends _User {
   password: string
@@ -61,7 +62,7 @@ const authHandlers = [
       name,
       email,
       password,
-      role: 'USER',
+      role: Role.USER,
     }
     users.push(user)
 

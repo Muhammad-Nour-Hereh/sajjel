@@ -28,6 +28,8 @@ const userPrivilegesHandlers = [
           cost: PrivilegeLevel.NONE,
           price: PrivilegeLevel.NONE,
           inventory: PrivilegeLevel.NONE,
+          item: PrivilegeLevel.NONE,
+          category: PrivilegeLevel.NONE,
         }
         return ok<UserPrivileges>(defaultPrivileges)
       }
@@ -74,6 +76,8 @@ const userPrivilegesHandlers = [
           cost: updateData.cost ?? 0,
           price: updateData.price ?? 0,
           inventory: updateData.inventory ?? 0,
+          item: updateData.item ?? 0,
+          category: updateData.category ?? 0,
         }
         userPrivileges.push(newPrivileges)
         existingPrivileges = newPrivileges

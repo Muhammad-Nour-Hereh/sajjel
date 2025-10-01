@@ -11,7 +11,24 @@
         "description": "Smartphones and basic phones",
         "thumbnail": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop",
         "children": [],
-        "items": [],
+        "items": [
+          {
+            "id": 101,
+            "name": "iPhone 14 Pro",
+            "model": "A2890",
+            "thumbnail": "https://images.unsplash.com/photo-1675355722392-8c6ef65379f5?w=400&h=300&fit=crop",
+            "cost": { "amount": 900, "currency": "USD" },
+            "price": { "amount": 1199, "currency": "USD" }
+          },
+          {
+            "id": 102,
+            "name": "Samsung Galaxy S23",
+            "model": "SM-S911B",
+            "thumbnail": "https://images.unsplash.com/photo-1676388161041-5cb9184160a6?w=400&h=300&fit=crop",
+            "cost": { "amount": 700, "currency": "USD" },
+            "price": { "amount": 999, "currency": "USD" }
+          }
+        ],
         "children_count": 0,
         "items_count": 2,
         "level": 1
@@ -22,13 +39,39 @@
         "description": "Portable computers and accessories",
         "thumbnail": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop",
         "children": [],
-        "items": [],
+        "items": [
+          {
+            "id": 103,
+            "name": "MacBook Pro 16”",
+            "model": "M2 Pro",
+            "thumbnail": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=300&fit=crop",
+            "cost": { "amount": 2200, "currency": "USD" },
+            "price": { "amount": 2699, "currency": "USD" }
+          }
+        ],
         "children_count": 0,
         "items_count": 1,
         "level": 1
       }
     ],
-    "items": [],
+    "items": [
+      {
+        "id": 101,
+        "name": "iPhone 14 Pro",
+        "model": "A2890",
+        "thumbnail": "https://images.unsplash.com/photo-1675355722392-8c6ef65379f5?w=400&h=300&fit=crop",
+        "cost": { "amount": 900, "currency": "USD" },
+        "price": { "amount": 1199, "currency": "USD" }
+      },
+      {
+        "id": 102,
+        "name": "Samsung Galaxy S23",
+        "model": "SM-S911B",
+        "thumbnail": "https://images.unsplash.com/photo-1676388161041-5cb9184160a6?w=400&h=300&fit=crop",
+        "cost": { "amount": 700, "currency": "USD" },
+        "price": { "amount": 999, "currency": "USD" }
+      }
+    ],
     "children_count": 2,
     "items_count": 0,
     "level": 0
@@ -45,7 +88,16 @@
         "description": "Clothing for men",
         "thumbnail": "https://images.unsplash.com/photo-1516826957135-700dedea698c?w=400&h=300&fit=crop",
         "children": [],
-        "items": [],
+        "items": [
+          {
+            "id": 201,
+            "name": "Men's Leather Jacket",
+            "model": "Classic Fit",
+            "thumbnail": "https://images.unsplash.com/photo-1602810318383-e8a4c68a1cf6?w=400&h=300&fit=crop",
+            "cost": { "amount": 80, "currency": "USD" },
+            "price": { "amount": 150, "currency": "USD" }
+          }
+        ],
         "children_count": 0,
         "items_count": 1,
         "level": 1
@@ -62,7 +114,24 @@
     "description": "Physical and digital books",
     "thumbnail": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop",
     "children": [],
-    "items": [],
+    "items": [
+      {
+        "id": 301,
+        "name": "The Pragmatic Programmer",
+        "model": "2nd Edition",
+        "thumbnail": "https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&h=300&fit=crop",
+        "cost": { "amount": 25, "currency": "USD" },
+        "price": { "amount": 45, "currency": "USD" }
+      },
+      {
+        "id": 302,
+        "name": "Clean Code",
+        "model": "Robert C. Martin",
+        "thumbnail": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=400&h=300&fit=crop",
+        "cost": { "amount": 20, "currency": "USD" },
+        "price": { "amount": 40, "currency": "USD" }
+      }
+    ],
     "children_count": 0,
     "items_count": 2,
     "level": 0
