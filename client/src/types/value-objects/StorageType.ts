@@ -1,4 +1,4 @@
-const enum StorageType {
+enum StorageType {
   SHOP = 'shop',
   WAREHOUSE = 'warehouse',
   INVENTORY = 'inventory',
