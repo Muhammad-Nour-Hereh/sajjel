@@ -19,8 +19,11 @@ const InvetoryManagmentPage = () => {
           <Plus className="mr-2" /> Add Storage
         </Button>
       </div>
-
-      <StorageCard title={'store 1'} storageType={StorageType.SHOP} />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <StorageCard title={'store 1'} storageType={StorageType.SHOP} />
+        <StorageCard title={'store 1'} storageType={StorageType.SHOP} />
+        <StorageCard title={'store 1'} storageType={StorageType.SHOP} />
+      </div>
     </div>
   )
 }

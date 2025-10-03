@@ -36,11 +36,11 @@ const StorageCard = ({ title, storageType }: StorageCardProps) => {
   }
 
   return (
-    <Card className="max-w-200 px-4">
+    <Card className="px-4">
       <div className="flex items-center gap-4">
         <Icon />
         <div>
-          <span className="text-2xl font-bold">{title}</span>
+          <span className="text-lg font-bold">{title}</span>
           <div>
             <Badge variant="secondary" className="mt-1 capitalize">
               {storageType}
@@ -48,7 +48,7 @@ const StorageCard = ({ title, storageType }: StorageCardProps) => {
           </div>
         </div>
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         <Button className="flex-auto" variant={'outline'} size="sm">
           <Edit /> Edit
         </Button>
