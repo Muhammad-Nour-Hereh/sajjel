@@ -20,7 +20,7 @@ import CategoriesPage from './features/category/pages/CategoriesPage'
 import AdminLayout from './layouts/AdminLayout'
 import AdminRoutes from './routes/AdminRoutes'
 import UsersManagementPage from './features/user-managment/pages/UsersManagementPage'
-import InvetoryManagmentPage from './features/inventory/pages/InvetoryManagmentPage'
+import InvventoryIndex from './features/inventory/pages'
 
 const AppRoutes = () => {
   return (
@@ -39,10 +39,7 @@ const AppRoutes = () => {
         <Route path={UserRoutes.ITEMS} element={<ItemsPage />} />
         <Route path={UserRoutes.SALES} element={<SalesPage />} />
         <Route path={UserRoutes.CATEGORIES} element={<CategoriesPage />} />
-        <Route
-          path={UserRoutes.INVENTORY}
-          element={<InvetoryManagmentPage />}
-        />
+        <Route path={UserRoutes.INVENTORY} element={<InvventoryIndex />} />
       </Route>
       <Route element={<AdminLayout />}>
         <Route
