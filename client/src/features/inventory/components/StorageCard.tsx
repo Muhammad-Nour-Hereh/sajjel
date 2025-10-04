@@ -24,6 +24,7 @@ interface StorageCardProps {
   storageType: StorageType
   openDialog: () => void
   setFormData: (formData: { name: string; storageType: StorageType }) => void
+  setConfirmDialog: (val: boolean) => void
 }
 
 const StorageCard = ({
@@ -31,6 +32,7 @@ const StorageCard = ({
   storageType,
   openDialog,
   setFormData,
+  setConfirmDialog,
 }: StorageCardProps) => {
   const Icon = () => {
     const Icon = storageTypeIcons[storageType].icon
@@ -69,7 +71,12 @@ const StorageCard = ({
           }}>
           <Edit /> Edit
         </Button>
-        <Button variant={'destructive'} size="sm">
+        <Button
+          variant={'destructive'}
+          size="sm"
+          onClick={() => {
+            setConfirmDialog(true)
+          }}>
           <Trash2 />
         </Button>
       </div>

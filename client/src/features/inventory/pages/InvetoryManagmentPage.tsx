@@ -2,8 +2,9 @@ import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import StorageCard from '../components/StorageCard'
 import StorageType from '@/types/value-objects/StorageType'
-import StorageDialog from '../components/StorageDialog'
+import StorageDialog from '../dialogs/StorageDialog'
 import { useState } from 'react'
+import ConfirmationDialog from '@/components/ui/dialogs/ConfirmationDialog'
 
 const storages = [
   {
@@ -21,13 +22,18 @@ const storages = [
 ]
 
 const InvetoryManagmentPage = () => {
-  const [dialogOpen, setDialogOpen] = useState(false)
+  // storage dialog states
+  const [storageDialogOpen, setStorageDialogOpen] = useState(false)
   const [dialogMode, setDialogMode] = useState<'add' | 'edit'>('add')
   const openDialog = (mode: 'add' | 'edit') => {
-    setDialogOpen(true)
+    setStorageDialogOpen(true)
     setDialogMode(mode)
   }
 
+  // confirmation dialog states
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
+
+  // form states
   const [formData, setFormData] = useState({
     name: '',
     storageType: StorageType.SHOP,
@@ -55,16 +61,32 @@ const InvetoryManagmentPage = () => {
             storageType={s.storageType}
             openDialog={() => openDialog('edit')}
             setFormData={setFormData}
+            setConfirmDialog={setConfirmDialogOpen}
           />
         ))}
       </div>
 
+      {/* dialogs */}
       <StorageDialog
-        open={dialogOpen}
-        setOpen={setDialogOpen}
+        open={storageDialogOpen}
+        setOpen={setStorageDialogOpen}
         mode={dialogMode}
         formData={formData}
         setFormData={setFormData}
+      />
+
+      <ConfirmationDialog
+        open={confirmDialogOpen}
+        onConfirm={function (): void {
+          throw new Error('Function not implemented.')
+        }}
+        onCancel={function (): void {
+          throw new Error('Function not implemented.')
+        }}
+        onOpenChange={function (open: boolean): void {
+          setConfirmDialogOpen(open)
+          throw new Error('Function not implemented.')
+        }}
       />
     </div>
   )
