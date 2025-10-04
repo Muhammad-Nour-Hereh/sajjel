@@ -2,15 +2,33 @@ import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import StorageCard from '../components/StorageCard'
 import StorageType from '@/types/value-objects/StorageType'
-import AddStorageDialog from '../components/AddStorageDialog'
+import StorageDialog from '../components/StorageDialog'
 import { useState } from 'react'
 
+const storages = [
+  {
+    name: 'store 1',
+    storageType: StorageType.SHOP,
+  },
+  {
+    name: 'store 2',
+    storageType: StorageType.INVENTORY,
+  },
+  {
+    name: 'store 3',
+    storageType: StorageType.WAREHOUSE,
+  },
+]
+
 const InvetoryManagmentPage = () => {
-  const [open, setOpen] = useState(false)
-  const [formData, setFormData] = useState<{
-    name: string
-    storageType: StorageType
-  }>({
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [dialogMode, setDialogMode] = useState<'add' | 'edit'>('add')
+  const openDialog = (mode: 'add' | 'edit') => {
+    setDialogOpen(true)
+    setDialogMode(mode)
+  }
+
+  const [formData, setFormData] = useState({
     name: '',
     storageType: StorageType.SHOP,
   })
@@ -26,23 +44,25 @@ const InvetoryManagmentPage = () => {
             Manage warehouses, shops, and inventory locations
           </p>
         </div>
-        <Button
-          size={'lg'}
-          onClick={() => {
-            setOpen(true)
-          }}>
+        <Button size={'lg'} onClick={() => openDialog('add')}>
           <Plus className="mr-2" /> Add Storage
         </Button>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <StorageCard title={'store 1'} storageType={StorageType.SHOP} />
-        <StorageCard title={'store 1'} storageType={StorageType.SHOP} />
-        <StorageCard title={'store 1'} storageType={StorageType.SHOP} />
+        {storages.map((s) => (
+          <StorageCard
+            name={s.name}
+            storageType={s.storageType}
+            openDialog={() => openDialog('edit')}
+            setFormData={setFormData}
+          />
+        ))}
       </div>
 
-      <AddStorageDialog
-        open={open}
-        setOpen={setOpen}
+      <StorageDialog
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        mode={dialogMode}
         formData={formData}
         setFormData={setFormData}
       />

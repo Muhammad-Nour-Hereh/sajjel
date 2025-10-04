@@ -20,11 +20,18 @@ const storageTypeIcons = {
 }
 
 interface StorageCardProps {
-  title: string
+  name: string
   storageType: StorageType
+  openDialog: () => void
+  setFormData: (formData: { name: string; storageType: StorageType }) => void
 }
 
-const StorageCard = ({ title, storageType }: StorageCardProps) => {
+const StorageCard = ({
+  name,
+  storageType,
+  openDialog,
+  setFormData,
+}: StorageCardProps) => {
   const Icon = () => {
     const Icon = storageTypeIcons[storageType].icon
     const color = storageTypeIcons[storageType].color
@@ -40,7 +47,7 @@ const StorageCard = ({ title, storageType }: StorageCardProps) => {
       <div className="flex items-center gap-4">
         <Icon />
         <div>
-          <span className="text-lg font-bold">{title}</span>
+          <span className="text-lg font-bold">{name}</span>
           <div>
             <Badge variant="secondary" className="mt-1 capitalize">
               {storageType}
@@ -49,7 +56,17 @@ const StorageCard = ({ title, storageType }: StorageCardProps) => {
         </div>
       </div>
       <div className="flex gap-2">
-        <Button className="flex-auto" variant={'outline'} size="sm">
+        <Button
+          className="flex-auto"
+          variant={'outline'}
+          size="sm"
+          onClick={() => {
+            setFormData({
+              name: name,
+              storageType: storageType,
+            })
+            openDialog()
+          }}>
           <Edit /> Edit
         </Button>
         <Button variant={'destructive'} size="sm">
