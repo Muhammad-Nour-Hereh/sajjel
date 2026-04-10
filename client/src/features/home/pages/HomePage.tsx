@@ -39,6 +39,13 @@ const HomePage = () => {
         </li>
         <li
           onClick={() => {
+            navigate(UserRoutes.INVENTORY)
+          }}
+          className="block cursor-pointer py-2 text-l font-bold select-none hover:text-gray-700">
+          inventory
+        </li>
+        <li
+          onClick={() => {
             remote.auth.logout()
             localStorage.removeItem('access_token')
             navigate(GuestRoutes.LOGIN)

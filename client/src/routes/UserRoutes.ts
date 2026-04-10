@@ -4,6 +4,7 @@ const UserRoutes = {
   ITEMS: '/items',
   SALES: '/sales',
   CATEGORIES: '/categories',
+  INVENTORY: '/inventory-management',
   SETTINGS: '/settings',
   PROFILE: '/profile',
   HELP: '/help',

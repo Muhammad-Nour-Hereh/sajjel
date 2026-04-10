@@ -41,3 +41,7 @@ export const convertPriceTo = (
 
   return { amount: newAmount, currency: targetCurrency }
 }
+
+export namespace Money {
+  export const Zero: Money = { amount: 0, currency: 'USD' }
+}
